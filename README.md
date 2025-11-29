@@ -1,4 +1,5 @@
-# INN > **Inspired Nation Network**
+# **Inspired Nation Network**
+> ### INN
 
 An app that matches you to your desired home
 
