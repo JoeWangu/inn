@@ -6,15 +6,15 @@ import 'package:inn/ui/home/home.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
-  redirect: (context, state) {
-    // bool loggedIn = false;
-    // bool loggingIn = state.uri.path == '/login';
-    // if (!loggedIn && loggingIn) {
-      // return '/login';
-      return '/signup';
-    // }
-    // return '/';
-  },
+  // redirect: (context, state) {
+  // bool loggedIn = false;
+  // bool loggingIn = state.uri.path == '/login';
+  // if (!loggedIn && loggingIn) {
+  // return '/login';
+  // return '/signup';
+  // }
+  // return '/';
+  // },
   routes: <RouteBase>[
     GoRoute(
       name: 'home',
