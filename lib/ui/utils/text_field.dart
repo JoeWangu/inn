@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:inn/ui/utils/validators.dart';
 
 class InnTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final IconData icon;
+  final bool isEmail;
   final bool isPassword;
+  final bool isPassword1;
   final ColorScheme cs;
+  final ValueChanged<String>? onChanged;
 
   const InnTextField({
     super.key,
     required this.hint,
     required this.controller,
     required this.icon,
+    this.isEmail = false,
     this.isPassword = false,
+    this.isPassword1 = false,
     required this.cs,
+    this.onChanged,
   });
 
   @override
@@ -22,7 +29,12 @@ class InnTextField extends StatelessWidget {
       style: TextStyle(color: cs.onSurface),
       controller: controller,
       obscureText: isPassword,
-      validator: (v) => v!.trim().isEmpty ? 'Required' : null,
+      onChanged: onChanged,
+      validator: isEmail
+          ? emailValidator
+          : isPassword
+          ? passwordValidator
+          : requiredValidator,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
