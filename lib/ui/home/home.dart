@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,13 +9,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +24,7 @@ class _MyHomePageState extends State<HomePage> {
             children: <Widget>[
               const Text('You have pushed the button this many times:'),
               Text(
-                '$_counter',
+                'home',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],
@@ -38,7 +32,9 @@ class _MyHomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          context.pushNamed('login');
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
