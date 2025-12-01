@@ -18,6 +18,7 @@
 import 'package:flutter/material.dart';
 import 'package:inn/routes.dart';
 
+
 void main() {
   runApp(const InnApp());
 }
@@ -30,6 +31,7 @@ class InnApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Inn App',
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color.fromARGB(255, 43, 95, 86),
         ),
