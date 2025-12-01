@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inn/debug.dart';
-import 'package:inn/ui/utils/buttons.dart';
-import 'package:inn/ui/utils/terms_checkbox.dart';
-import 'package:inn/ui/utils/text_field.dart';
+import 'package:inn/ui/utils/create_form.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -11,16 +8,47 @@ class SignupPage extends StatefulWidget {
   State<SignupPage> createState() => _SignupPageState();
 }
 
-void _signUp() {
-  print('sign up pressed');
-}
-
 class _SignupPageState extends State<SignupPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _password1Controller = TextEditingController();
-  bool _termsAgreed = true;
+  bool _termsAgreed = false;
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _password1Controller.dispose();
+    super.dispose();
+  }
+
+  void _signUp() {
+    // Grab the *real* FormState from the key
+    final formState = _formKey.currentState;
+
+    if (!_termsAgreed) {
+      _showAgreementMissingMessage();
+      return;
+    }
+
+    if (formState == null) {
+      // This should never happen if the Form is in the tree,
+      // but guard against a nil reference just in case.
+      debugPrint('⚠️ FormState is null maybe the Form isn\'t mounted yet.');
+      return;
+    }
+
+    if (formState.validate()) {
+      // All validators returned null → the form is valid
+      debugPrint('✅ sign up pressed form is valid');
+      // You can now read the controllers or call formState.save()
+    } else {
+      debugPrint('❌ not valid show errors');
+    }
+  }
 
   void _termsOnPressed(bool? newValue) => setState(() {
     _termsAgreed = newValue!;
@@ -32,6 +60,19 @@ class _SignupPageState extends State<SignupPage> {
     }
   });
 
+  void _showAgreementMissingMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text(
+          'You must agree to the Terms & Conditions before signing up.',
+        ),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -42,150 +83,91 @@ class _SignupPageState extends State<SignupPage> {
           // final width = constraints.maxWidth;
           // final height = constraints.maxHeight;
 
-          return Column(
-            children: [
-              _title(),
-              SizedBox(height: 10),
-              _form(
-                fullNameController: _fullNameController,
-                emailController: _emailController,
-                passwordController: _passwordController,
-                password1Controller: _password1Controller,
-                onPressed: _signUp,
-                cs: cs,
-                gap: 20,
-                termsAgreed: _termsAgreed,
-                termsOnPressed: _termsOnPressed,
-              ),
-              // SizedBox(height: 10.0),
-              // Expanded(
-              //   // ← This prevents infinity overflow
-              //   child: Container(
-              //     margin: const EdgeInsets.all(16),
-              //     decoration: BoxDecoration(
-              //       color: Colors.white.withAlpha(255),
-              //       borderRadius: BorderRadius.circular(16),
-              //       boxShadow: [
-              //         BoxShadow(
-              //           color: Colors.black26,
-              //           blurRadius: 10,
-              //           offset: Offset(0, 4),
-              //         ),
-              //       ],
-              //     ),
-              //     child: const ColorPaletteDebug(), // ← Your debug widget
-              //   ),
-              // ),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                _title(cs: cs),
+                SizedBox(height: 30),
+                CreateForm(
+                  formKey: _formKey,
+                  fullNameController: _fullNameController,
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  password1Controller: _password1Controller,
+                  onPressed: _signUp,
+                  cs: cs,
+                  gap: 20,
+                  termsAgreed: _termsAgreed,
+                  termsOnPressed: _termsOnPressed,
+                  buttonText: 'Sign Up',
+                ),
+                SizedBox(height: 40.0),
+              ],
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _title() {
-    return Container();
-  }
-
-  Widget _form({
-    required TextEditingController fullNameController,
-    required TextEditingController emailController,
-    required TextEditingController passwordController,
-    required TextEditingController password1Controller,
-    required VoidCallback onPressed,
-    required ColorScheme cs,
-    required double gap,
-    required bool termsAgreed,
-    required ValueChanged<bool?> termsOnPressed,
-  }) {
-    // final String tc = 'Terms & Conditions';
-    // Color getColor(Set<WidgetState> states) {
-    //   const Set<WidgetState> interactiveStates = <WidgetState>{
-    //     WidgetState.pressed,
-    //     WidgetState.hovered,
-    //     WidgetState.focused,
-    //   };
-    //   if (states.any(interactiveStates.contains)) {
-    //     return Colors.blue;
-    //   }
-    //   return Colors.red;
-    // }
-
-    return Form(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 40.0),
-        child: Column(
-          children: [
-            InnTextField(
-              hint: 'Full Name',
-              controller: fullNameController,
-              icon: Icons.person,
-              cs: cs,
-            ),
-            SizedBox(height: gap),
-            InnTextField(
-              hint: 'Email Address',
-              controller: emailController,
-              icon: Icons.email,
-              cs: cs,
-            ),
-            SizedBox(height: gap),
-            InnTextField(
-              hint: 'Password',
-              controller: passwordController,
-              icon: Icons.lock,
-              cs: cs,
-            ),
-            SizedBox(height: gap),
-            InnTextField(
-              hint: 'Retype Password',
-              controller: password1Controller,
-              icon: Icons.lock,
-              cs: cs,
-            ),
-            SizedBox(height: 40),
-            TermsCheckbox(onChanged: termsOnPressed, value: termsAgreed),
-            // Row(
-            //   children: [
-            //     Checkbox(
-            //       checkColor: cs.onPrimary,
-            //       fillColor: WidgetStateProperty.resolveWith(getColor),
-            //       value: termsAgreed,
-            //       onChanged: termsOnPressed,
-            //     ),
-            //     Text('I agree to the $tc'),
-            //   ],
-            // ),
-            SizedBox(height: gap),
-            InnButton(
-              onPressed: termsAgreed ? onPressed : () {},
-              buttonText: 'Sign Up',
-              cs: cs,
-            ),
-            SizedBox(height: 50.0),
-            _haveAnAccount(),
-          ],
-        ),
+  Widget _title({required ColorScheme cs}) {
+    return Container(
+      // height: 100,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: cs.primary.withAlpha(200),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
       ),
-    );
-  }
-
-  /* Have an account */
-  Widget _haveAnAccount() {
-    return Flexible(
-      child: RichText(
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
+        child: Column(
+          // mainAxisSize: MainAxisSize.min,
+          // mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TextSpan(text: 'Have an account? '),
-            TextSpan(
-              text: 'Sign In',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              // recognizer: _linkRecognizer,
-              // Accessibility hint for screen readers
-              semanticsLabel: 'Takes user back to the login page',
+            Text(
+              'Let\'s',
+              // textAlign: TextAlign.start,
+              style: TextStyle(
+                color: cs.onPrimary,
+                fontSize: 40.0,
+                fontWeight: FontWeight.w300,
+                letterSpacing: 1.0,
+                height: 1.0,
+              ),
+            ),
+            Text(
+              'Create',
+              // textAlign: TextAlign.center,
+              style: TextStyle(
+                color: cs.onPrimary,
+                fontSize: 50.0,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.0,
+                height: 1.0,
+              ),
+            ),
+            Text(
+              'Your',
+              // textAlign: TextAlign.center,
+              style: TextStyle(
+                color: cs.onPrimary,
+                fontSize: 50.0,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.0,
+                height: 1.0,
+              ),
+            ),
+            Text(
+              'Account',
+              // textAlign: TextAlign.center,
+              style: TextStyle(
+                color: cs.onPrimary,
+                fontSize: 50.0,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.0,
+                height: 1.0,
+              ),
             ),
           ],
         ),
