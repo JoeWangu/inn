@@ -78,31 +78,39 @@ class _SignupPageState extends State<SignupPage> {
     final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+        // title: const Text('INN'),
+        toolbarHeight: 1,
+      ),
+      // backgroundColor: cs.primary.withAlpha(200),
       body: LayoutBuilder(
         builder: (context, constraints) {
           // final width = constraints.maxWidth;
           // final height = constraints.maxHeight;
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                _title(cs: cs),
-                SizedBox(height: 30),
-                CreateForm(
-                  formKey: _formKey,
-                  fullNameController: _fullNameController,
-                  emailController: _emailController,
-                  passwordController: _passwordController,
-                  password1Controller: _password1Controller,
-                  onPressed: _signUp,
-                  cs: cs,
-                  gap: 20,
-                  termsAgreed: _termsAgreed,
-                  termsOnPressed: _termsOnPressed,
-                  buttonText: 'Sign Up',
-                ),
-                SizedBox(height: 40.0),
-              ],
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _title(cs: cs),
+                  SizedBox(height: 30),
+                  CreateForm(
+                    formKey: _formKey,
+                    fullNameController: _fullNameController,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    password1Controller: _password1Controller,
+                    onPressed: _signUp,
+                    cs: cs,
+                    gap: 20,
+                    termsAgreed: _termsAgreed,
+                    termsOnPressed: _termsOnPressed,
+                    buttonText: 'Sign Up',
+                  ),
+                  SizedBox(height: 40.0),
+                ],
+              ),
             ),
           );
         },
