@@ -121,7 +121,7 @@ class HaveAccount extends StatelessWidget {
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    context.pushNamed('login');
+                    context.pop();
                   },
                 // Accessibility hint for screen readers
                 semanticsLabel: 'Takes user back to the login page',
