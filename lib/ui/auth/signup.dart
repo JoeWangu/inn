@@ -81,7 +81,9 @@ class _SignupPageState extends State<SignupPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
         // title: const Text('INN'),
-        toolbarHeight: 1,
+        toolbarHeight: 0,
+        scrolledUnderElevation: 0.0,
+        surfaceTintColor: Colors.transparent,
       ),
       // backgroundColor: cs.primary.withAlpha(200),
       body: LayoutBuilder(
