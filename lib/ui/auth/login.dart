@@ -477,7 +477,7 @@ class _HouseCircle extends StatelessWidget {
           top: -diameter * 0.28,
           child: ClipOval(
             child: Image.asset(
-              'assets/images/lp_house.png',
+              'assets/img_assets/lp_house.png',
               width: diameter * 1.15,
               height: diameter * 1.4,
               fit: BoxFit.cover,
