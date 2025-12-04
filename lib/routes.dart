@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inn/debug.dart';
 import 'package:inn/ui/auth/login.dart';
 import 'package:inn/ui/auth/signup.dart';
 import 'package:inn/ui/home/home.dart';
@@ -24,12 +25,17 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: 'login',
       path: '/login',
-      builder: (context, state) => LoginPage(),
+      builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
       name: 'signup',
       path: '/signup',
-      builder: (context, state) => SignupPage(),
+      builder: (context, state) => const SignupPage(),
+    ),
+    GoRoute(
+      name: 'app_colors',
+      path: '/colors',
+      builder: (context, state) => const ColorsPage(),
     ),
   ],
 );
