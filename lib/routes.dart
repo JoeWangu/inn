@@ -26,7 +26,10 @@ final GoRouter router = GoRouter(
       return '/welcome';
     }
 
-    if (!loggedIn && path != '/login' && path != '/welcome') {
+    if (!loggedIn &&
+        path != '/login' &&
+        path != '/welcome' &&
+        path != '/signup') {
       return '/login';
     }
 
