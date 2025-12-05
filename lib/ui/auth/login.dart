@@ -350,7 +350,9 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(height: 30),
         _buildButton('Login', true, _login),
         const SizedBox(height: 20),
-        _buildButton('Create an account', false, () {}),
+        _buildButton('Create an account', false, () {
+          context.pushNamed('signup');
+        }),
       ],
     );
   }
