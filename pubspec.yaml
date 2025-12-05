@@ -37,6 +37,7 @@ dependencies:
   go_router: ^17.0.0
   url_launcher: ^6.3.2
   flutter_native_splash: ^2.4.7
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,7 @@ flutter:
     - assets/logo/
     - assets/img_assets/
     - assets/images/
+    - assets/onboarding/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
