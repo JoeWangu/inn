@@ -15,8 +15,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int currentPage = 0;
 
   final List<String> _images = [
-    "assets/onboarding/main.jpg",
     "assets/onboarding/left.jpg",
+    "assets/onboarding/main.jpg",
     "assets/onboarding/right.jpg",
   ];
 
@@ -90,33 +90,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme cs = Theme.of(context).colorScheme;
     final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: cs.onPrimary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (currentPage > 0) ...[
-                    IconButton(
-                      onPressed: _previousPage,
-                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                      color: Colors.black87,
-                    ),
-                  ] else ...[
-                    IconButton(
-                      onPressed: _onWillPop,
-                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                      color: Colors.black87,
-                    ),
-                  ],
+                  // if (currentPage > 0) ...[
+                  // IconButton(
+                  //   onPressed: _previousPage,
+                  //   icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  //   color: Colors.black87,
+                  //   highlightColor: cs.onSurface.withValues(alpha: 0.5),
+                  // ),
+                  ElevatedButton(
+                    onPressed: _onWillPop,
+                    // style: ButtonStyle(
+                    //   shape: WidgetStateProperty.all(CircleBorder()),
+                    // ),
+                    child: const Icon(Icons.arrow_back),
+                  ),
 
+                  // ] else ...[
+                  //   IconButton(
+                  //     onPressed: _onWillPop,
+                  //     icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  //     color: Colors.black87,
+                  //   ),
+                  // ],
                   TextButton(
                     onPressed: _finishOnboarding,
                     child: const Text(
@@ -133,47 +142,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               const Spacer(flex: 2),
 
-              // Image Stack with PageView magic
               SizedBox(
-                height: size.height * 0.45,
+                height: size.height * 0.30,
+                width: size.width * 0.60,
                 child: PageView.builder(
                   controller: _pageController,
                   onPageChanged: (value) => setState(() => currentPage = value),
                   itemCount: _images.length,
                   itemBuilder: (context, index) {
-                    // Calculate how far this page is from center
-                    double relativePosition = (index - currentPage).toDouble();
-
-                    // Center image (sharp)
-                    if (relativePosition.abs() < 0.5) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(36),
-                        child: Image.asset(
-                          _images[index],
-                          width: size.width * 0.80,
-                          height: 380,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    }
-
-                    // Left or right faded + tilted images
-                    double angle = relativePosition < 0 ? -0.26 : 0.26; // ~15°
-                    double opacity = 0.45;
-
-                    return Transform.rotate(
-                      angle: angle,
-                      child: Opacity(
-                        opacity: opacity,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(32),
-                          child: Image.asset(
-                            _images[index],
-                            width: 220,
-                            height: 300,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(32),
+                      child: Image.asset(
+                        _images[index],
+                        width: 220,
+                        height: 300,
+                        fit: BoxFit.cover,
                       ),
                     );
                   },
