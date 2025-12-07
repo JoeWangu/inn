@@ -17,22 +17,23 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:inn/routes.dart';
 
 /// A scroll behavior that enables mouse/track‑pad dragging for all axes.
 class DesktopDragScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.trackpad,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.invertedStylus,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad,
+    PointerDeviceKind.stylus,
+    PointerDeviceKind.invertedStylus,
+  };
 }
 
 void main() {
-  runApp(const InnApp());
+  runApp(const ProviderScope(child: InnApp()));
 }
 
 class InnApp extends StatelessWidget {
@@ -41,6 +42,7 @@ class InnApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Inn App',
       theme: ThemeData(
         useMaterial3: true,
