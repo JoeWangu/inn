@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inn/ui/auth/login_viewmodel.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -20,13 +22,13 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
+  /*   void _login() {
     if (_formKey.currentState!.validate()) {
       print("Login pressed - valid!");
     } else {
       print('not valid');
     }
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +55,41 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: isDesktop
-            ? _buildDesktop()
-            : _buildMobile(BoxConstraints(minHeight: viewportHeight)),
+            ? _buildDesktop(login: () {})
+            : _buildMobile(
+                BoxConstraints(minHeight: viewportHeight),
+                login: () async {
+                  final formState = _formKey.currentState;
+                  if (formState == null) return;
+                  if (!formState.validate()) return;
+                  formState.save();
+                  final navigator = GoRouter.of(context);
+                  final messenger = ScaffoldMessenger.of(context);
+                  final bool success = await ref
+                      .read(loginViewmodelProvider.notifier)
+                      .loginUser(
+                        email: _emailController.text.trim(),
+                        password: _passwordController.text,
+                      );
+                  if (!mounted) return;
+                  if (success) {
+                    navigator.pushReplacementNamed('home');
+                  } else {
+                    messenger.showSnackBar(
+                      const SnackBar(content: Text('no such user')),
+                    );
+                  }
+                },
+              ),
       ),
     );
   }
 
   // ========================== MOBILE ==========================
-  Widget _buildMobile(BoxConstraints constraints) {
+  Widget _buildMobile(
+    BoxConstraints constraints, {
+    required VoidCallback login,
+  }) {
     // Get screen dimensions
     final size = MediaQuery.sizeOf(context);
     final screenWidth = size.width;
@@ -165,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 10),
 
-                      _buildButton('Login', true, _login),
+                      _buildButton('Login', true, login),
 
                       const SizedBox(height: 5),
 
@@ -239,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
   }
  */
 
-  Widget _buildDesktop() {
+  Widget _buildDesktop({required VoidCallback login}) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double screenWidth = constraints.maxWidth;
@@ -309,7 +338,9 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.fromLTRB(48, 56, 48, 48),
                       child: Form(
                         key: _formKey,
-                        child: _buildFormFields(), // your existing form
+                        child: _buildFormFields(
+                          login: login,
+                        ), // your existing form
                       ),
                     ),
                   ),
@@ -323,7 +354,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // Shared form fields for desktop
-  Widget _buildFormFields() {
+  Widget _buildFormFields({required VoidCallback login}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -348,7 +379,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         const SizedBox(height: 30),
-        _buildButton('Login', true, _login),
+        _buildButton('Login', true, login),
         const SizedBox(height: 20),
         _buildButton('Create an account', false, () {
           context.pushNamed('signup');
