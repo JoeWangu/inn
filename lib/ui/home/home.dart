@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inn/ui/utils/item_card.dart';
+import 'package:inn/shared/item_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -189,11 +189,18 @@ class _HomePageState extends State<HomePage> {
 
                       // Popular Hotels
                       _sectionHeader('Popular Hotels', () {
-                        context.pushNamed('login');
+                        context.pushNamed('explore');
                       }),
                       const SizedBox(height: 16),
                       _popularHotelsGrid(),
-                      const SizedBox(height: 100),
+                      // const SizedBox(height: 100),
+                      const SizedBox(height: 16),
+
+                      // Rest Home
+                      _sectionHeader('Restful Home', () {
+                        context.pushNamed('rest');
+                      }),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
@@ -248,6 +255,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _sectionHeader(String title, VoidCallback onTap) {
+    final ColorScheme cs = Theme.of(context).colorScheme;
+
     return Row(
       children: [
         Text(
@@ -260,11 +269,11 @@ class _HomePageState extends State<HomePage> {
           onPressed: onTap,
           child: Row(
             children: [
-              const Text(
+              Text(
                 'See all',
-                style: TextStyle(color: Colors.blue, fontSize: 14),
+                style: TextStyle(color: cs.primary, fontSize: 14),
               ),
-              Icon(Icons.keyboard_arrow_right, size: 16, color: Colors.blue),
+              Icon(Icons.keyboard_arrow_right, size: 16, color: cs.primary),
             ],
           ),
         ),
