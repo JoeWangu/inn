@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:inn/ui/utils/create_form.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:inn/models/user.dart';
+import 'package:inn/shared/create_form.dart';
+import 'package:inn/ui/auth/signup_viewmodel.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -25,30 +29,30 @@ class _SignupPageState extends State<SignupPage> {
     super.dispose();
   }
 
-  void _signUp() {
-    // Grab the *real* FormState from the key
-    final formState = _formKey.currentState;
+  /*   // void _signUp() {
+  //   // Grab the *real* FormState from the key
+  //   final formState = _formKey.currentState;
 
-    if (!_termsAgreed) {
-      _showAgreementMissingMessage();
-      return;
-    }
+  //   if (!_termsAgreed) {
+  //     _showAgreementMissingMessage();
+  //     return;
+  //   }
 
-    if (formState == null) {
-      // This should never happen if the Form is in the tree,
-      // but guard against a nil reference just in case.
-      debugPrint('⚠️ FormState is null maybe the Form isn\'t mounted yet.');
-      return;
-    }
+  //   if (formState == null) {
+  //     // This should never happen if the Form is in the tree,
+  //     // but guard against a nil reference just in case.
+  //     debugPrint('⚠️ FormState is null maybe the Form isn\'t mounted yet.');
+  //     return;
+  //   }
 
-    if (formState.validate()) {
-      // All validators returned null → the form is valid
-      debugPrint('✅ sign up pressed form is valid');
-      // You can now read the controllers or call formState.save()
-    } else {
-      debugPrint('❌ not valid show errors');
-    }
-  }
+  //   if (formState.validate()) {
+  //     // All validators returned null → the form is valid
+  //     debugPrint('✅ sign up pressed form is valid');
+  //     // You can now read the controllers or call formState.save()
+  //   } else {
+  //     debugPrint('❌ not valid show errors');
+  //   }
+  // } */
 
   void _termsOnPressed(bool? newValue) => setState(() {
     _termsAgreed = newValue!;
@@ -103,7 +107,52 @@ class _SignupPageState extends State<SignupPage> {
                     emailController: _emailController,
                     passwordController: _passwordController,
                     password1Controller: _password1Controller,
-                    onPressed: _signUp,
+                    // onPressed: _signUp,
+                    onPressed: () async {
+                      final formState = _formKey.currentState;
+
+                      if (!_termsAgreed) {
+                        _showAgreementMissingMessage();
+                        return;
+                      }
+
+                      if (formState == null) {
+                        debugPrint(
+                          '⚠️ FormState is null maybe the Form isn\'t mounted yet.',
+                        );
+                        return;
+                      }
+
+                      if (!formState.validate()) {
+                        debugPrint('❌ Form validation failed – show errors');
+                        return;
+                      }
+                      formState.save();
+                      final user = User(
+                        fullName: _fullNameController.text.trim(),
+                        email: _emailController.text.trim(),
+                        password: _password1Controller.text,
+                      );
+
+                      // Store context BEFORE the await otherwise the warning
+                      // never goes away
+                      final navigator = GoRouter.of(context);
+                      final messenger = ScaffoldMessenger.of(context);
+
+                      final bool ok = await ref
+                          .read(signupViewmodelProvider.notifier)
+                          .signupUser(user);
+
+                      if (!mounted) return;
+
+                      if (ok) {
+                        navigator.pushReplacementNamed('home');
+                      } else {
+                        messenger.showSnackBar(
+                          const SnackBar(content: Text('Signup failed')),
+                        );
+                      }
+                    },
                     cs: cs,
                     gap: 20,
                     termsAgreed: _termsAgreed,
