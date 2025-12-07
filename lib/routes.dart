@@ -3,17 +3,20 @@ import 'package:go_router/go_router.dart';
 import 'package:inn/debug.dart';
 import 'package:inn/ui/auth/login.dart';
 import 'package:inn/ui/auth/signup.dart';
+import 'package:inn/ui/explore/explore.dart';
+import 'package:inn/ui/favorites/favorites.dart';
 import 'package:inn/ui/home/home.dart';
 import 'package:inn/ui/home/onboarding.dart';
+import 'package:inn/ui/resthome/resthome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: '/welcome',
+  initialLocation: '/',
   redirect: (context, state) async {
     final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-    final seenOnboarding = await prefs.getBool('seen_onboarding') ?? false;
+    final bool seenOnboarding = await prefs.getBool('seen_onboarding') ?? false;
+    final bool loggedIn = await prefs.getBool('logged_in') ?? false;
     final isFirstLaunch = !seenOnboarding;
-    bool loggedIn = false;
 
     // final token = await prefs.getString('auth_token');
     // final loggedIn = token != null && token.isNotEmpty;
@@ -64,6 +67,21 @@ final GoRouter router = GoRouter(
       name: 'welcome',
       path: '/welcome',
       builder: (context, state) => const OnboardingScreen(),
+    ),
+    GoRoute(
+      name: 'explore',
+      path: '/explore',
+      builder: (context, state) => const ExplorePage(),
+    ),
+    GoRoute(
+      name: 'favorites',
+      path: '/favorites',
+      builder: (context, state) => const FavoritesPage(),
+    ),
+    GoRoute(
+      name: 'rest',
+      path: '/rest',
+      builder: (context, state) => const Resthome(),
     ),
   ],
 );
