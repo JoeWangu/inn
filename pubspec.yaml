@@ -1,3 +1,4 @@
+#file: noinspection SpellCheckingInspection
 name: inn
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
@@ -34,13 +35,27 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  # navigation
   go_router: ^17.0.0
-  url_launcher: ^6.3.2
-  flutter_native_splash: ^2.4.7
-  shared_preferences: ^2.5.3
+  # dependency injection(DI)
   flutter_riverpod: ^3.0.3
   riverpod_annotation: ^3.0.3
-  http: ^1.6.0
+  # splash screen
+  flutter_native_splash: ^2.4.7
+  # data manipulation
+  flutter_secure_storage: ^9.2.4
+  shared_preferences: ^2.5.3
+  drift: ^2.30.0
+  # networking
+  dio: ^5.9.0
+  retrofit: ^4.9.1
+  retrofit_generator: ^10.2.0
+  # JSON + immutable models
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  # others
+  url_launcher: ^6.3.2
+  crypto: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +69,9 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   riverpod_generator: ^3.0.3
   build_runner: ^2.10.4
+  json_serializable: ^6.11.2
+  drift_dev: ^2.30.0
+  freezed: ^3.2.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
