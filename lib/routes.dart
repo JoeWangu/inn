@@ -6,7 +6,7 @@ import 'package:inn/presentation/pages/auth/signup.dart';
 import 'package:inn/presentation/pages/explore/explore.dart';
 import 'package:inn/presentation/pages/favorites/favorites.dart';
 import 'package:inn/presentation/pages/home/home.dart';
-import 'package:inn/presentation/onboarding/onboarding.dart';
+import 'package:inn/presentation/pages/onboarding/onboarding.dart';
 import 'package:inn/presentation/pages/resthome/resthome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
