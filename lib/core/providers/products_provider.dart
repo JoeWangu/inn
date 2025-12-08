@@ -1,4 +1,4 @@
-import 'package:inn/models/product.dart';
+import 'package:inn/data/models/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'products_provider.g.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inn/models/post.dart';
-import 'package:inn/services/remote_service.dart';
+import 'package:inn/data/models/post.dart';
+import 'package:inn/domain/repositories/remote_service.dart';
 
 class Resthome extends StatefulWidget {
   const Resthome({super.key});

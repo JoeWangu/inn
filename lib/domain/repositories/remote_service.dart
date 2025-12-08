@@ -1,6 +1,6 @@
 // import 'dart:convert';
 
-import 'package:inn/models/post.dart';
+import 'package:inn/data/models/post.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteService {

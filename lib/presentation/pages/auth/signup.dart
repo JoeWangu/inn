@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inn/models/user.dart';
-import 'package:inn/shared/create_form.dart';
-import 'package:inn/ui/auth/signup_viewmodel.dart';
+import 'package:inn/data/models/user.dart';
+import 'package:inn/presentation/shared/create_form.dart';
+import 'package:inn/presentation/pages/auth/signup_viewmodel.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});

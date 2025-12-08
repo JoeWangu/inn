@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:inn/providers/cart_provider.dart';
+import 'package:inn/core/providers/cart_provider.dart';
 
 class FavoritesPage extends ConsumerStatefulWidget {
   const FavoritesPage({super.key});

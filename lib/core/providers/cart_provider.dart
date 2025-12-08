@@ -1,5 +1,5 @@
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:inn/models/product.dart';
+import 'package:inn/data/models/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cart_provider.g.dart';

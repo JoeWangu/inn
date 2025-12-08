@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inn/utils/validators.dart';
+import 'package:inn/presentation/utils/validators.dart';
 
 class InnTextField extends StatelessWidget {
   final String hint;

@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inn/shared/buttons.dart';
-import 'package:inn/shared/confirm_password.dart';
-import 'package:inn/shared/terms_checkbox.dart';
-import 'package:inn/shared/text_field.dart';
-import 'package:inn/utils/validators.dart';
+import 'package:inn/presentation/shared/buttons.dart';
+import 'package:inn/presentation/shared/confirm_password.dart';
+import 'package:inn/presentation/shared/terms_checkbox.dart';
+import 'package:inn/presentation/shared/text_field.dart';
+import 'package:inn/presentation/utils/validators.dart';
 
 class CreateForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;

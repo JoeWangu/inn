@@ -1,4 +1,4 @@
-import 'package:inn/models/user.dart';
+import 'package:inn/data/models/user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

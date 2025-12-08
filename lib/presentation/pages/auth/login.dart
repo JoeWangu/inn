@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inn/ui/auth/login_viewmodel.dart';
+import 'package:inn/presentation/pages/auth/login_viewmodel.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});

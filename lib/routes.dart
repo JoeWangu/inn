@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/debug.dart';
-import 'package:inn/ui/auth/login.dart';
-import 'package:inn/ui/auth/signup.dart';
-import 'package:inn/ui/explore/explore.dart';
-import 'package:inn/ui/favorites/favorites.dart';
-import 'package:inn/ui/home/home.dart';
-import 'package:inn/ui/home/onboarding.dart';
-import 'package:inn/ui/resthome/resthome.dart';
+import 'package:inn/presentation/pages/auth/login.dart';
+import 'package:inn/presentation/pages/auth/signup.dart';
+import 'package:inn/presentation/pages/explore/explore.dart';
+import 'package:inn/presentation/pages/favorites/favorites.dart';
+import 'package:inn/presentation/pages/home/home.dart';
+import 'package:inn/presentation/pages/home/onboarding.dart';
+import 'package:inn/presentation/pages/resthome/resthome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
