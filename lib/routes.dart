@@ -7,7 +7,6 @@ import 'package:inn/presentation/pages/explore/explore.dart';
 import 'package:inn/presentation/pages/favorites/favorites.dart';
 import 'package:inn/presentation/pages/home/home.dart';
 import 'package:inn/presentation/pages/onboarding/onboarding.dart';
-import 'package:inn/presentation/pages/resthome/resthome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
@@ -77,11 +76,6 @@ final GoRouter router = GoRouter(
       name: 'favorites',
       path: '/favorites',
       builder: (context, state) => const FavoritesPage(),
-    ),
-    GoRoute(
-      name: 'rest',
-      path: '/rest',
-      builder: (context, state) => const Resthome(),
     ),
   ],
 );
