@@ -8,6 +8,7 @@ class InnButton extends StatelessWidget {
   final ColorScheme cs;
   final double buttonWidth;
   final double buttonHeight;
+  final bool isLoading;
 
   const InnButton({
     super.key,
@@ -17,6 +18,7 @@ class InnButton extends StatelessWidget {
     required this.cs,
     this.buttonWidth = double.infinity,
     this.buttonHeight = 50,
+    this.isLoading = false,
   });
 
   @override
@@ -29,7 +31,7 @@ class InnButton extends StatelessWidget {
       height: buttonHeight,
       child: filled
           ? ElevatedButton(
-              onPressed: onPressed,
+              onPressed: isLoading ? null : onPressed,
               style:
                   ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(2),
@@ -38,6 +40,9 @@ class InnButton extends StatelessWidget {
                     ),
                   ).copyWith(
                     backgroundColor: WidgetStateProperty.resolveWith((states) {
+                      if (states.contains(WidgetState.disabled)) {
+                        return cs.surfaceDim.withValues(alpha: 0.5);
+                      }
                       return null;
                     }),
                     // shadowColor: WidgetStateProperty.all(Colors.grey),
@@ -53,10 +58,19 @@ class InnButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Center(
-                  child: Text(
-                    buttonText,
-                    style: TextStyle(color: cs.onPrimary, fontSize: 18),
-                  ),
+                  child: isLoading
+                      ? SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: cs.onPrimary,
+                          ),
+                        )
+                      : Text(
+                          buttonText,
+                          style: TextStyle(color: cs.onPrimary, fontSize: 18),
+                        ),
                 ),
               ),
             )
