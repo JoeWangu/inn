@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inn/data/models/user.dart';
+import 'package:inn/core/errors/error_handler.dart';
 import 'package:inn/presentation/shared/create_form.dart';
-import 'package:inn/presentation/pages/auth/signup_viewmodel.dart';
+import 'package:inn/presentation/controllers/sign_up_controller.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
@@ -14,54 +14,30 @@ class SignupPage extends ConsumerStatefulWidget {
 
 class _SignupPageState extends ConsumerState<SignupPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _password1Controller = TextEditingController();
   bool _termsAgreed = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
-    _fullNameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _password1Controller.dispose();
     super.dispose();
   }
 
-  /*   // void _signUp() {
-  //   // Grab the *real* FormState from the key
-  //   final formState = _formKey.currentState;
-
-  //   if (!_termsAgreed) {
-  //     _showAgreementMissingMessage();
-  //     return;
-  //   }
-
-  //   if (formState == null) {
-  //     // This should never happen if the Form is in the tree,
-  //     // but guard against a nil reference just in case.
-  //     debugPrint('⚠️ FormState is null maybe the Form isn\'t mounted yet.');
-  //     return;
-  //   }
-
-  //   if (formState.validate()) {
-  //     // All validators returned null → the form is valid
-  //     debugPrint('✅ sign up pressed form is valid');
-  //     // You can now read the controllers or call formState.save()
-  //   } else {
-  //     debugPrint('❌ not valid show errors');
-  //   }
-  // } */
-
   void _termsOnPressed(bool? newValue) => setState(() {
     _termsAgreed = newValue!;
-
-    if (_termsAgreed) {
-      // TODO: Here goes your functionality that remembers the user.
-    } else {
-      // TODO: Forget the user
-    }
+    // if (_termsAgreed) {
+    //   // TODOs: Here goes your functionality that remembers the user.
+    // } else {
+    //   // TODOs: Forget the user
+    // }
   });
 
   void _showAgreementMissingMessage() {
@@ -80,11 +56,43 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final signUpState = ref.watch(signUpControllerProvider);
+    ref.listen<AsyncValue<void>>(signUpControllerProvider, (previous, next) {
+      next.whenOrNull(
+        data: (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Signup successful! Welcome aboard.',
+                style: TextStyle(color: cs.onPrimary),
+              ),
+              // Use Primary color (or Colors.green) for success
+              backgroundColor: cs.primary,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+
+          context.goNamed('home');
+        },
+        error: (error, stackTrace) {
+          final niceMessage = getReadableError(error);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(niceMessage),
+              backgroundColor: cs.error,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        },
+      );
+    });
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
-        // title: const Text('INN'),
         toolbarHeight: 0,
         scrolledUnderElevation: 0.0,
         surfaceTintColor: Colors.transparent,
@@ -103,61 +111,48 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   SizedBox(height: 30),
                   CreateForm(
                     formKey: _formKey,
-                    fullNameController: _fullNameController,
+                    usernameController: _usernameController,
                     emailController: _emailController,
                     passwordController: _passwordController,
                     password1Controller: _password1Controller,
-                    // onPressed: _signUp,
-                    onPressed: () async {
+                    cs: cs,
+                    gap: 20,
+                    termsAgreed: _termsAgreed,
+                    termsOnPressed: _termsOnPressed,
+                    buttonText: 'Sign Up',
+                    isLoading: signUpState.isLoading,
+                    obscurePassword: _obscurePassword,
+                    obscureConfirm: _obscureConfirmPassword,
+                    onToggleObscure: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                    onToggleObscureConfirm: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
+                    onPressed: () {
                       final formState = _formKey.currentState;
 
                       if (!_termsAgreed) {
                         _showAgreementMissingMessage();
                         return;
                       }
-
-                      if (formState == null) {
-                        debugPrint(
-                          '⚠️ FormState is null maybe the Form isn\'t mounted yet.',
-                        );
-                        return;
-                      }
-
-                      if (!formState.validate()) {
-                        debugPrint('❌ Form validation failed – show errors');
+                      if (formState == null || !formState.validate()) {
                         return;
                       }
                       formState.save();
-                      final user = User(
-                        fullName: _fullNameController.text.trim(),
-                        email: _emailController.text.trim(),
-                        password: _password1Controller.text,
-                      );
 
-                      // Store context BEFORE the await otherwise the warning
-                      // never goes away
-                      final navigator = GoRouter.of(context);
-                      final messenger = ScaffoldMessenger.of(context);
-
-                      final bool ok = await ref
-                          .read(signupViewmodelProvider.notifier)
-                          .signupUser(user);
-
-                      if (!mounted) return;
-
-                      if (ok) {
-                        navigator.pushReplacementNamed('home');
-                      } else {
-                        messenger.showSnackBar(
-                          const SnackBar(content: Text('Signup failed')),
-                        );
-                      }
+                      ref
+                          .read(signUpControllerProvider.notifier)
+                          .signUp(
+                            name: _usernameController.text.trim(),
+                            email: _emailController.text.trim(),
+                            password: _password1Controller.text,
+                          );
                     },
-                    cs: cs,
-                    gap: 20,
-                    termsAgreed: _termsAgreed,
-                    termsOnPressed: _termsOnPressed,
-                    buttonText: 'Sign Up',
                   ),
                   SizedBox(height: 40.0),
                 ],
