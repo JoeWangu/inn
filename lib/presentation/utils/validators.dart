@@ -1,3 +1,9 @@
+String? usernameValidator(String? v) {
+  if (v == null || v.trim().isEmpty) return 'Required';
+  if (v.length < 3) return 'Must have 3 or more letters';
+  return null;
+}
+
 String? emailValidator(String? v) {
   if (v == null || v.trim().isEmpty) return 'Email required';
   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) return 'Enter a valid email';
@@ -12,14 +18,11 @@ String? passwordValidator(String? v) {
   return null;
 }
 
-String? confirmPasswordValidator(String? v, String original) {
-  final base = passwordValidator(v);
-  if (base != null) return base;
-  if (v != original) {
-    return 'Passwords do not match';
-  }
-  return null;
-}
-
-String? requiredValidator(String? v) =>
-    (v == null || v.trim().isEmpty) ? 'Required' : null;
+// String? confirmPasswordValidator(String? v, String original) {
+//   final base = passwordValidator(v);
+//   if (base != null) return base;
+//   if (v != original) {
+//     return 'Passwords do not match';
+//   }
+//   return null;
+// }
