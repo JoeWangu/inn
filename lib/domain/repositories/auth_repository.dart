@@ -38,6 +38,7 @@ class AuthRepository {
     );
     final response = await _api.signUp(request);
     await _storage.write(key: 'access_token', value: response.token);
+    await _storage.write(key: 'refresh_token', value: response.refresh);
     return response;
   }
 
@@ -48,6 +49,13 @@ class AuthRepository {
     final request = LoginRequest(email: email, password: password);
     final response = await _api.login(request);
     await _storage.write(key: 'access_token', value: response.token);
+    await _storage.write(key: 'refresh_token', value: response.refresh);
     return response;
+  }
+
+  Future<void> logout() async {
+    // await _storage.delete(key: 'access_token');
+    // await _storage.delete(key: 'refresh_token');
+    await _storage.deleteAll();
   }
 }
