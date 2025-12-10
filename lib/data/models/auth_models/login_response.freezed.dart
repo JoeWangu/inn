@@ -15,8 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LoginResponse {
 
- String get user;// It's a String now, not an Object
- String get token; bool get created;
+ UserModel get user; String get token; String get refresh; bool get created;
 /// Create a copy of LoginResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +28,16 @@ $LoginResponseCopyWith<LoginResponse> get copyWith => _$LoginResponseCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponse&&(identical(other.user, user) || other.user == user)&&(identical(other.token, token) || other.token == token)&&(identical(other.created, created) || other.created == created));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponse&&(identical(other.user, user) || other.user == user)&&(identical(other.token, token) || other.token == token)&&(identical(other.refresh, refresh) || other.refresh == refresh)&&(identical(other.created, created) || other.created == created));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,user,token,created);
+int get hashCode => Object.hash(runtimeType,user,token,refresh,created);
 
 @override
 String toString() {
-  return 'LoginResponse(user: $user, token: $token, created: $created)';
+  return 'LoginResponse(user: $user, token: $token, refresh: $refresh, created: $created)';
 }
 
 
@@ -49,11 +48,11 @@ abstract mixin class $LoginResponseCopyWith<$Res>  {
   factory $LoginResponseCopyWith(LoginResponse value, $Res Function(LoginResponse) _then) = _$LoginResponseCopyWithImpl;
 @useResult
 $Res call({
- String user, String token, bool created
+ UserModel user, String token, String refresh, bool created
 });
 
 
-
+$UserModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -66,15 +65,25 @@ class _$LoginResponseCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? token = null,Object? created = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? token = null,Object? refresh = null,Object? created = null,}) {
   return _then(_self.copyWith(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
+as UserModel,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
+as String,refresh: null == refresh ? _self.refresh : refresh // ignore: cast_nullable_to_non_nullable
 as String,created: null == created ? _self.created : created // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
-
+/// Create a copy of LoginResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserModelCopyWith<$Res> get user {
+  
+  return $UserModelCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 
@@ -156,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String user,  String token,  bool created)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserModel user,  String token,  String refresh,  bool created)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoginResponse() when $default != null:
-return $default(_that.user,_that.token,_that.created);case _:
+return $default(_that.user,_that.token,_that.refresh,_that.created);case _:
   return orElse();
 
 }
@@ -177,10 +186,10 @@ return $default(_that.user,_that.token,_that.created);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String user,  String token,  bool created)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserModel user,  String token,  String refresh,  bool created)  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponse():
-return $default(_that.user,_that.token,_that.created);case _:
+return $default(_that.user,_that.token,_that.refresh,_that.created);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +206,10 @@ return $default(_that.user,_that.token,_that.created);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String user,  String token,  bool created)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserModel user,  String token,  String refresh,  bool created)?  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponse() when $default != null:
-return $default(_that.user,_that.token,_that.created);case _:
+return $default(_that.user,_that.token,_that.refresh,_that.created);case _:
   return null;
 
 }
@@ -212,12 +221,12 @@ return $default(_that.user,_that.token,_that.created);case _:
 @JsonSerializable()
 
 class _LoginResponse implements LoginResponse {
-  const _LoginResponse({required this.user, required this.token, required this.created});
+  const _LoginResponse({required this.user, required this.token, required this.refresh, required this.created});
   factory _LoginResponse.fromJson(Map<String, dynamic> json) => _$LoginResponseFromJson(json);
 
-@override final  String user;
-// It's a String now, not an Object
+@override final  UserModel user;
 @override final  String token;
+@override final  String refresh;
 @override final  bool created;
 
 /// Create a copy of LoginResponse
@@ -233,16 +242,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponse&&(identical(other.user, user) || other.user == user)&&(identical(other.token, token) || other.token == token)&&(identical(other.created, created) || other.created == created));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponse&&(identical(other.user, user) || other.user == user)&&(identical(other.token, token) || other.token == token)&&(identical(other.refresh, refresh) || other.refresh == refresh)&&(identical(other.created, created) || other.created == created));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,user,token,created);
+int get hashCode => Object.hash(runtimeType,user,token,refresh,created);
 
 @override
 String toString() {
-  return 'LoginResponse(user: $user, token: $token, created: $created)';
+  return 'LoginResponse(user: $user, token: $token, refresh: $refresh, created: $created)';
 }
 
 
@@ -253,11 +262,11 @@ abstract mixin class _$LoginResponseCopyWith<$Res> implements $LoginResponseCopy
   factory _$LoginResponseCopyWith(_LoginResponse value, $Res Function(_LoginResponse) _then) = __$LoginResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String user, String token, bool created
+ UserModel user, String token, String refresh, bool created
 });
 
 
-
+@override $UserModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -270,16 +279,26 @@ class __$LoginResponseCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? user = null,Object? token = null,Object? created = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? user = null,Object? token = null,Object? refresh = null,Object? created = null,}) {
   return _then(_LoginResponse(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
+as UserModel,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
+as String,refresh: null == refresh ? _self.refresh : refresh // ignore: cast_nullable_to_non_nullable
 as String,created: null == created ? _self.created : created // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
 
-
+/// Create a copy of LoginResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserModelCopyWith<$Res> get user {
+  
+  return $UserModelCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 // dart format on

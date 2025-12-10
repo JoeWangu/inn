@@ -23,14 +23,15 @@ class _AuthApi implements AuthApi {
   Future<SignupResponse> signUp(SignUpRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'requiresToken': 'false'};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _options = _setStreamType<SignupResponse>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'create-user-api/',
+            'users/',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -51,14 +52,15 @@ class _AuthApi implements AuthApi {
   Future<LoginResponse> login(LoginRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'requiresToken': 'false'};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _options = _setStreamType<LoginResponse>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'login-user-api/',
+            'users/login/',
             queryParameters: queryParameters,
             data: _data,
           )
