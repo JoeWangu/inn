@@ -467,7 +467,6 @@ class _HouseCircle extends StatelessWidget {
 }
  */
 
-
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -479,7 +478,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   // IMPROVEMENT: Password Visibility Toggle
   bool _obscurePassword = true;
 
@@ -493,6 +492,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     // 1. WATCH STATE (For loading spinner)
+    final ColorScheme cs = Theme.of(context).colorScheme;
     final loginState = ref.watch(loginControllerProvider);
     final isLoading = loginState.isLoading;
 
@@ -500,15 +500,25 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.whenOrNull(
         data: (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Login successful! Welcome',
+                style: TextStyle(color: cs.onPrimary),
+              ),
+              backgroundColor: cs.primary,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 3),
+            ),
+          );
           // Success! Go home.
-          context.go('/home');
+          context.goNamed('home');
         },
         error: (error, stackTrace) {
-          // Error! Show nice message.
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(getReadableError(error)),
-              backgroundColor: Theme.of(context).colorScheme.error,
+              backgroundColor: cs.error,
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -518,7 +528,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     final size = MediaQuery.sizeOf(context);
     final bool isDesktop = size.width >= 800;
-    final double viewportHeight = MediaQuery.of(context).size.height -
+    final double viewportHeight =
+        MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
 
@@ -534,10 +545,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
         ),
         child: isDesktop
-            ? _buildDesktop(isLoading: isLoading)
+            ? _buildDesktop(isLoading: isLoading, cs: cs)
             : _buildMobile(
                 BoxConstraints(minHeight: viewportHeight),
                 isLoading: isLoading,
+                cs: cs,
               ),
       ),
     );
@@ -550,20 +562,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     final formState = _formKey.currentState;
     if (formState == null || !formState.validate()) return;
-    
+
     formState.save();
 
     // Trigger Controller
-    ref.read(loginControllerProvider.notifier).login(
-      email: _emailController.text.trim(),
-      password: _passwordController.text,
-    );
+    ref
+        .read(loginControllerProvider.notifier)
+        .login(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
   }
 
   // ========================== MOBILE ==========================
   Widget _buildMobile(
     BoxConstraints constraints, {
     required bool isLoading,
+    required ColorScheme cs,
   }) {
     final size = MediaQuery.sizeOf(context);
     // ... (Your existing layout math logic) ...
@@ -598,7 +613,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       child: const Text(
                         'FIND YOUR PERFECT HOME',
                         style: TextStyle(
-                          color: Colors.white, fontSize: 20, letterSpacing: 2, fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          fontSize: 20,
+                          letterSpacing: 2,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -645,8 +663,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     children: [
                       TextButton(
                         // Disable when loading
-                        onPressed: isLoading ? null : () {}, 
-                        child: const Text('Forgot Password?', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                        onPressed: isLoading ? null : () {},
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
                       ),
                       const SizedBox(height: 10),
 
@@ -654,7 +675,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       InnButton(
                         onPressed: _onLoginPressed,
                         buttonText: 'Login',
-                        cs: Theme.of(context).colorScheme,
+                        cs: cs,
                         isLoading: isLoading, // Shows spinner automatically
                       ),
 
@@ -666,7 +687,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       InnButton(
                         onPressed: () => context.pushNamed('signup'),
                         buttonText: 'Create an account',
-                        cs: Theme.of(context).colorScheme,
+                        cs: cs,
                         filled: false,
                         isLoading: isLoading,
                       ),
@@ -682,14 +703,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   // ==================== DESKTOP / TABLET ====================
-  Widget _buildDesktop({required bool isLoading}) {
+  Widget _buildDesktop({required bool isLoading, required ColorScheme cs}) {
     // ... (Your LayoutBuilder logic) ...
     return LayoutBuilder(
       builder: (context, constraints) {
         // ... (Keep your math variables) ...
         final double screenWidth = constraints.maxWidth;
         final double screenHeight = constraints.maxHeight;
-        final double leftPanelWidth = screenWidth * 0.55; 
+        final double leftPanelWidth = screenWidth * 0.55;
         final double circleSize = (screenWidth * 0.28).clamp(280.0, 420.0);
         final double titleFontSize = (screenWidth * 0.07).clamp(70.0, 110.0);
         final double subtitleFontSize = (screenWidth * 0.015).clamp(18.0, 28.0);
@@ -705,9 +726,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     children: [
                       _HouseCircle(diameter: circleSize),
                       SizedBox(height: screenHeight * 0.06),
-                      Text('INN', style: TextStyle(color: const Color(0xFFEDB232), fontSize: titleFontSize, fontWeight: FontWeight.bold, height: 1.0)),
+                      Text(
+                        'INN',
+                        style: TextStyle(
+                          color: const Color(0xFFEDB232),
+                          fontSize: titleFontSize,
+                          fontWeight: FontWeight.bold,
+                          height: 1.0,
+                        ),
+                      ),
                       SizedBox(height: screenHeight * 0.02),
-                      Text('FIND YOUR PERFECT HOME', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: subtitleFontSize, letterSpacing: 4, fontWeight: FontWeight.w300)),
+                      Text(
+                        'FIND YOUR PERFECT HOME',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: subtitleFontSize,
+                          letterSpacing: 4,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -718,10 +756,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 520),
                   child: Card(
-                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.08, vertical: screenHeight * 0.1),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.08,
+                      vertical: screenHeight * 0.1,
+                    ),
                     elevation: 20,
                     shadowColor: Colors.black45,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(48, 56, 48, 48),
                       child: AbsorbPointer(
@@ -731,28 +774,40 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              _buildTextField(controller: _emailController, hint: 'Email', icon: Icons.person_outline),
+                              _buildTextField(
+                                controller: _emailController,
+                                hint: 'Email',
+                                icon: Icons.person_outline,
+                              ),
                               const SizedBox(height: 20),
-                              _buildTextField(controller: _passwordController, hint: 'Password', icon: Icons.lock_outline, isPassword: true),
+                              _buildTextField(
+                                controller: _passwordController,
+                                hint: 'Password',
+                                icon: Icons.lock_outline,
+                                isPassword: true,
+                              ),
                               const SizedBox(height: 5),
                               Align(
                                 alignment: Alignment.centerRight,
-                                child: TextButton(onPressed: isLoading ? null : () {}, child: const Text('Forgot Password?')),
+                                child: TextButton(
+                                  onPressed: isLoading ? null : () {},
+                                  child: const Text('Forgot Password?'),
+                                ),
                               ),
                               const SizedBox(height: 30),
-                              
+
                               // Desktop Buttons
                               InnButton(
                                 onPressed: _onLoginPressed,
                                 buttonText: 'Login',
-                                cs: Theme.of(context).colorScheme,
+                                cs: cs,
                                 isLoading: isLoading,
                               ),
                               const SizedBox(height: 20),
                               InnButton(
                                 onPressed: () => context.pushNamed('signup'),
                                 buttonText: 'Create an account',
-                                cs: Theme.of(context).colorScheme,
+                                cs: cs,
                                 filled: false,
                                 isLoading: isLoading,
                               ),
@@ -781,13 +836,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     return TextFormField(
       controller: controller,
       // IMPROVEMENT: Toggle logic
-      obscureText: isPassword ? _obscurePassword : false, 
+      obscureText: isPassword ? _obscurePassword : false,
       validator: (v) => v!.trim().isEmpty ? 'Required' : null,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.grey),
         prefixIcon: Icon(icon, color: Colors.grey),
-        
+
         // IMPROVEMENT: Add the Eye Icon
         suffixIcon: isPassword
             ? IconButton(
@@ -802,13 +857,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 },
               )
             : null,
-            
+
         filled: true,
         fillColor: Colors.grey.shade100,
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide(color: Colors.grey.shade300, width: 1)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide(color: Colors.grey.shade300, width: 1)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color(0xFF2B5F56), width: 1.4)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: const BorderSide(color: Color(0xFF2B5F56), width: 1.4),
+        ),
       ),
     );
   }
