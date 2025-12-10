@@ -66,7 +66,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 'Signup successful! Welcome aboard.',
                 style: TextStyle(color: cs.onPrimary),
               ),
-              // Use Primary color (or Colors.green) for success
               backgroundColor: cs.primary,
               behavior: SnackBarBehavior.floating,
               duration: const Duration(seconds: 3),
@@ -76,11 +75,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           context.goNamed('home');
         },
         error: (error, stackTrace) {
-          final niceMessage = getReadableError(error);
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(niceMessage),
+              content: Text(getReadableError(error)),
               backgroundColor: cs.error,
               behavior: SnackBarBehavior.floating,
               duration: const Duration(seconds: 4),
