@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:inn/core/constants.dart';
+import 'package:inn/core/network/auth_interceptor.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'dio_provider.g.dart';
@@ -17,6 +18,11 @@ Dio dio(Ref ref) {
       },
     ),
   );
-  // dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+
+  dio.interceptors.add(
+    LogInterceptor(requestBody: true, responseBody: true, error: true),
+  );
+  dio.interceptors.add(AuthInterceptor(ref, dio));
+
   return dio;
 }
