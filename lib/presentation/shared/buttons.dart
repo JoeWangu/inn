@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inn/presentation/utils/color_util.dart';
+import 'package:inn/core/utils/color_util.dart';
 
 class InnButton extends StatelessWidget {
   final VoidCallback onPressed;

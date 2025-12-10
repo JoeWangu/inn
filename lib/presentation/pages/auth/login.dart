@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/core/errors/error_handler.dart';
-import 'package:inn/presentation/controllers/login_controller.dart';
+import 'package:inn/presentation/controllers/auth_controllers/login_controller.dart';
 // import 'package:inn/presentation/pages/auth/login_viewmodel.dart';
 import 'package:inn/presentation/shared/buttons.dart';
 

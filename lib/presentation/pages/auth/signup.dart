@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/core/errors/error_handler.dart';
 import 'package:inn/presentation/shared/create_form.dart';
-import 'package:inn/presentation/controllers/sign_up_controller.dart';
+import 'package:inn/presentation/controllers/auth_controllers/sign_up_controller.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});

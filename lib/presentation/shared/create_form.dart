@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inn/presentation/shared/buttons.dart';
 import 'package:inn/presentation/shared/terms_checkbox.dart';
 import 'package:inn/presentation/shared/text_field.dart';
-import 'package:inn/presentation/utils/validators.dart';
+import 'package:inn/core/utils/validators.dart';
 
 class CreateForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
