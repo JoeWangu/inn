@@ -9,6 +9,8 @@ abstract class SignupResponse with _$SignupResponse {
   const factory SignupResponse({
     required UserModel user,
     required String token,
+    required String refresh,
+    required String? message,
   }) = _SignupResponse;
 
   factory SignupResponse.fromJson(Map<String, dynamic> json) => 
