@@ -1,6 +1,6 @@
 #file: noinspection SpellCheckingInspection
 name: inn
-description: "A new Flutter project."
+description: "An application that matches you to your dream home, apartment or rental."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -54,7 +54,7 @@ dependencies:
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   # others
-  url_launcher: ^6.3.2
+  # url_launcher: ^6.3.2
   crypto: ^3.0.7
 
 dev_dependencies:
@@ -159,7 +159,8 @@ flutter_native_splash:
   # remain optional. NOTE that if you specify the [required] color, then you cant 
   # use the [required] background_image in the next section. the reverse is true.
   # select one, they cant work together.
-  color: "#2B5F56"  ##====================================[REQUIRED]==========
+  color: "#BFC0C0"  ##====================================[REQUIRED]==========
+  # color: "#2B5F56"  ##====================================[REQUIRED]==========
   #color_dark: "#042a49"
   # platform-specific color. will override general color if active:
   #color_android: "#42a5f5"
@@ -255,7 +256,8 @@ flutter_native_splash:
   #! ANDROID 12+ configuration:
   android_12:
     # background color
-    color: "#2B5F56"
+    color: "#BFC0C0"
+    # color: "#2B5F56"
     # color_dark: "#042a49"
 
     # center-logo
