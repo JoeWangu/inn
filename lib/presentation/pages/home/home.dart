@@ -1,19 +1,33 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inn/data/models/house_model.dart';
+import 'package:inn/presentation/controllers/home_controller/house_controller.dart';
+import 'package:inn/presentation/shared/house_card.dart';
 import 'package:inn/presentation/shared/item_card.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(homeHouseControllerProvider);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final housesAsync = ref.watch(houseStreamProvider);
     ColorScheme cs = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -49,20 +63,6 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Row(
                                 children: [
-                                  // Stack(
-                                  //   children: [
-                                  //     Positioned.fill(
-                                  //   child: Container(
-                                  //     width: 50.0,
-                                  //     height: 50.0,
-                                  //     decoration: BoxDecoration(
-                                  //       color: cs.tertiaryContainer,
-                                  //     ),
-                                  //     child: ColoredBox(
-                                  //       color: cs.onPrimary,
-                                  //     ),
-                                  //   ),
-                                  // ),
                                   CircleAvatar(
                                     radius: 24,
                                     backgroundColor: cs.onSurface.withValues(
@@ -174,6 +174,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
+                // BOTTOM SECTION
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
                   child: Column(
@@ -183,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                         context.pushNamed('app_colors');
                       }),
                       const SizedBox(height: 16),
-                      _recentlyViewedList(),
+                      _recentlyViewedList(housesAsync: housesAsync),
 
                       const SizedBox(height: 32),
 
@@ -281,26 +282,62 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _recentlyViewedList() {
+  Widget _recentlyViewedList({
+    required AsyncValue<List<HouseModel>> housesAsync,
+  }) {
     ColorScheme cs = Theme.of(context).colorScheme;
 
     return SizedBox(
       height: 260,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return ItemCard(
-            cs: cs,
-            needsInfoChip: true,
-            index: index,
-            cardWidth: 280.0,
-            cardHeight: 250.0,
-            containerMargin: 12.0,
+      child: housesAsync.when(
+        data: (houses) {
+          if (houses.isEmpty) {
+            return const Center(child: Text("No houses found"));
+          }
+
+          // User Req: Display in horizontal ListView
+          return ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: houses.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              final house = houses[index];
+              return HouseCard(house: house);
+              // TODO:
+              // return ItemCard(
+              //   cs: cs,
+              //   needsInfoChip: true,
+              //   index: index,
+              //   cardWidth: 280.0,
+              //   cardHeight: 250.0,
+              //   containerMargin: 12.0,
+              // );
+            },
           );
         },
+        error: (err, stack) => Center(child: Text("Error: $err")),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
+
+    // return SizedBox(
+    //   height: 260,
+    //   child: ListView.builder(
+    //     scrollDirection: Axis.horizontal,
+    //     itemCount: 5,
+    //     itemBuilder: (context, index) {
+    //       return ItemCard(
+    //         cs: cs,
+    //         needsInfoChip: true,
+    //         index: index,
+    //         cardWidth: 280.0,
+    //         cardHeight: 250.0,
+    //         containerMargin: 12.0,
+    //       );
+    //     },
+    //   ),
+    // );
   }
 
   Widget _popularHotelsGrid() {
@@ -371,3 +408,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
