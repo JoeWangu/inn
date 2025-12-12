@@ -73,55 +73,9 @@ final class HomeHouseControllerProvider
 }
 
 String _$homeHouseControllerHash() =>
-    r'8d4ebb79544a1cf395c706587299147b781580fc';
+    r'618eaef6150cc322ffc16de4e1755b687a39787b';
 
 abstract class _$HomeHouseController extends $AsyncNotifier<void> {
-  FutureOr<void> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    build();
-    final ref = this.ref as $Ref<AsyncValue<void>, void>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<void>, void>,
-              AsyncValue<void>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, null);
-  }
-}
-
-@ProviderFor(ExploreHouseController)
-const exploreHouseControllerProvider = ExploreHouseControllerProvider._();
-
-final class ExploreHouseControllerProvider
-    extends $AsyncNotifierProvider<ExploreHouseController, void> {
-  const ExploreHouseControllerProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'exploreHouseControllerProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$exploreHouseControllerHash();
-
-  @$internal
-  @override
-  ExploreHouseController create() => ExploreHouseController();
-}
-
-String _$exploreHouseControllerHash() =>
-    r'8e02c01755fb644eef691c0a614a6cfe6a99b222';
-
-abstract class _$ExploreHouseController extends $AsyncNotifier<void> {
   FutureOr<void> build();
   @$mustCallSuper
   @override
