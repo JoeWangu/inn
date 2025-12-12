@@ -13,7 +13,7 @@ abstract class PaginatedResponse<T> with _$PaginatedResponse<T> {
   }) = _PaginatedResponse;
 
   factory PaginatedResponse.fromJson(
-    Map<String, dynamic> json, 
-    T Function(Object? json) fromJsonT
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
   ) => _$PaginatedResponseFromJson(json, fromJsonT);
 }
