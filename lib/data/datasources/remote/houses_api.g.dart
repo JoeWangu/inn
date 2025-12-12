@@ -20,16 +20,20 @@ class _HousesApi implements HousesApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PaginatedResponse<HouseModel>> fetchHouses({int page = 1}) async {
+  Future<PaginatedResponse<HouseModel>> fetchHouses({
+    int page = 1,
+    String? search,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page};
+    final queryParameters = <String, dynamic>{r'page': page, r'search': search};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PaginatedResponse<HouseModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'houses/',
+            'rentals/api/rentals/',
             queryParameters: queryParameters,
             data: _data,
           )
