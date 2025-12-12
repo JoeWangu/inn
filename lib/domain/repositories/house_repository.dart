@@ -12,7 +12,7 @@ part 'house_repository.g.dart';
 HouseRepository houseRepository(Ref ref) {
   return HouseRepository(
     ref.read(housesApiProvider),
-    ref.read(appDatabaseProvider), // Assuming you exposed the DB as a provider
+    ref.read(appDatabaseProvider),
   );
 }
 
@@ -23,7 +23,7 @@ class HouseRepository {
   HouseRepository(this._api, this._db);
 
   // ==========================================================
-  // 1. DATA STREAM (Single Source of Truth)
+  // DATA STREAM (Single Source of Truth)
   // The UI listens to this. It updates automatically when we save to DB.
   // ==========================================================
   Stream<List<HouseModel>> watchHouses() {
@@ -31,7 +31,7 @@ class HouseRepository {
   }
 
   // ==========================================================
-  // 2. HOME PAGE LOGIC (Fetch 2nd Last Page)
+  // HOME PAGE LOGIC (Fetch 2nd Last Page)
   // ==========================================================
   Future<void> fetchRecentHouses() async {
     try {
@@ -74,7 +74,7 @@ class HouseRepository {
   }
 
   // ==========================================================
-  // 3. EXPLORE PAGE LOGIC (Pagination)
+  // EXPLORE PAGE LOGIC (Pagination)
   // ==========================================================
   // Returns 'true' if there are more pages, 'false' if we reached the end.
   Future<bool> fetchHousesPage(int page) async {
@@ -92,5 +92,30 @@ class HouseRepository {
       print('Error fetching page $page: $e');
       rethrow;
     }
+  }
+
+  // ==========================================================
+  // HOME SHOULD FETCH?(returns true or false based on the set rules.)
+  // ==========================================================
+  Future<bool> shouldFetchHomeData() async {
+    // Rule 1: Is DB Empty?
+    final count = await _db.getHouseCount();
+    if (count == 0) return true;
+
+    // Rule 2: Is Data Stale (> 24 hours)?
+    final lastFetch = await _db.getLatestFetchTime();
+    if (lastFetch == null) return true; // Safety fallback
+
+    final difference = DateTime.now().difference(lastFetch);
+    return difference.inHours >= 24;
+  }
+
+  // ==========================================================
+  // SEARCH(Add a dedicated method for searching)
+  // ==========================================================
+  Future<List<HouseModel>> searchHouses(String query) async {
+    // We pass the query to the 'search' parameter we just added
+    final response = await _api.fetchHouses(search: query);
+    return response.results;
   }
 }
