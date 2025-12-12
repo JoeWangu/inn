@@ -21,10 +21,10 @@ HousesApi housesApi(Ref ref) {
 abstract class HousesApi {
   factory HousesApi(Dio dio, {String baseUrl}) = _HousesApi;
 
-  // We use @GET to fetch data
-  // We use @Query to pass the '?page=1' parameter
+  // We use @GET to fetch data and @Query to pass the '?page=1' parameter
   @GET(Constants.rentals)
   Future<PaginatedResponse<HouseModel>> fetchHouses({
     @Query('page') int page = 1,
+    @Query('search') String? search,
   });
 }
