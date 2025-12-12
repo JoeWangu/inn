@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+/* import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_viewmodel.g.dart';
@@ -47,3 +47,4 @@ class LoginViewmodel extends _$LoginViewmodel {
     return success;
   }
 }
+ */

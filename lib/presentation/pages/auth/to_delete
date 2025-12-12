@@ -1,4 +1,4 @@
-// dependencies:
+/* // dependencies:
 //   flutter_secure_storage: ^10.0.0  # Latest as of Dec 2025 – check pub.dev
 // For extra paranoia, add biometric checks via local_auth package.
 
@@ -45,4 +45,4 @@ class AuthService {
       headers: {'Authorization': 'Bearer $token'},  // Slap it on headers
     );
   }
-}
+} */
