@@ -16,15 +16,13 @@ T _$identity<T>(T value) => value;
 mixin _$HouseModel {
 
  int get id;// The ID reference to the image (int)
- int get image; double get price;@JsonKey(name: 'total_units') int get totalUnits; String get title; String get description; String get category;// Dates are automatically parsed if in YYYY-MM-DD format
+ int get image; double get price;@JsonKey(name: 'total_units') int get totalUnits; String? get title; String? get description; String? get category;// Dates are automatically parsed if in YYYY-MM-DD format
 @JsonKey(name: 'date_posted') DateTime get datePosted;@JsonKey(name: 'date_modified') DateTime get dateModified;// Times are usually safer as Strings unless you combine them with dates
-@JsonKey(name: 'time_posted') String get timePosted;@JsonKey(name: 'time_modified') String get timeModified; bool get available;@JsonKey(name: 'is_active') bool get isActive;// Nested Objects
+@JsonKey(name: 'time_posted') String? get timePosted;@JsonKey(name: 'time_modified') String? get timeModified; bool get available;@JsonKey(name: 'is_active') bool get isActive;// Nested Objects
 @JsonKey(name: 'author_detail') AuthorDetail get authorDetail;@JsonKey(name: 'image_detail') ImageDetail get imageDetail;// Rating
 @JsonKey(name: 'avg_rating') num get avgRating;// num handles int or double
-// Location Objects (Nullable based on your JSON item #2)
- Country? get country; StateData? get state;// 'State' is a Flutter keyword, so we rename the class
- City? get city; Neighborhood? get neighborhood;// The flat username string
- String get author;
+ Country? get country; StateData? get state; City? get city; Neighborhood? get neighborhood;// The flat username string
+ String? get author;
 /// Create a copy of HouseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -57,7 +55,7 @@ abstract mixin class $HouseModelCopyWith<$Res>  {
   factory $HouseModelCopyWith(HouseModel value, $Res Function(HouseModel) _then) = _$HouseModelCopyWithImpl;
 @useResult
 $Res call({
- int id, int image, double price,@JsonKey(name: 'total_units') int totalUnits, String title, String description, String category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String timePosted,@JsonKey(name: 'time_modified') String timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String author
+ int id, int image, double price,@JsonKey(name: 'total_units') int totalUnits, String? title, String? description, String? category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String? timePosted,@JsonKey(name: 'time_modified') String? timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String? author
 });
 
 
@@ -74,20 +72,20 @@ class _$HouseModelCopyWithImpl<$Res>
 
 /// Create a copy of HouseModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? image = null,Object? price = null,Object? totalUnits = null,Object? title = null,Object? description = null,Object? category = null,Object? datePosted = null,Object? dateModified = null,Object? timePosted = null,Object? timeModified = null,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = null,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? image = null,Object? price = null,Object? totalUnits = null,Object? title = freezed,Object? description = freezed,Object? category = freezed,Object? datePosted = null,Object? dateModified = null,Object? timePosted = freezed,Object? timeModified = freezed,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = null,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,totalUnits: null == totalUnits ? _self.totalUnits : totalUnits // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as String,datePosted: null == datePosted ? _self.datePosted : datePosted // ignore: cast_nullable_to_non_nullable
+as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,datePosted: null == datePosted ? _self.datePosted : datePosted // ignore: cast_nullable_to_non_nullable
 as DateTime,dateModified: null == dateModified ? _self.dateModified : dateModified // ignore: cast_nullable_to_non_nullable
-as DateTime,timePosted: null == timePosted ? _self.timePosted : timePosted // ignore: cast_nullable_to_non_nullable
-as String,timeModified: null == timeModified ? _self.timeModified : timeModified // ignore: cast_nullable_to_non_nullable
-as String,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
+as DateTime,timePosted: freezed == timePosted ? _self.timePosted : timePosted // ignore: cast_nullable_to_non_nullable
+as String?,timeModified: freezed == timeModified ? _self.timeModified : timeModified // ignore: cast_nullable_to_non_nullable
+as String?,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
 as bool,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,authorDetail: null == authorDetail ? _self.authorDetail : authorDetail // ignore: cast_nullable_to_non_nullable
 as AuthorDetail,imageDetail: null == imageDetail ? _self.imageDetail : imageDetail // ignore: cast_nullable_to_non_nullable
@@ -96,8 +94,8 @@ as num,country: freezed == country ? _self.country : country // ignore: cast_nul
 as Country?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as StateData?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as City?,neighborhood: freezed == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
-as Neighborhood?,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String,
+as Neighborhood?,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of HouseModel
@@ -248,7 +246,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String title,  String description,  String category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String timePosted, @JsonKey(name: 'time_modified')  String timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String author)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HouseModel() when $default != null:
 return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_that.description,_that.category,_that.datePosted,_that.dateModified,_that.timePosted,_that.timeModified,_that.available,_that.isActive,_that.authorDetail,_that.imageDetail,_that.avgRating,_that.country,_that.state,_that.city,_that.neighborhood,_that.author);case _:
@@ -269,7 +267,7 @@ return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String title,  String description,  String category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String timePosted, @JsonKey(name: 'time_modified')  String timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String author)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)  $default,) {final _that = this;
 switch (_that) {
 case _HouseModel():
 return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_that.description,_that.category,_that.datePosted,_that.dateModified,_that.timePosted,_that.timeModified,_that.available,_that.isActive,_that.authorDetail,_that.imageDetail,_that.avgRating,_that.country,_that.state,_that.city,_that.neighborhood,_that.author);case _:
@@ -289,7 +287,7 @@ return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String title,  String description,  String category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String timePosted, @JsonKey(name: 'time_modified')  String timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String author)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)?  $default,) {final _that = this;
 switch (_that) {
 case _HouseModel() when $default != null:
 return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_that.description,_that.category,_that.datePosted,_that.dateModified,_that.timePosted,_that.timeModified,_that.available,_that.isActive,_that.authorDetail,_that.imageDetail,_that.avgRating,_that.country,_that.state,_that.city,_that.neighborhood,_that.author);case _:
@@ -304,7 +302,7 @@ return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_t
 
 @JsonSerializable(explicitToJson: true)
 class _HouseModel implements HouseModel {
-  const _HouseModel({required this.id, required this.image, required this.price, @JsonKey(name: 'total_units') required this.totalUnits, required this.title, required this.description, required this.category, @JsonKey(name: 'date_posted') required this.datePosted, @JsonKey(name: 'date_modified') required this.dateModified, @JsonKey(name: 'time_posted') required this.timePosted, @JsonKey(name: 'time_modified') required this.timeModified, required this.available, @JsonKey(name: 'is_active') required this.isActive, @JsonKey(name: 'author_detail') required this.authorDetail, @JsonKey(name: 'image_detail') required this.imageDetail, @JsonKey(name: 'avg_rating') required this.avgRating, this.country, this.state, this.city, this.neighborhood, required this.author});
+  const _HouseModel({required this.id, required this.image, required this.price, @JsonKey(name: 'total_units') required this.totalUnits, this.title, this.description, this.category, @JsonKey(name: 'date_posted') required this.datePosted, @JsonKey(name: 'date_modified') required this.dateModified, @JsonKey(name: 'time_posted') this.timePosted, @JsonKey(name: 'time_modified') this.timeModified, required this.available, @JsonKey(name: 'is_active') required this.isActive, @JsonKey(name: 'author_detail') required this.authorDetail, @JsonKey(name: 'image_detail') required this.imageDetail, @JsonKey(name: 'avg_rating') required this.avgRating, this.country, this.state, this.city, this.neighborhood, this.author});
   factory _HouseModel.fromJson(Map<String, dynamic> json) => _$HouseModelFromJson(json);
 
 @override final  int id;
@@ -312,15 +310,15 @@ class _HouseModel implements HouseModel {
 @override final  int image;
 @override final  double price;
 @override@JsonKey(name: 'total_units') final  int totalUnits;
-@override final  String title;
-@override final  String description;
-@override final  String category;
+@override final  String? title;
+@override final  String? description;
+@override final  String? category;
 // Dates are automatically parsed if in YYYY-MM-DD format
 @override@JsonKey(name: 'date_posted') final  DateTime datePosted;
 @override@JsonKey(name: 'date_modified') final  DateTime dateModified;
 // Times are usually safer as Strings unless you combine them with dates
-@override@JsonKey(name: 'time_posted') final  String timePosted;
-@override@JsonKey(name: 'time_modified') final  String timeModified;
+@override@JsonKey(name: 'time_posted') final  String? timePosted;
+@override@JsonKey(name: 'time_modified') final  String? timeModified;
 @override final  bool available;
 @override@JsonKey(name: 'is_active') final  bool isActive;
 // Nested Objects
@@ -329,14 +327,12 @@ class _HouseModel implements HouseModel {
 // Rating
 @override@JsonKey(name: 'avg_rating') final  num avgRating;
 // num handles int or double
-// Location Objects (Nullable based on your JSON item #2)
 @override final  Country? country;
 @override final  StateData? state;
-// 'State' is a Flutter keyword, so we rename the class
 @override final  City? city;
 @override final  Neighborhood? neighborhood;
 // The flat username string
-@override final  String author;
+@override final  String? author;
 
 /// Create a copy of HouseModel
 /// with the given fields replaced by the non-null parameter values.
@@ -371,7 +367,7 @@ abstract mixin class _$HouseModelCopyWith<$Res> implements $HouseModelCopyWith<$
   factory _$HouseModelCopyWith(_HouseModel value, $Res Function(_HouseModel) _then) = __$HouseModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int image, double price,@JsonKey(name: 'total_units') int totalUnits, String title, String description, String category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String timePosted,@JsonKey(name: 'time_modified') String timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String author
+ int id, int image, double price,@JsonKey(name: 'total_units') int totalUnits, String? title, String? description, String? category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String? timePosted,@JsonKey(name: 'time_modified') String? timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String? author
 });
 
 
@@ -388,20 +384,20 @@ class __$HouseModelCopyWithImpl<$Res>
 
 /// Create a copy of HouseModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? image = null,Object? price = null,Object? totalUnits = null,Object? title = null,Object? description = null,Object? category = null,Object? datePosted = null,Object? dateModified = null,Object? timePosted = null,Object? timeModified = null,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = null,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? image = null,Object? price = null,Object? totalUnits = null,Object? title = freezed,Object? description = freezed,Object? category = freezed,Object? datePosted = null,Object? dateModified = null,Object? timePosted = freezed,Object? timeModified = freezed,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = null,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = freezed,}) {
   return _then(_HouseModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,totalUnits: null == totalUnits ? _self.totalUnits : totalUnits // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as String,datePosted: null == datePosted ? _self.datePosted : datePosted // ignore: cast_nullable_to_non_nullable
+as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,datePosted: null == datePosted ? _self.datePosted : datePosted // ignore: cast_nullable_to_non_nullable
 as DateTime,dateModified: null == dateModified ? _self.dateModified : dateModified // ignore: cast_nullable_to_non_nullable
-as DateTime,timePosted: null == timePosted ? _self.timePosted : timePosted // ignore: cast_nullable_to_non_nullable
-as String,timeModified: null == timeModified ? _self.timeModified : timeModified // ignore: cast_nullable_to_non_nullable
-as String,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
+as DateTime,timePosted: freezed == timePosted ? _self.timePosted : timePosted // ignore: cast_nullable_to_non_nullable
+as String?,timeModified: freezed == timeModified ? _self.timeModified : timeModified // ignore: cast_nullable_to_non_nullable
+as String?,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
 as bool,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,authorDetail: null == authorDetail ? _self.authorDetail : authorDetail // ignore: cast_nullable_to_non_nullable
 as AuthorDetail,imageDetail: null == imageDetail ? _self.imageDetail : imageDetail // ignore: cast_nullable_to_non_nullable
@@ -410,8 +406,8 @@ as num,country: freezed == country ? _self.country : country // ignore: cast_nul
 as Country?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as StateData?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as City?,neighborhood: freezed == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
-as Neighborhood?,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String,
+as Neighborhood?,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -488,7 +484,7 @@ $NeighborhoodCopyWith<$Res>? get neighborhood {
 /// @nodoc
 mixin _$AuthorDetail {
 
- int get id; String get username; String get email;@JsonKey(name: 'user_profile') UserProfile? get userProfile;
+ int get id; String? get username; String? get email;@JsonKey(name: 'user_profile') UserProfile? get userProfile;
 /// Create a copy of AuthorDetail
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -521,7 +517,7 @@ abstract mixin class $AuthorDetailCopyWith<$Res>  {
   factory $AuthorDetailCopyWith(AuthorDetail value, $Res Function(AuthorDetail) _then) = _$AuthorDetailCopyWithImpl;
 @useResult
 $Res call({
- int id, String username, String email,@JsonKey(name: 'user_profile') UserProfile? userProfile
+ int id, String? username, String? email,@JsonKey(name: 'user_profile') UserProfile? userProfile
 });
 
 
@@ -538,12 +534,12 @@ class _$AuthorDetailCopyWithImpl<$Res>
 
 /// Create a copy of AuthorDetail
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? email = null,Object? userProfile = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = freezed,Object? email = freezed,Object? userProfile = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,userProfile: freezed == userProfile ? _self.userProfile : userProfile // ignore: cast_nullable_to_non_nullable
+as int,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,userProfile: freezed == userProfile ? _self.userProfile : userProfile // ignore: cast_nullable_to_non_nullable
 as UserProfile?,
   ));
 }
@@ -641,7 +637,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String username,  String email, @JsonKey(name: 'user_profile')  UserProfile? userProfile)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? username,  String? email, @JsonKey(name: 'user_profile')  UserProfile? userProfile)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthorDetail() when $default != null:
 return $default(_that.id,_that.username,_that.email,_that.userProfile);case _:
@@ -662,7 +658,7 @@ return $default(_that.id,_that.username,_that.email,_that.userProfile);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String username,  String email, @JsonKey(name: 'user_profile')  UserProfile? userProfile)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? username,  String? email, @JsonKey(name: 'user_profile')  UserProfile? userProfile)  $default,) {final _that = this;
 switch (_that) {
 case _AuthorDetail():
 return $default(_that.id,_that.username,_that.email,_that.userProfile);case _:
@@ -682,7 +678,7 @@ return $default(_that.id,_that.username,_that.email,_that.userProfile);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String username,  String email, @JsonKey(name: 'user_profile')  UserProfile? userProfile)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? username,  String? email, @JsonKey(name: 'user_profile')  UserProfile? userProfile)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthorDetail() when $default != null:
 return $default(_that.id,_that.username,_that.email,_that.userProfile);case _:
@@ -697,12 +693,12 @@ return $default(_that.id,_that.username,_that.email,_that.userProfile);case _:
 @JsonSerializable()
 
 class _AuthorDetail implements AuthorDetail {
-  const _AuthorDetail({required this.id, required this.username, required this.email, @JsonKey(name: 'user_profile') this.userProfile});
+  const _AuthorDetail({required this.id, this.username, this.email, @JsonKey(name: 'user_profile') this.userProfile});
   factory _AuthorDetail.fromJson(Map<String, dynamic> json) => _$AuthorDetailFromJson(json);
 
 @override final  int id;
-@override final  String username;
-@override final  String email;
+@override final  String? username;
+@override final  String? email;
 @override@JsonKey(name: 'user_profile') final  UserProfile? userProfile;
 
 /// Create a copy of AuthorDetail
@@ -738,7 +734,7 @@ abstract mixin class _$AuthorDetailCopyWith<$Res> implements $AuthorDetailCopyWi
   factory _$AuthorDetailCopyWith(_AuthorDetail value, $Res Function(_AuthorDetail) _then) = __$AuthorDetailCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String username, String email,@JsonKey(name: 'user_profile') UserProfile? userProfile
+ int id, String? username, String? email,@JsonKey(name: 'user_profile') UserProfile? userProfile
 });
 
 
@@ -755,12 +751,12 @@ class __$AuthorDetailCopyWithImpl<$Res>
 
 /// Create a copy of AuthorDetail
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? email = null,Object? userProfile = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = freezed,Object? email = freezed,Object? userProfile = freezed,}) {
   return _then(_AuthorDetail(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,userProfile: freezed == userProfile ? _self.userProfile : userProfile // ignore: cast_nullable_to_non_nullable
+as int,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,userProfile: freezed == userProfile ? _self.userProfile : userProfile // ignore: cast_nullable_to_non_nullable
 as UserProfile?,
   ));
 }
@@ -784,7 +780,7 @@ $UserProfileCopyWith<$Res>? get userProfile {
 /// @nodoc
 mixin _$UserProfile {
 
-@JsonKey(name: 'phone_number') String get phoneNumber;
+@JsonKey(name: 'phone_number') String? get phoneNumber;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -817,7 +813,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'phone_number') String phoneNumber
+@JsonKey(name: 'phone_number') String? phoneNumber
 });
 
 
@@ -834,10 +830,10 @@ class _$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? phoneNumber = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? phoneNumber = freezed,}) {
   return _then(_self.copyWith(
-phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,
+phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -922,7 +918,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'phone_number')  String phoneNumber)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'phone_number')  String? phoneNumber)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
 return $default(_that.phoneNumber);case _:
@@ -943,7 +939,7 @@ return $default(_that.phoneNumber);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'phone_number')  String phoneNumber)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'phone_number')  String? phoneNumber)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile():
 return $default(_that.phoneNumber);case _:
@@ -963,7 +959,7 @@ return $default(_that.phoneNumber);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'phone_number')  String phoneNumber)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'phone_number')  String? phoneNumber)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
 return $default(_that.phoneNumber);case _:
@@ -978,10 +974,10 @@ return $default(_that.phoneNumber);case _:
 @JsonSerializable()
 
 class _UserProfile implements UserProfile {
-  const _UserProfile({@JsonKey(name: 'phone_number') required this.phoneNumber});
+  const _UserProfile({@JsonKey(name: 'phone_number') this.phoneNumber});
   factory _UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 
-@override@JsonKey(name: 'phone_number') final  String phoneNumber;
+@override@JsonKey(name: 'phone_number') final  String? phoneNumber;
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
@@ -1016,7 +1012,7 @@ abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith
   factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'phone_number') String phoneNumber
+@JsonKey(name: 'phone_number') String? phoneNumber
 });
 
 
@@ -1033,10 +1029,10 @@ class __$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? phoneNumber = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? phoneNumber = freezed,}) {
   return _then(_UserProfile(
-phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,
+phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -1047,8 +1043,7 @@ as String,
 /// @nodoc
 mixin _$ImageDetail {
 
- int get id;@JsonKey(name: 'image_name') String get imageName; String get image;// This is the full URL
- String get author;
+ int get id;@JsonKey(name: 'image_name') String? get imageName; String? get image; String? get author;
 /// Create a copy of ImageDetail
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1081,7 +1076,7 @@ abstract mixin class $ImageDetailCopyWith<$Res>  {
   factory $ImageDetailCopyWith(ImageDetail value, $Res Function(ImageDetail) _then) = _$ImageDetailCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'image_name') String imageName, String image, String author
+ int id,@JsonKey(name: 'image_name') String? imageName, String? image, String? author
 });
 
 
@@ -1098,13 +1093,13 @@ class _$ImageDetailCopyWithImpl<$Res>
 
 /// Create a copy of ImageDetail
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? imageName = null,Object? image = null,Object? author = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? imageName = freezed,Object? image = freezed,Object? author = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,imageName: null == imageName ? _self.imageName : imageName // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String,
+as int,imageName: freezed == imageName ? _self.imageName : imageName // ignore: cast_nullable_to_non_nullable
+as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -1189,7 +1184,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_name')  String imageName,  String image,  String author)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_name')  String? imageName,  String? image,  String? author)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ImageDetail() when $default != null:
 return $default(_that.id,_that.imageName,_that.image,_that.author);case _:
@@ -1210,7 +1205,7 @@ return $default(_that.id,_that.imageName,_that.image,_that.author);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_name')  String imageName,  String image,  String author)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_name')  String? imageName,  String? image,  String? author)  $default,) {final _that = this;
 switch (_that) {
 case _ImageDetail():
 return $default(_that.id,_that.imageName,_that.image,_that.author);case _:
@@ -1230,7 +1225,7 @@ return $default(_that.id,_that.imageName,_that.image,_that.author);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'image_name')  String imageName,  String image,  String author)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'image_name')  String? imageName,  String? image,  String? author)?  $default,) {final _that = this;
 switch (_that) {
 case _ImageDetail() when $default != null:
 return $default(_that.id,_that.imageName,_that.image,_that.author);case _:
@@ -1245,14 +1240,13 @@ return $default(_that.id,_that.imageName,_that.image,_that.author);case _:
 @JsonSerializable()
 
 class _ImageDetail implements ImageDetail {
-  const _ImageDetail({required this.id, @JsonKey(name: 'image_name') required this.imageName, required this.image, required this.author});
+  const _ImageDetail({required this.id, @JsonKey(name: 'image_name') this.imageName, this.image, this.author});
   factory _ImageDetail.fromJson(Map<String, dynamic> json) => _$ImageDetailFromJson(json);
 
 @override final  int id;
-@override@JsonKey(name: 'image_name') final  String imageName;
-@override final  String image;
-// This is the full URL
-@override final  String author;
+@override@JsonKey(name: 'image_name') final  String? imageName;
+@override final  String? image;
+@override final  String? author;
 
 /// Create a copy of ImageDetail
 /// with the given fields replaced by the non-null parameter values.
@@ -1287,7 +1281,7 @@ abstract mixin class _$ImageDetailCopyWith<$Res> implements $ImageDetailCopyWith
   factory _$ImageDetailCopyWith(_ImageDetail value, $Res Function(_ImageDetail) _then) = __$ImageDetailCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'image_name') String imageName, String image, String author
+ int id,@JsonKey(name: 'image_name') String? imageName, String? image, String? author
 });
 
 
@@ -1304,13 +1298,13 @@ class __$ImageDetailCopyWithImpl<$Res>
 
 /// Create a copy of ImageDetail
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? imageName = null,Object? image = null,Object? author = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? imageName = freezed,Object? image = freezed,Object? author = freezed,}) {
   return _then(_ImageDetail(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,imageName: null == imageName ? _self.imageName : imageName // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String,
+as int,imageName: freezed == imageName ? _self.imageName : imageName // ignore: cast_nullable_to_non_nullable
+as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -1321,7 +1315,7 @@ as String,
 /// @nodoc
 mixin _$Country {
 
- int get id; String get name; String get code;
+ int get id; String? get name; String? get code;
 /// Create a copy of Country
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1354,7 +1348,7 @@ abstract mixin class $CountryCopyWith<$Res>  {
   factory $CountryCopyWith(Country value, $Res Function(Country) _then) = _$CountryCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String code
+ int id, String? name, String? code
 });
 
 
@@ -1371,12 +1365,12 @@ class _$CountryCopyWithImpl<$Res>
 
 /// Create a copy of Country
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? code = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? code = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
-as String,
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,code: freezed == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -1461,7 +1455,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String code)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? name,  String? code)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Country() when $default != null:
 return $default(_that.id,_that.name,_that.code);case _:
@@ -1482,7 +1476,7 @@ return $default(_that.id,_that.name,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String code)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? name,  String? code)  $default,) {final _that = this;
 switch (_that) {
 case _Country():
 return $default(_that.id,_that.name,_that.code);case _:
@@ -1502,7 +1496,7 @@ return $default(_that.id,_that.name,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String code)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? name,  String? code)?  $default,) {final _that = this;
 switch (_that) {
 case _Country() when $default != null:
 return $default(_that.id,_that.name,_that.code);case _:
@@ -1517,12 +1511,12 @@ return $default(_that.id,_that.name,_that.code);case _:
 @JsonSerializable()
 
 class _Country implements Country {
-  const _Country({required this.id, required this.name, required this.code});
+  const _Country({required this.id, this.name, this.code});
   factory _Country.fromJson(Map<String, dynamic> json) => _$CountryFromJson(json);
 
 @override final  int id;
-@override final  String name;
-@override final  String code;
+@override final  String? name;
+@override final  String? code;
 
 /// Create a copy of Country
 /// with the given fields replaced by the non-null parameter values.
@@ -1557,7 +1551,7 @@ abstract mixin class _$CountryCopyWith<$Res> implements $CountryCopyWith<$Res> {
   factory _$CountryCopyWith(_Country value, $Res Function(_Country) _then) = __$CountryCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String code
+ int id, String? name, String? code
 });
 
 
@@ -1574,12 +1568,281 @@ class __$CountryCopyWithImpl<$Res>
 
 /// Create a copy of Country
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? code = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? code = freezed,}) {
   return _then(_Country(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
-as String,
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,code: freezed == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$StateData {
+
+ int get id; String? get name; int? get country;
+/// Create a copy of StateData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$StateDataCopyWith<StateData> get copyWith => _$StateDataCopyWithImpl<StateData>(this as StateData, _$identity);
+
+  /// Serializes this StateData to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StateData&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.country, country) || other.country == country));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,country);
+
+@override
+String toString() {
+  return 'StateData(id: $id, name: $name, country: $country)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $StateDataCopyWith<$Res>  {
+  factory $StateDataCopyWith(StateData value, $Res Function(StateData) _then) = _$StateDataCopyWithImpl;
+@useResult
+$Res call({
+ int id, String? name, int? country
+});
+
+
+
+
+}
+/// @nodoc
+class _$StateDataCopyWithImpl<$Res>
+    implements $StateDataCopyWith<$Res> {
+  _$StateDataCopyWithImpl(this._self, this._then);
+
+  final StateData _self;
+  final $Res Function(StateData) _then;
+
+/// Create a copy of StateData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? country = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,country: freezed == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [StateData].
+extension StateDataPatterns on StateData {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _StateData value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _StateData() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _StateData value)  $default,){
+final _that = this;
+switch (_that) {
+case _StateData():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _StateData value)?  $default,){
+final _that = this;
+switch (_that) {
+case _StateData() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? name,  int? country)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _StateData() when $default != null:
+return $default(_that.id,_that.name,_that.country);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? name,  int? country)  $default,) {final _that = this;
+switch (_that) {
+case _StateData():
+return $default(_that.id,_that.name,_that.country);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? name,  int? country)?  $default,) {final _that = this;
+switch (_that) {
+case _StateData() when $default != null:
+return $default(_that.id,_that.name,_that.country);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _StateData implements StateData {
+  const _StateData({required this.id, this.name, this.country});
+  factory _StateData.fromJson(Map<String, dynamic> json) => _$StateDataFromJson(json);
+
+@override final  int id;
+@override final  String? name;
+@override final  int? country;
+
+/// Create a copy of StateData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$StateDataCopyWith<_StateData> get copyWith => __$StateDataCopyWithImpl<_StateData>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$StateDataToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StateData&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.country, country) || other.country == country));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,country);
+
+@override
+String toString() {
+  return 'StateData(id: $id, name: $name, country: $country)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$StateDataCopyWith<$Res> implements $StateDataCopyWith<$Res> {
+  factory _$StateDataCopyWith(_StateData value, $Res Function(_StateData) _then) = __$StateDataCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, String? name, int? country
+});
+
+
+
+
+}
+/// @nodoc
+class __$StateDataCopyWithImpl<$Res>
+    implements _$StateDataCopyWith<$Res> {
+  __$StateDataCopyWithImpl(this._self, this._then);
+
+  final _StateData _self;
+  final $Res Function(_StateData) _then;
+
+/// Create a copy of StateData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? country = freezed,}) {
+  return _then(_StateData(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,country: freezed == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -1590,9 +1853,7 @@ as String,
 /// @nodoc
 mixin _$City {
 
- int get id; String get name;// 'state' might be an ID or object here? JSON shows null, assuming int? or object?
-// Kept dynamic/nullable to be safe
- Object? get state; int get country;
+ int get id; String? get name; int? get state; int get country;
 /// Create a copy of City
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1605,12 +1866,12 @@ $CityCopyWith<City> get copyWith => _$CityCopyWithImpl<City>(this as City, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is City&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.state, state)&&(identical(other.country, country) || other.country == country));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is City&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.state, state) || other.state == state)&&(identical(other.country, country) || other.country == country));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(state),country);
+int get hashCode => Object.hash(runtimeType,id,name,state,country);
 
 @override
 String toString() {
@@ -1625,7 +1886,7 @@ abstract mixin class $CityCopyWith<$Res>  {
   factory $CityCopyWith(City value, $Res Function(City) _then) = _$CityCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, Object? state, int country
+ int id, String? name, int? state, int country
 });
 
 
@@ -1642,11 +1903,12 @@ class _$CityCopyWithImpl<$Res>
 
 /// Create a copy of City
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? state = freezed,Object? country = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? state = freezed,Object? country = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,state: freezed == state ? _self.state : state ,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as int?,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -1732,7 +1994,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  Object? state,  int country)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? name,  int? state,  int country)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _City() when $default != null:
 return $default(_that.id,_that.name,_that.state,_that.country);case _:
@@ -1753,7 +2015,7 @@ return $default(_that.id,_that.name,_that.state,_that.country);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  Object? state,  int country)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? name,  int? state,  int country)  $default,) {final _that = this;
 switch (_that) {
 case _City():
 return $default(_that.id,_that.name,_that.state,_that.country);case _:
@@ -1773,7 +2035,7 @@ return $default(_that.id,_that.name,_that.state,_that.country);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  Object? state,  int country)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? name,  int? state,  int country)?  $default,) {final _that = this;
 switch (_that) {
 case _City() when $default != null:
 return $default(_that.id,_that.name,_that.state,_that.country);case _:
@@ -1788,14 +2050,12 @@ return $default(_that.id,_that.name,_that.state,_that.country);case _:
 @JsonSerializable()
 
 class _City implements City {
-  const _City({required this.id, required this.name, this.state, required this.country});
+  const _City({required this.id, this.name, this.state, required this.country});
   factory _City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
 
 @override final  int id;
-@override final  String name;
-// 'state' might be an ID or object here? JSON shows null, assuming int? or object?
-// Kept dynamic/nullable to be safe
-@override final  Object? state;
+@override final  String? name;
+@override final  int? state;
 @override final  int country;
 
 /// Create a copy of City
@@ -1811,12 +2071,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _City&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.state, state)&&(identical(other.country, country) || other.country == country));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _City&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.state, state) || other.state == state)&&(identical(other.country, country) || other.country == country));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(state),country);
+int get hashCode => Object.hash(runtimeType,id,name,state,country);
 
 @override
 String toString() {
@@ -1831,7 +2091,7 @@ abstract mixin class _$CityCopyWith<$Res> implements $CityCopyWith<$Res> {
   factory _$CityCopyWith(_City value, $Res Function(_City) _then) = __$CityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, Object? state, int country
+ int id, String? name, int? state, int country
 });
 
 
@@ -1848,11 +2108,12 @@ class __$CityCopyWithImpl<$Res>
 
 /// Create a copy of City
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? state = freezed,Object? country = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? state = freezed,Object? country = null,}) {
   return _then(_City(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,state: freezed == state ? _self.state : state ,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as int?,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -1864,7 +2125,7 @@ as int,
 /// @nodoc
 mixin _$Neighborhood {
 
- int get id; String get name; int get city;
+ int get id; String? get name; int? get city;
 /// Create a copy of Neighborhood
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1897,7 +2158,7 @@ abstract mixin class $NeighborhoodCopyWith<$Res>  {
   factory $NeighborhoodCopyWith(Neighborhood value, $Res Function(Neighborhood) _then) = _$NeighborhoodCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, int city
+ int id, String? name, int? city
 });
 
 
@@ -1914,12 +2175,12 @@ class _$NeighborhoodCopyWithImpl<$Res>
 
 /// Create a copy of Neighborhood
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? city = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? city = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
-as int,
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -2004,7 +2265,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  int city)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? name,  int? city)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Neighborhood() when $default != null:
 return $default(_that.id,_that.name,_that.city);case _:
@@ -2025,7 +2286,7 @@ return $default(_that.id,_that.name,_that.city);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  int city)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? name,  int? city)  $default,) {final _that = this;
 switch (_that) {
 case _Neighborhood():
 return $default(_that.id,_that.name,_that.city);case _:
@@ -2045,7 +2306,7 @@ return $default(_that.id,_that.name,_that.city);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  int city)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? name,  int? city)?  $default,) {final _that = this;
 switch (_that) {
 case _Neighborhood() when $default != null:
 return $default(_that.id,_that.name,_that.city);case _:
@@ -2060,12 +2321,12 @@ return $default(_that.id,_that.name,_that.city);case _:
 @JsonSerializable()
 
 class _Neighborhood implements Neighborhood {
-  const _Neighborhood({required this.id, required this.name, required this.city});
+  const _Neighborhood({required this.id, this.name, this.city});
   factory _Neighborhood.fromJson(Map<String, dynamic> json) => _$NeighborhoodFromJson(json);
 
 @override final  int id;
-@override final  String name;
-@override final  int city;
+@override final  String? name;
+@override final  int? city;
 
 /// Create a copy of Neighborhood
 /// with the given fields replaced by the non-null parameter values.
@@ -2100,7 +2361,7 @@ abstract mixin class _$NeighborhoodCopyWith<$Res> implements $NeighborhoodCopyWi
   factory _$NeighborhoodCopyWith(_Neighborhood value, $Res Function(_Neighborhood) _then) = __$NeighborhoodCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, int city
+ int id, String? name, int? city
 });
 
 
@@ -2117,278 +2378,12 @@ class __$NeighborhoodCopyWithImpl<$Res>
 
 /// Create a copy of Neighborhood
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? city = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? city = freezed,}) {
   return _then(_Neighborhood(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-
-}
-
-
-/// @nodoc
-mixin _$StateData {
-
- int get id; String get name;
-/// Create a copy of StateData
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$StateDataCopyWith<StateData> get copyWith => _$StateDataCopyWithImpl<StateData>(this as StateData, _$identity);
-
-  /// Serializes this StateData to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StateData&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,name);
-
-@override
-String toString() {
-  return 'StateData(id: $id, name: $name)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $StateDataCopyWith<$Res>  {
-  factory $StateDataCopyWith(StateData value, $Res Function(StateData) _then) = _$StateDataCopyWithImpl;
-@useResult
-$Res call({
- int id, String name
-});
-
-
-
-
-}
-/// @nodoc
-class _$StateDataCopyWithImpl<$Res>
-    implements $StateDataCopyWith<$Res> {
-  _$StateDataCopyWithImpl(this._self, this._then);
-
-  final StateData _self;
-  final $Res Function(StateData) _then;
-
-/// Create a copy of StateData
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,}) {
-  return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [StateData].
-extension StateDataPatterns on StateData {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _StateData value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _StateData() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _StateData value)  $default,){
-final _that = this;
-switch (_that) {
-case _StateData():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _StateData value)?  $default,){
-final _that = this;
-switch (_that) {
-case _StateData() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _StateData() when $default != null:
-return $default(_that.id,_that.name);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name)  $default,) {final _that = this;
-switch (_that) {
-case _StateData():
-return $default(_that.id,_that.name);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name)?  $default,) {final _that = this;
-switch (_that) {
-case _StateData() when $default != null:
-return $default(_that.id,_that.name);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _StateData implements StateData {
-  const _StateData({required this.id, required this.name});
-  factory _StateData.fromJson(Map<String, dynamic> json) => _$StateDataFromJson(json);
-
-@override final  int id;
-@override final  String name;
-
-/// Create a copy of StateData
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$StateDataCopyWith<_StateData> get copyWith => __$StateDataCopyWithImpl<_StateData>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$StateDataToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StateData&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,name);
-
-@override
-String toString() {
-  return 'StateData(id: $id, name: $name)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$StateDataCopyWith<$Res> implements $StateDataCopyWith<$Res> {
-  factory _$StateDataCopyWith(_StateData value, $Res Function(_StateData) _then) = __$StateDataCopyWithImpl;
-@override @useResult
-$Res call({
- int id, String name
-});
-
-
-
-
-}
-/// @nodoc
-class __$StateDataCopyWithImpl<$Res>
-    implements _$StateDataCopyWith<$Res> {
-  __$StateDataCopyWithImpl(this._self, this._then);
-
-  final _StateData _self;
-  final $Res Function(_StateData) _then;
-
-/// Create a copy of StateData
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,}) {
-  return _then(_StateData(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
+as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

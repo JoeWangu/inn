@@ -11,13 +11,13 @@ _HouseModel _$HouseModelFromJson(Map<String, dynamic> json) => _HouseModel(
   image: (json['image'] as num).toInt(),
   price: (json['price'] as num).toDouble(),
   totalUnits: (json['total_units'] as num).toInt(),
-  title: json['title'] as String,
-  description: json['description'] as String,
-  category: json['category'] as String,
+  title: json['title'] as String?,
+  description: json['description'] as String?,
+  category: json['category'] as String?,
   datePosted: DateTime.parse(json['date_posted'] as String),
   dateModified: DateTime.parse(json['date_modified'] as String),
-  timePosted: json['time_posted'] as String,
-  timeModified: json['time_modified'] as String,
+  timePosted: json['time_posted'] as String?,
+  timeModified: json['time_modified'] as String?,
   available: json['available'] as bool,
   isActive: json['is_active'] as bool,
   authorDetail: AuthorDetail.fromJson(
@@ -39,7 +39,7 @@ _HouseModel _$HouseModelFromJson(Map<String, dynamic> json) => _HouseModel(
   neighborhood: json['neighborhood'] == null
       ? null
       : Neighborhood.fromJson(json['neighborhood'] as Map<String, dynamic>),
-  author: json['author'] as String,
+  author: json['author'] as String?,
 );
 
 Map<String, dynamic> _$HouseModelToJson(_HouseModel instance) =>
@@ -70,8 +70,8 @@ Map<String, dynamic> _$HouseModelToJson(_HouseModel instance) =>
 _AuthorDetail _$AuthorDetailFromJson(Map<String, dynamic> json) =>
     _AuthorDetail(
       id: (json['id'] as num).toInt(),
-      username: json['username'] as String,
-      email: json['email'] as String,
+      username: json['username'] as String?,
+      email: json['email'] as String?,
       userProfile: json['user_profile'] == null
           ? null
           : UserProfile.fromJson(json['user_profile'] as Map<String, dynamic>),
@@ -86,16 +86,16 @@ Map<String, dynamic> _$AuthorDetailToJson(_AuthorDetail instance) =>
     };
 
 _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) =>
-    _UserProfile(phoneNumber: json['phone_number'] as String);
+    _UserProfile(phoneNumber: json['phone_number'] as String?);
 
 Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
     <String, dynamic>{'phone_number': instance.phoneNumber};
 
 _ImageDetail _$ImageDetailFromJson(Map<String, dynamic> json) => _ImageDetail(
   id: (json['id'] as num).toInt(),
-  imageName: json['image_name'] as String,
-  image: json['image'] as String,
-  author: json['author'] as String,
+  imageName: json['image_name'] as String?,
+  image: json['image'] as String?,
+  author: json['author'] as String?,
 );
 
 Map<String, dynamic> _$ImageDetailToJson(_ImageDetail instance) =>
@@ -108,8 +108,8 @@ Map<String, dynamic> _$ImageDetailToJson(_ImageDetail instance) =>
 
 _Country _$CountryFromJson(Map<String, dynamic> json) => _Country(
   id: (json['id'] as num).toInt(),
-  name: json['name'] as String,
-  code: json['code'] as String,
+  name: json['name'] as String?,
+  code: json['code'] as String?,
 );
 
 Map<String, dynamic> _$CountryToJson(_Country instance) => <String, dynamic>{
@@ -118,10 +118,23 @@ Map<String, dynamic> _$CountryToJson(_Country instance) => <String, dynamic>{
   'code': instance.code,
 };
 
+_StateData _$StateDataFromJson(Map<String, dynamic> json) => _StateData(
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String?,
+  country: (json['country'] as num?)?.toInt(),
+);
+
+Map<String, dynamic> _$StateDataToJson(_StateData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'country': instance.country,
+    };
+
 _City _$CityFromJson(Map<String, dynamic> json) => _City(
   id: (json['id'] as num).toInt(),
-  name: json['name'] as String,
-  state: json['state'],
+  name: json['name'] as String?,
+  state: (json['state'] as num?)?.toInt(),
   country: (json['country'] as num).toInt(),
 );
 
@@ -135,8 +148,8 @@ Map<String, dynamic> _$CityToJson(_City instance) => <String, dynamic>{
 _Neighborhood _$NeighborhoodFromJson(Map<String, dynamic> json) =>
     _Neighborhood(
       id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      city: (json['city'] as num).toInt(),
+      name: json['name'] as String?,
+      city: (json['city'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$NeighborhoodToJson(_Neighborhood instance) =>
@@ -145,9 +158,3 @@ Map<String, dynamic> _$NeighborhoodToJson(_Neighborhood instance) =>
       'name': instance.name,
       'city': instance.city,
     };
-
-_StateData _$StateDataFromJson(Map<String, dynamic> json) =>
-    _StateData(id: (json['id'] as num).toInt(), name: json['name'] as String);
-
-Map<String, dynamic> _$StateDataToJson(_StateData instance) =>
-    <String, dynamic>{'id': instance.id, 'name': instance.name};
