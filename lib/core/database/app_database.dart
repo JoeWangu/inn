@@ -24,7 +24,7 @@ class AppDatabase extends _$AppDatabase {
 
   // --- DAO METHODS ---
 
-  // 1. Insert or Replace (Upsert)
+  // Insert or Replace (Upsert)
   // Saves a list of houses to the DB. If one exists, it updates it.
   Future<void> insertHouses(List<HouseModel> houses) async {
     await batch((batch) {
@@ -34,28 +34,45 @@ class AppDatabase extends _$AppDatabase {
           HousesTableCompanion.insert(
             id: Value(house.id),
             data: house, // The converter handles this automatically!
-            category: house.category,
+            category: house.category ?? '',
             fetchedAt: Value(DateTime.now()),
           ),
-          mode: InsertMode.insertOrReplace, 
+          mode: InsertMode.insertOrReplace,
         );
       }
     });
   }
 
-  // 2. Get All Houses (Reactive Stream)
+  // Get All Houses (Reactive Stream)
   // Returns a stream that automatically updates when 'insertHouses' is called.
   Stream<List<HouseModel>> watchHouses() {
     return (select(housesTable)
-          // You might want to order by datePosted from inside the JSON, 
+          // You might want to order by datePosted from inside the JSON,
           // but for now, we order by when we fetched it.
-          ..orderBy([(t) => OrderingTerm.desc(t.fetchedAt)])) 
+          // ..orderBy([(t) => OrderingTerm.desc(t.fetchedAt)]))
+          ..orderBy([(t) => OrderingTerm.asc(t.id)]))
         .map((row) => row.data) // Extract the HouseModel object
         .watch();
   }
-  
-  // 3. Clear Cache (Optional, good for pull-to-refresh)
+
+  // Clear Cache (Optional, good for pull-to-refresh)
   Future<void> clearHouses() => delete(housesTable).go();
+
+  // Check if DB is empty
+  Future<int> getHouseCount() {
+    final countExp = housesTable.id.count();
+    final query = selectOnly(housesTable)..addColumns([countExp]);
+    return query.map((row) => row.read(countExp)!).getSingle();
+  }
+
+  // Get the timestamp of the most recently saved item
+  Future<DateTime?> getLatestFetchTime() {
+    return (select(housesTable)
+          ..orderBy([(t) => OrderingTerm.desc(t.fetchedAt)]) // Newest first
+          ..limit(1)) // Only need one
+        .map((row) => row.fetchedAt)
+        .getSingleOrNull();
+  }
 }
 
 LazyDatabase _openConnection() {
