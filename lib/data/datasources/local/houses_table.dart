@@ -22,13 +22,13 @@ class HouseModelConverter extends TypeConverter<HouseModel, String> {
 class HousesTable extends Table {
   // We use the ID from the server as the primary key
   IntColumn get id => integer()();
-  
+
   // We store the whole object as a JSON string using the converter
   TextColumn get data => text().map(const HouseModelConverter())();
-  
+
   // We store the 'category' separately just in case you want to filter by category locally later
   TextColumn get category => text()();
-  
+
   // Useful for ordering
   DateTimeColumn get fetchedAt => dateTime().withDefault(currentDateAndTime)();
 
