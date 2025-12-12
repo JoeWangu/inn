@@ -36,8 +36,8 @@ class AuthInterceptor extends Interceptor {
   // 2. INCOMING: Handle Errors (401)
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    // Check if the error is 401 Unauthorized
-    if (err.response?.statusCode == 401) {
+    // Check if the error is 401 Unauthorized or 403 Forbidden
+    if (err.response?.statusCode == 401 || err.response?.statusCode == 403) {
       final storage = ref.read(secureStorageProvider);
 
       // A. Get the Refresh Token
