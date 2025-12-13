@@ -31,7 +31,7 @@ class HouseDetailsPage extends StatelessWidget {
                   background: Hero(
                     tag: heroTag,
                     child: CachedNetworkImage(
-                      imageUrl: house.imageDetail.image ?? '',
+                      imageUrl: house.imageDetail?.image ?? '',
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
                           Container(color: Colors.grey[200]),
