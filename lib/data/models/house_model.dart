@@ -10,7 +10,7 @@ abstract class HouseModel with _$HouseModel {
   const factory HouseModel({
     required int id,
     // The ID reference to the image (int)
-    required int image,
+    int? image,
     required double price,
     @JsonKey(name: 'total_units') required int totalUnits,
     String? title,
@@ -30,7 +30,7 @@ abstract class HouseModel with _$HouseModel {
 
     // Nested Objects
     @JsonKey(name: 'author_detail') required AuthorDetail authorDetail,
-    @JsonKey(name: 'image_detail') required ImageDetail imageDetail,
+    @JsonKey(name: 'image_detail') ImageDetail? imageDetail,
 
     // Rating
     @JsonKey(name: 'avg_rating')
@@ -47,6 +47,8 @@ abstract class HouseModel with _$HouseModel {
 
   factory HouseModel.fromJson(Map<String, dynamic> json) =>
       _$HouseModelFromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 // --- NESTED CLASSES ---
@@ -62,6 +64,8 @@ abstract class AuthorDetail with _$AuthorDetail {
 
   factory AuthorDetail.fromJson(Map<String, dynamic> json) =>
       _$AuthorDetailFromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 @freezed
@@ -72,6 +76,8 @@ abstract class UserProfile with _$UserProfile {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 @freezed
@@ -85,30 +91,30 @@ abstract class ImageDetail with _$ImageDetail {
 
   factory ImageDetail.fromJson(Map<String, dynamic> json) =>
       _$ImageDetailFromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 @freezed
 abstract class Country with _$Country {
-  const factory Country({
-    required int id,
-    String? name,
-    String? code,
-  }) = _Country;
+  const factory Country({required int id, String? name, String? code}) =
+      _Country;
 
   factory Country.fromJson(Map<String, dynamic> json) =>
       _$CountryFromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 @freezed
 abstract class StateData with _$StateData {
-  const factory StateData({
-    required int id,
-    String? name,
-    int? country,
-  }) = _StateData;
+  const factory StateData({required int id, String? name, int? country}) =
+      _StateData;
 
   factory StateData.fromJson(Map<String, dynamic> json) =>
       _$StateDataFromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 @freezed
@@ -121,16 +127,17 @@ abstract class City with _$City {
   }) = _City;
 
   factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 @freezed
 abstract class Neighborhood with _$Neighborhood {
-  const factory Neighborhood({
-    required int id,
-    String? name,
-    int? city,
-  }) = _Neighborhood;
+  const factory Neighborhood({required int id, String? name, int? city}) =
+      _Neighborhood;
 
   factory Neighborhood.fromJson(Map<String, dynamic> json) =>
       _$NeighborhoodFromJson(json);
+
+  Map<String, dynamic> toJson();
 }

@@ -8,7 +8,7 @@ part of 'house_model.dart';
 
 _HouseModel _$HouseModelFromJson(Map<String, dynamic> json) => _HouseModel(
   id: (json['id'] as num).toInt(),
-  image: (json['image'] as num).toInt(),
+  image: (json['image'] as num?)?.toInt(),
   price: (json['price'] as num).toDouble(),
   totalUnits: (json['total_units'] as num).toInt(),
   title: json['title'] as String?,
@@ -23,9 +23,9 @@ _HouseModel _$HouseModelFromJson(Map<String, dynamic> json) => _HouseModel(
   authorDetail: AuthorDetail.fromJson(
     json['author_detail'] as Map<String, dynamic>,
   ),
-  imageDetail: ImageDetail.fromJson(
-    json['image_detail'] as Map<String, dynamic>,
-  ),
+  imageDetail: json['image_detail'] == null
+      ? null
+      : ImageDetail.fromJson(json['image_detail'] as Map<String, dynamic>),
   avgRating: json['avg_rating'] as num,
   country: json['country'] == null
       ? null
@@ -58,7 +58,7 @@ Map<String, dynamic> _$HouseModelToJson(_HouseModel instance) =>
       'available': instance.available,
       'is_active': instance.isActive,
       'author_detail': instance.authorDetail.toJson(),
-      'image_detail': instance.imageDetail.toJson(),
+      'image_detail': instance.imageDetail?.toJson(),
       'avg_rating': instance.avgRating,
       'country': instance.country?.toJson(),
       'state': instance.state?.toJson(),

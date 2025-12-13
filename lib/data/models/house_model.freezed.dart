@@ -16,10 +16,10 @@ T _$identity<T>(T value) => value;
 mixin _$HouseModel {
 
  int get id;// The ID reference to the image (int)
- int get image; double get price;@JsonKey(name: 'total_units') int get totalUnits; String? get title; String? get description; String? get category;// Dates are automatically parsed if in YYYY-MM-DD format
+ int? get image; double get price;@JsonKey(name: 'total_units') int get totalUnits; String? get title; String? get description; String? get category;// Dates are automatically parsed if in YYYY-MM-DD format
 @JsonKey(name: 'date_posted') DateTime get datePosted;@JsonKey(name: 'date_modified') DateTime get dateModified;// Times are usually safer as Strings unless you combine them with dates
 @JsonKey(name: 'time_posted') String? get timePosted;@JsonKey(name: 'time_modified') String? get timeModified; bool get available;@JsonKey(name: 'is_active') bool get isActive;// Nested Objects
-@JsonKey(name: 'author_detail') AuthorDetail get authorDetail;@JsonKey(name: 'image_detail') ImageDetail get imageDetail;// Rating
+@JsonKey(name: 'author_detail') AuthorDetail get authorDetail;@JsonKey(name: 'image_detail') ImageDetail? get imageDetail;// Rating
 @JsonKey(name: 'avg_rating') num get avgRating;// num handles int or double
  Country? get country; StateData? get state; City? get city; Neighborhood? get neighborhood;// The flat username string
  String? get author;
@@ -55,11 +55,11 @@ abstract mixin class $HouseModelCopyWith<$Res>  {
   factory $HouseModelCopyWith(HouseModel value, $Res Function(HouseModel) _then) = _$HouseModelCopyWithImpl;
 @useResult
 $Res call({
- int id, int image, double price,@JsonKey(name: 'total_units') int totalUnits, String? title, String? description, String? category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String? timePosted,@JsonKey(name: 'time_modified') String? timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String? author
+ int id, int? image, double price,@JsonKey(name: 'total_units') int totalUnits, String? title, String? description, String? category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String? timePosted,@JsonKey(name: 'time_modified') String? timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail? imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String? author
 });
 
 
-$AuthorDetailCopyWith<$Res> get authorDetail;$ImageDetailCopyWith<$Res> get imageDetail;$CountryCopyWith<$Res>? get country;$StateDataCopyWith<$Res>? get state;$CityCopyWith<$Res>? get city;$NeighborhoodCopyWith<$Res>? get neighborhood;
+$AuthorDetailCopyWith<$Res> get authorDetail;$ImageDetailCopyWith<$Res>? get imageDetail;$CountryCopyWith<$Res>? get country;$StateDataCopyWith<$Res>? get state;$CityCopyWith<$Res>? get city;$NeighborhoodCopyWith<$Res>? get neighborhood;
 
 }
 /// @nodoc
@@ -72,11 +72,11 @@ class _$HouseModelCopyWithImpl<$Res>
 
 /// Create a copy of HouseModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? image = null,Object? price = null,Object? totalUnits = null,Object? title = freezed,Object? description = freezed,Object? category = freezed,Object? datePosted = null,Object? dateModified = null,Object? timePosted = freezed,Object? timeModified = freezed,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = null,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? image = freezed,Object? price = null,Object? totalUnits = null,Object? title = freezed,Object? description = freezed,Object? category = freezed,Object? datePosted = null,Object? dateModified = null,Object? timePosted = freezed,Object? timeModified = freezed,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = freezed,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as int,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as int?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,totalUnits: null == totalUnits ? _self.totalUnits : totalUnits // ignore: cast_nullable_to_non_nullable
 as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -88,8 +88,8 @@ as String?,timeModified: freezed == timeModified ? _self.timeModified : timeModi
 as String?,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
 as bool,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,authorDetail: null == authorDetail ? _self.authorDetail : authorDetail // ignore: cast_nullable_to_non_nullable
-as AuthorDetail,imageDetail: null == imageDetail ? _self.imageDetail : imageDetail // ignore: cast_nullable_to_non_nullable
-as ImageDetail,avgRating: null == avgRating ? _self.avgRating : avgRating // ignore: cast_nullable_to_non_nullable
+as AuthorDetail,imageDetail: freezed == imageDetail ? _self.imageDetail : imageDetail // ignore: cast_nullable_to_non_nullable
+as ImageDetail?,avgRating: null == avgRating ? _self.avgRating : avgRating // ignore: cast_nullable_to_non_nullable
 as num,country: freezed == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as Country?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as StateData?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
@@ -111,9 +111,12 @@ $AuthorDetailCopyWith<$Res> get authorDetail {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ImageDetailCopyWith<$Res> get imageDetail {
-  
-  return $ImageDetailCopyWith<$Res>(_self.imageDetail, (value) {
+$ImageDetailCopyWith<$Res>? get imageDetail {
+    if (_self.imageDetail == null) {
+    return null;
+  }
+
+  return $ImageDetailCopyWith<$Res>(_self.imageDetail!, (value) {
     return _then(_self.copyWith(imageDetail: value));
   });
 }/// Create a copy of HouseModel
@@ -246,7 +249,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail? imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HouseModel() when $default != null:
 return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_that.description,_that.category,_that.datePosted,_that.dateModified,_that.timePosted,_that.timeModified,_that.available,_that.isActive,_that.authorDetail,_that.imageDetail,_that.avgRating,_that.country,_that.state,_that.city,_that.neighborhood,_that.author);case _:
@@ -267,7 +270,7 @@ return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail? imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)  $default,) {final _that = this;
 switch (_that) {
 case _HouseModel():
 return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_that.description,_that.category,_that.datePosted,_that.dateModified,_that.timePosted,_that.timeModified,_that.available,_that.isActive,_that.authorDetail,_that.imageDetail,_that.avgRating,_that.country,_that.state,_that.city,_that.neighborhood,_that.author);case _:
@@ -287,7 +290,7 @@ return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? image,  double price, @JsonKey(name: 'total_units')  int totalUnits,  String? title,  String? description,  String? category, @JsonKey(name: 'date_posted')  DateTime datePosted, @JsonKey(name: 'date_modified')  DateTime dateModified, @JsonKey(name: 'time_posted')  String? timePosted, @JsonKey(name: 'time_modified')  String? timeModified,  bool available, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'author_detail')  AuthorDetail authorDetail, @JsonKey(name: 'image_detail')  ImageDetail? imageDetail, @JsonKey(name: 'avg_rating')  num avgRating,  Country? country,  StateData? state,  City? city,  Neighborhood? neighborhood,  String? author)?  $default,) {final _that = this;
 switch (_that) {
 case _HouseModel() when $default != null:
 return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_that.description,_that.category,_that.datePosted,_that.dateModified,_that.timePosted,_that.timeModified,_that.available,_that.isActive,_that.authorDetail,_that.imageDetail,_that.avgRating,_that.country,_that.state,_that.city,_that.neighborhood,_that.author);case _:
@@ -302,12 +305,12 @@ return $default(_that.id,_that.image,_that.price,_that.totalUnits,_that.title,_t
 
 @JsonSerializable(explicitToJson: true)
 class _HouseModel implements HouseModel {
-  const _HouseModel({required this.id, required this.image, required this.price, @JsonKey(name: 'total_units') required this.totalUnits, this.title, this.description, this.category, @JsonKey(name: 'date_posted') required this.datePosted, @JsonKey(name: 'date_modified') required this.dateModified, @JsonKey(name: 'time_posted') this.timePosted, @JsonKey(name: 'time_modified') this.timeModified, required this.available, @JsonKey(name: 'is_active') required this.isActive, @JsonKey(name: 'author_detail') required this.authorDetail, @JsonKey(name: 'image_detail') required this.imageDetail, @JsonKey(name: 'avg_rating') required this.avgRating, this.country, this.state, this.city, this.neighborhood, this.author});
+  const _HouseModel({required this.id, this.image, required this.price, @JsonKey(name: 'total_units') required this.totalUnits, this.title, this.description, this.category, @JsonKey(name: 'date_posted') required this.datePosted, @JsonKey(name: 'date_modified') required this.dateModified, @JsonKey(name: 'time_posted') this.timePosted, @JsonKey(name: 'time_modified') this.timeModified, required this.available, @JsonKey(name: 'is_active') required this.isActive, @JsonKey(name: 'author_detail') required this.authorDetail, @JsonKey(name: 'image_detail') this.imageDetail, @JsonKey(name: 'avg_rating') required this.avgRating, this.country, this.state, this.city, this.neighborhood, this.author});
   factory _HouseModel.fromJson(Map<String, dynamic> json) => _$HouseModelFromJson(json);
 
 @override final  int id;
 // The ID reference to the image (int)
-@override final  int image;
+@override final  int? image;
 @override final  double price;
 @override@JsonKey(name: 'total_units') final  int totalUnits;
 @override final  String? title;
@@ -323,7 +326,7 @@ class _HouseModel implements HouseModel {
 @override@JsonKey(name: 'is_active') final  bool isActive;
 // Nested Objects
 @override@JsonKey(name: 'author_detail') final  AuthorDetail authorDetail;
-@override@JsonKey(name: 'image_detail') final  ImageDetail imageDetail;
+@override@JsonKey(name: 'image_detail') final  ImageDetail? imageDetail;
 // Rating
 @override@JsonKey(name: 'avg_rating') final  num avgRating;
 // num handles int or double
@@ -367,11 +370,11 @@ abstract mixin class _$HouseModelCopyWith<$Res> implements $HouseModelCopyWith<$
   factory _$HouseModelCopyWith(_HouseModel value, $Res Function(_HouseModel) _then) = __$HouseModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int image, double price,@JsonKey(name: 'total_units') int totalUnits, String? title, String? description, String? category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String? timePosted,@JsonKey(name: 'time_modified') String? timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String? author
+ int id, int? image, double price,@JsonKey(name: 'total_units') int totalUnits, String? title, String? description, String? category,@JsonKey(name: 'date_posted') DateTime datePosted,@JsonKey(name: 'date_modified') DateTime dateModified,@JsonKey(name: 'time_posted') String? timePosted,@JsonKey(name: 'time_modified') String? timeModified, bool available,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'author_detail') AuthorDetail authorDetail,@JsonKey(name: 'image_detail') ImageDetail? imageDetail,@JsonKey(name: 'avg_rating') num avgRating, Country? country, StateData? state, City? city, Neighborhood? neighborhood, String? author
 });
 
 
-@override $AuthorDetailCopyWith<$Res> get authorDetail;@override $ImageDetailCopyWith<$Res> get imageDetail;@override $CountryCopyWith<$Res>? get country;@override $StateDataCopyWith<$Res>? get state;@override $CityCopyWith<$Res>? get city;@override $NeighborhoodCopyWith<$Res>? get neighborhood;
+@override $AuthorDetailCopyWith<$Res> get authorDetail;@override $ImageDetailCopyWith<$Res>? get imageDetail;@override $CountryCopyWith<$Res>? get country;@override $StateDataCopyWith<$Res>? get state;@override $CityCopyWith<$Res>? get city;@override $NeighborhoodCopyWith<$Res>? get neighborhood;
 
 }
 /// @nodoc
@@ -384,11 +387,11 @@ class __$HouseModelCopyWithImpl<$Res>
 
 /// Create a copy of HouseModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? image = null,Object? price = null,Object? totalUnits = null,Object? title = freezed,Object? description = freezed,Object? category = freezed,Object? datePosted = null,Object? dateModified = null,Object? timePosted = freezed,Object? timeModified = freezed,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = null,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? image = freezed,Object? price = null,Object? totalUnits = null,Object? title = freezed,Object? description = freezed,Object? category = freezed,Object? datePosted = null,Object? dateModified = null,Object? timePosted = freezed,Object? timeModified = freezed,Object? available = null,Object? isActive = null,Object? authorDetail = null,Object? imageDetail = freezed,Object? avgRating = null,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,Object? author = freezed,}) {
   return _then(_HouseModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as int,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as int,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as int?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,totalUnits: null == totalUnits ? _self.totalUnits : totalUnits // ignore: cast_nullable_to_non_nullable
 as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -400,8 +403,8 @@ as String?,timeModified: freezed == timeModified ? _self.timeModified : timeModi
 as String?,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
 as bool,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,authorDetail: null == authorDetail ? _self.authorDetail : authorDetail // ignore: cast_nullable_to_non_nullable
-as AuthorDetail,imageDetail: null == imageDetail ? _self.imageDetail : imageDetail // ignore: cast_nullable_to_non_nullable
-as ImageDetail,avgRating: null == avgRating ? _self.avgRating : avgRating // ignore: cast_nullable_to_non_nullable
+as AuthorDetail,imageDetail: freezed == imageDetail ? _self.imageDetail : imageDetail // ignore: cast_nullable_to_non_nullable
+as ImageDetail?,avgRating: null == avgRating ? _self.avgRating : avgRating // ignore: cast_nullable_to_non_nullable
 as num,country: freezed == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as Country?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as StateData?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
@@ -424,9 +427,12 @@ $AuthorDetailCopyWith<$Res> get authorDetail {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ImageDetailCopyWith<$Res> get imageDetail {
-  
-  return $ImageDetailCopyWith<$Res>(_self.imageDetail, (value) {
+$ImageDetailCopyWith<$Res>? get imageDetail {
+    if (_self.imageDetail == null) {
+    return null;
+  }
+
+  return $ImageDetailCopyWith<$Res>(_self.imageDetail!, (value) {
     return _then(_self.copyWith(imageDetail: value));
   });
 }/// Create a copy of HouseModel
