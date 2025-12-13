@@ -11,6 +11,8 @@ import 'package:inn/presentation/pages/home/house_details_page.dart';
 import 'package:inn/presentation/pages/home/search_page.dart';
 import 'package:inn/presentation/pages/onboarding/onboarding.dart';
 import 'package:inn/presentation/pages/profile/profile_page.dart';
+import 'package:inn/presentation/pages/profile/my_properties_page.dart';
+import 'package:inn/presentation/pages/create_house/create_house_page.dart';
 import 'package:inn/presentation/shared/scaffold_with_nav_bar.dart';
 
 // final GoRouter router =
@@ -130,6 +132,16 @@ GoRouter createRouter(String initialPath) {
         name: 'search',
         path: '/search',
         builder: (context, state) => const SearchPage(),
+      ),
+      GoRoute(
+        name: 'my-properties',
+        path: '/my-properties',
+        builder: (context, state) => const MyPropertiesPage(),
+      ),
+      GoRoute(
+        name: 'create-house',
+        path: '/create-house',
+        builder: (context, state) => const CreateHousePage(),
       ),
     ],
   );
