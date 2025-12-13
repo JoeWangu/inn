@@ -73,7 +73,7 @@ class ExplorePage extends ConsumerWidget {
                     child: Hero(
                       tag: tag,
                       child: Image.network(
-                        house.imageDetail.image ?? '',
+                        house.imageDetail?.image ?? '',
                         fit: BoxFit.cover,
                       ),
                     ),
