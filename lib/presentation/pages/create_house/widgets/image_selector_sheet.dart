@@ -149,11 +149,11 @@ class _ImageSelectorSheetState extends ConsumerState<ImageSelectorSheet> {
                           child: CachedNetworkImage(
                             imageUrl: imageUrl,
                             fit: BoxFit.cover,
-                            placeholder: (_, __) => Container(
+                            placeholder: (_, _) => Container(
                               color: Colors.grey[200],
                               child: const Icon(Icons.image),
                             ),
-                            errorWidget: (_, __, ___) => Container(
+                            errorWidget: (_, _, _) => Container(
                               color: Colors.grey[200],
                               child: const Icon(Icons.broken_image),
                             ),
