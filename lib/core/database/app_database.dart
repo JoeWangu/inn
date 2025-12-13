@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import 'dart:io';
 // Import the table & model
 import 'package:inn/data/datasources/local/houses_table.dart';
+import 'package:inn/data/datasources/local/my_houses_table.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,12 +16,27 @@ AppDatabase appDatabase(Ref ref) {
   return AppDatabase();
 }
 
-@DriftDatabase(tables: [HousesTable]) // <--- Add it here
+@DriftDatabase(tables: [HousesTable, MyHousesTable])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          // We added the MyHousesTable in version 2
+          await m.createTable(myHousesTable);
+        }
+      },
+    );
+  }
 
   // --- DAO METHODS ---
 
@@ -72,6 +88,48 @@ class AppDatabase extends _$AppDatabase {
           ..limit(1)) // Only need one
         .map((row) => row.fetchedAt)
         .getSingleOrNull();
+  }
+
+  // --- MY HOUSES DAO ---
+
+  Future<void> insertMyHouses(List<HouseModel> houses) async {
+    await batch((batch) {
+      for (final house in houses) {
+        batch.insert(
+          myHousesTable,
+          MyHousesTableCompanion.insert(
+            id: Value(house.id),
+            data: house,
+            fetchedAt: Value(DateTime.now()),
+          ),
+          mode: InsertMode.insertOrReplace,
+        );
+      }
+    });
+  }
+
+  Stream<List<HouseModel>> watchMyHouses() {
+    return (select(myHousesTable)..orderBy([(t) => OrderingTerm.desc(t.id)]))
+        .map((row) => row.data)
+        .watch();
+  }
+
+  Future<int> getMyHousesCount() {
+    final countExp = myHousesTable.id.count();
+    final query = selectOnly(myHousesTable)..addColumns([countExp]);
+    return query.map((row) => row.read(countExp)!).getSingle();
+  }
+
+  Future<DateTime?> getLatestMyHouseFetchTime() {
+    return (select(myHousesTable)
+          ..orderBy([(t) => OrderingTerm.desc(t.fetchedAt)])
+          ..limit(1))
+        .map((row) => row.fetchedAt)
+        .getSingleOrNull();
+  }
+
+  Future<void> deleteMyHouse(int id) {
+    return (delete(myHousesTable)..where((t) => t.id.equals(id))).go();
   }
 }
 

@@ -298,15 +298,269 @@ class HousesTableCompanion extends UpdateCompanion<HousesTableData> {
   }
 }
 
+class $MyHousesTableTable extends MyHousesTable
+    with TableInfo<$MyHousesTableTable, MyHousesTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MyHousesTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<HouseModel, String> data =
+      GeneratedColumn<String>(
+        'data',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<HouseModel>($MyHousesTableTable.$converterdata);
+  static const VerificationMeta _fetchedAtMeta = const VerificationMeta(
+    'fetchedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> fetchedAt = GeneratedColumn<DateTime>(
+    'fetched_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, data, fetchedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'my_houses_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MyHousesTableData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('fetched_at')) {
+      context.handle(
+        _fetchedAtMeta,
+        fetchedAt.isAcceptableOrUnknown(data['fetched_at']!, _fetchedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MyHousesTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MyHousesTableData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      data: $MyHousesTableTable.$converterdata.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}data'],
+        )!,
+      ),
+      fetchedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}fetched_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MyHousesTableTable createAlias(String alias) {
+    return $MyHousesTableTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<HouseModel, String> $converterdata =
+      const HouseModelConverter();
+}
+
+class MyHousesTableData extends DataClass
+    implements Insertable<MyHousesTableData> {
+  final int id;
+  final HouseModel data;
+  final DateTime fetchedAt;
+  const MyHousesTableData({
+    required this.id,
+    required this.data,
+    required this.fetchedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['data'] = Variable<String>(
+        $MyHousesTableTable.$converterdata.toSql(data),
+      );
+    }
+    map['fetched_at'] = Variable<DateTime>(fetchedAt);
+    return map;
+  }
+
+  MyHousesTableCompanion toCompanion(bool nullToAbsent) {
+    return MyHousesTableCompanion(
+      id: Value(id),
+      data: Value(data),
+      fetchedAt: Value(fetchedAt),
+    );
+  }
+
+  factory MyHousesTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MyHousesTableData(
+      id: serializer.fromJson<int>(json['id']),
+      data: serializer.fromJson<HouseModel>(json['data']),
+      fetchedAt: serializer.fromJson<DateTime>(json['fetchedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'data': serializer.toJson<HouseModel>(data),
+      'fetchedAt': serializer.toJson<DateTime>(fetchedAt),
+    };
+  }
+
+  MyHousesTableData copyWith({
+    int? id,
+    HouseModel? data,
+    DateTime? fetchedAt,
+  }) => MyHousesTableData(
+    id: id ?? this.id,
+    data: data ?? this.data,
+    fetchedAt: fetchedAt ?? this.fetchedAt,
+  );
+  MyHousesTableData copyWithCompanion(MyHousesTableCompanion data) {
+    return MyHousesTableData(
+      id: data.id.present ? data.id.value : this.id,
+      data: data.data.present ? data.data.value : this.data,
+      fetchedAt: data.fetchedAt.present ? data.fetchedAt.value : this.fetchedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MyHousesTableData(')
+          ..write('id: $id, ')
+          ..write('data: $data, ')
+          ..write('fetchedAt: $fetchedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, data, fetchedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MyHousesTableData &&
+          other.id == this.id &&
+          other.data == this.data &&
+          other.fetchedAt == this.fetchedAt);
+}
+
+class MyHousesTableCompanion extends UpdateCompanion<MyHousesTableData> {
+  final Value<int> id;
+  final Value<HouseModel> data;
+  final Value<DateTime> fetchedAt;
+  const MyHousesTableCompanion({
+    this.id = const Value.absent(),
+    this.data = const Value.absent(),
+    this.fetchedAt = const Value.absent(),
+  });
+  MyHousesTableCompanion.insert({
+    this.id = const Value.absent(),
+    required HouseModel data,
+    this.fetchedAt = const Value.absent(),
+  }) : data = Value(data);
+  static Insertable<MyHousesTableData> custom({
+    Expression<int>? id,
+    Expression<String>? data,
+    Expression<DateTime>? fetchedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (data != null) 'data': data,
+      if (fetchedAt != null) 'fetched_at': fetchedAt,
+    });
+  }
+
+  MyHousesTableCompanion copyWith({
+    Value<int>? id,
+    Value<HouseModel>? data,
+    Value<DateTime>? fetchedAt,
+  }) {
+    return MyHousesTableCompanion(
+      id: id ?? this.id,
+      data: data ?? this.data,
+      fetchedAt: fetchedAt ?? this.fetchedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (data.present) {
+      map['data'] = Variable<String>(
+        $MyHousesTableTable.$converterdata.toSql(data.value),
+      );
+    }
+    if (fetchedAt.present) {
+      map['fetched_at'] = Variable<DateTime>(fetchedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MyHousesTableCompanion(')
+          ..write('id: $id, ')
+          ..write('data: $data, ')
+          ..write('fetchedAt: $fetchedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $HousesTableTable housesTable = $HousesTableTable(this);
+  late final $MyHousesTableTable myHousesTable = $MyHousesTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [housesTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    housesTable,
+    myHousesTable,
+  ];
 }
 
 typedef $$HousesTableTableCreateCompanionBuilder =
@@ -485,12 +739,175 @@ typedef $$HousesTableTableProcessedTableManager =
       HousesTableData,
       PrefetchHooks Function()
     >;
+typedef $$MyHousesTableTableCreateCompanionBuilder =
+    MyHousesTableCompanion Function({
+      Value<int> id,
+      required HouseModel data,
+      Value<DateTime> fetchedAt,
+    });
+typedef $$MyHousesTableTableUpdateCompanionBuilder =
+    MyHousesTableCompanion Function({
+      Value<int> id,
+      Value<HouseModel> data,
+      Value<DateTime> fetchedAt,
+    });
+
+class $$MyHousesTableTableFilterComposer
+    extends Composer<_$AppDatabase, $MyHousesTableTable> {
+  $$MyHousesTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<HouseModel, HouseModel, String> get data =>
+      $composableBuilder(
+        column: $table.data,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<DateTime> get fetchedAt => $composableBuilder(
+    column: $table.fetchedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MyHousesTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $MyHousesTableTable> {
+  $$MyHousesTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get fetchedAt => $composableBuilder(
+    column: $table.fetchedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MyHousesTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MyHousesTableTable> {
+  $$MyHousesTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<HouseModel, String> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get fetchedAt =>
+      $composableBuilder(column: $table.fetchedAt, builder: (column) => column);
+}
+
+class $$MyHousesTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MyHousesTableTable,
+          MyHousesTableData,
+          $$MyHousesTableTableFilterComposer,
+          $$MyHousesTableTableOrderingComposer,
+          $$MyHousesTableTableAnnotationComposer,
+          $$MyHousesTableTableCreateCompanionBuilder,
+          $$MyHousesTableTableUpdateCompanionBuilder,
+          (
+            MyHousesTableData,
+            BaseReferences<
+              _$AppDatabase,
+              $MyHousesTableTable,
+              MyHousesTableData
+            >,
+          ),
+          MyHousesTableData,
+          PrefetchHooks Function()
+        > {
+  $$MyHousesTableTableTableManager(_$AppDatabase db, $MyHousesTableTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MyHousesTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MyHousesTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MyHousesTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<HouseModel> data = const Value.absent(),
+                Value<DateTime> fetchedAt = const Value.absent(),
+              }) => MyHousesTableCompanion(
+                id: id,
+                data: data,
+                fetchedAt: fetchedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required HouseModel data,
+                Value<DateTime> fetchedAt = const Value.absent(),
+              }) => MyHousesTableCompanion.insert(
+                id: id,
+                data: data,
+                fetchedAt: fetchedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MyHousesTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MyHousesTableTable,
+      MyHousesTableData,
+      $$MyHousesTableTableFilterComposer,
+      $$MyHousesTableTableOrderingComposer,
+      $$MyHousesTableTableAnnotationComposer,
+      $$MyHousesTableTableCreateCompanionBuilder,
+      $$MyHousesTableTableUpdateCompanionBuilder,
+      (
+        MyHousesTableData,
+        BaseReferences<_$AppDatabase, $MyHousesTableTable, MyHousesTableData>,
+      ),
+      MyHousesTableData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
   $$HousesTableTableTableManager get housesTable =>
       $$HousesTableTableTableManager(_db, _db.housesTable);
+  $$MyHousesTableTableTableManager get myHousesTable =>
+      $$MyHousesTableTableTableManager(_db, _db.myHousesTable);
 }
 
 // **************************************************************************
