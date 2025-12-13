@@ -8,32 +8,113 @@ part 'search_controller.g.dart';
 @riverpod
 class SearchHouseController extends _$SearchHouseController {
   Timer? _debounceTimer;
+  int _currentPage = 1;
+  bool _hasMore = true;
+
+  // Store last search params for pagination
+  String _lastQuery = '';
+  num? _lastMinPrice;
+  num? _lastMaxPrice;
+  String? _lastCity;
+  String? _lastCategory;
 
   @override
   FutureOr<List<HouseModel>> build() {
     return []; // Start with empty list
   }
 
-  void search(String query) {
+  void search(
+    String query, {
+    num? minPrice,
+    num? maxPrice,
+    String? city,
+    String? category,
+  }) {
     // cancel any pending search
     _debounceTimer?.cancel();
 
-    if (query.trim().isEmpty) {
+    if (query.trim().isEmpty &&
+        minPrice == null &&
+        maxPrice == null &&
+        city == null &&
+        category == null) {
       state = const AsyncData([]);
       return;
     }
 
     // Wait 500ms before hitting the API
     _debounceTimer = Timer(const Duration(milliseconds: 500), () {
-      _performSearch(query);
+      _performSearch(
+        query,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        city: city,
+        category: category,
+        isNewSearch: true,
+      );
     });
   }
 
-  Future<void> _performSearch(String query) async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
+  Future<void> loadNextPage() async {
+    if (state.isLoading || !_hasMore) return;
+
+    await _performSearch(
+      _lastQuery,
+      minPrice: _lastMinPrice,
+      maxPrice: _lastMaxPrice,
+      city: _lastCity,
+      category: _lastCategory,
+      isNewSearch: false,
+    );
+  }
+
+  Future<void> _performSearch(
+    String query, {
+    num? minPrice,
+    num? maxPrice,
+    String? city,
+    String? category,
+    required bool isNewSearch,
+  }) async {
+    if (isNewSearch) {
+      state = const AsyncLoading();
+      _currentPage = 1;
+      _hasMore = true;
+      _lastQuery = query;
+      _lastMinPrice = minPrice;
+      _lastMaxPrice = maxPrice;
+      _lastCity = city;
+      _lastCategory = category;
+    }
+
+    // We guard the state update
+    final newState = await AsyncValue.guard(() async {
       final repository = ref.read(houseRepositoryProvider);
-      return repository.searchHouses(query);
+      final response = await repository.searchHouses(
+        query,
+        page: _currentPage,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        city: city,
+        category: category,
+      );
+
+      // Update Pagination Info
+      if (response.next == null) {
+        _hasMore = false;
+      } else {
+        _currentPage++;
+      }
+
+      // If new search -> return new list
+      if (isNewSearch) {
+        return response.results;
+      } else {
+        // If pagination -> append to existing list
+        return [...?state.value, ...response.results];
+      }
     });
+
+    state = newState;
   }
 }

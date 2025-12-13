@@ -34,7 +34,7 @@ final class SearchHouseControllerProvider
 }
 
 String _$searchHouseControllerHash() =>
-    r'0a6d874a0b78b5d73a617791be00bd3c9c480c71';
+    r'16bdc7bdfe64ea623193dd22282d0958773f0686';
 
 abstract class _$SearchHouseController
     extends $AsyncNotifier<List<HouseModel>> {
