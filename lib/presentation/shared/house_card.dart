@@ -5,11 +5,13 @@ import 'package:inn/data/models/house_model.dart';
 
 class HouseCard extends StatelessWidget {
   final HouseModel house;
-  const HouseCard({super.key, required this.house});
+  final String tagPrefix;
+
+  const HouseCard({super.key, required this.house, this.tagPrefix = 'home'});
 
   @override
   Widget build(BuildContext context) {
-    final tag = 'home_${house.id}';
+    final tag = '${tagPrefix}_${house.id}';
 
     return GestureDetector(
       onTap: () => context.pushNamed(
@@ -39,7 +41,7 @@ class HouseCard extends StatelessWidget {
               child: Hero(
                 tag: tag,
                 child: CachedNetworkImage(
-                  imageUrl: house.imageDetail.image ?? '',
+                  imageUrl: house.imageDetail?.image ?? '',
                   height: 140,
                   width: double.infinity,
                   fit: BoxFit.cover,
