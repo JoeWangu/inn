@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:inn/presentation/controllers/home_controller/house_controller.dart';
 import 'package:inn/presentation/shared/house_card.dart';
-// import 'package:inn/presentation/shared/item_card.dart';
+import 'package:inn/presentation/shared/item_card.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -188,7 +188,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                   // BOTTOM SECTION
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
+                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 100),
                     child: Column(
                       children: [
                         // Recently Viewed
@@ -196,7 +196,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                           context.pushNamed('app_colors');
                         }),
                         const SizedBox(height: 16),
-                        _recentlyViewedList(housesAsync: housesAsync),
+                        _horizontalHouseList(
+                          housesAsync: housesAsync,
+                          tagPrefix: 'recent',
+                          useItemCard: true,
+                          limit: 5,
+                          reverse: false,
+                        ),
 
                         const SizedBox(height: 32),
 
@@ -205,16 +211,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                           context.pushNamed('explore');
                         }),
                         const SizedBox(height: 16),
-                        // _popularHotelsGrid(),
-                        _recentlyViewedList(housesAsync: housesAsync),
-                        // const SizedBox(height: 100),
-                        const SizedBox(height: 16),
-
-                        // Rest Home
-                        _sectionHeader('Restful Home', () {
-                          context.pushNamed('rest');
-                        }),
-                        const SizedBox(height: 16),
+                        _popularHotelsGrid(
+                          housesAsync: housesAsync,
+                          tagPrefix: 'popular',
+                          limit: 5,
+                          reverse: true,
+                        ),
                       ],
                     ),
                   ),
@@ -224,48 +226,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ),
       ),
-
-      // // BOTTOM NAVIGATION BAR
-      // bottomNavigationBar: Container(
-      //   decoration: BoxDecoration(
-      //     color: Colors.white,
-      //     borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-      //     boxShadow: [
-      //       BoxShadow(
-      //         color: Colors.black12,
-      //         blurRadius: 20,
-      //         offset: Offset(0, -4),
-      //       ),
-      //     ],
-      //   ),
-      //   child: ClipRRect(
-      //     borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-      //     child: BottomNavigationBar(
-      //       currentIndex: _selectedIndex,
-      //       onTap: (index) => setState(() => _selectedIndex = index),
-      //       type: BottomNavigationBarType.fixed,
-      //       selectedItemColor: const Color(0xFF2B5F56),
-      //       unselectedItemColor: Colors.grey[500],
-      //       showSelectedLabels: true,
-      //       showUnselectedLabels: true,
-      //       items: const [
-      //         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-      //         BottomNavigationBarItem(
-      //           icon: Icon(Icons.search),
-      //           label: 'Explore',
-      //         ),
-      //         BottomNavigationBarItem(
-      //           icon: Icon(Icons.favorite_border),
-      //           label: 'Saved',
-      //         ),
-      //         BottomNavigationBarItem(
-      //           icon: Icon(Icons.person_outline),
-      //           label: 'Profile',
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 
@@ -296,37 +256,54 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  Widget _recentlyViewedList({
+  // Renamed from _recentlyViewedList to be more generic since it handles both
+  Widget _horizontalHouseList({
     required AsyncValue<List<HouseModel>> housesAsync,
+    required String tagPrefix,
+    required bool useItemCard,
+    required int limit,
+    required bool reverse,
   }) {
     // ColorScheme cs = Theme.of(context).colorScheme;
 
     return SizedBox(
       height: 260,
       child: housesAsync.when(
-        data: (houses) {
-          if (houses.isEmpty) {
+        data: (allHouses) {
+          if (allHouses.isEmpty) {
             return const Center(child: Text("No houses found"));
           }
 
-          // User Req: Display in horizontal ListView
+          // Apply slicing logic:
+          // 1. Reverse if needed
+          Iterable<HouseModel> processed = reverse
+              ? allHouses.reversed
+              : allHouses;
+          // 2. Take limit
+          final displayHouses = processed.take(limit).toList();
+
+          if (displayHouses.isEmpty) {
+            return const Center(child: Text("No houses to display"));
+          }
+
           return ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: houses.length,
+            itemCount: displayHouses.length,
             separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              final house = houses[index];
-              return HouseCard(house: house);
-              // TODO:
-              // return ItemCard(
-              //   cs: cs,
-              //   needsInfoChip: true,
-              //   index: index,
-              //   cardWidth: 280.0,
-              //   cardHeight: 250.0,
-              //   containerMargin: 12.0,
-              // );
+              final house = displayHouses[index];
+              if (useItemCard) {
+                return ItemCard(
+                  house: house,
+                  tagPrefix: tagPrefix,
+                  index: index,
+                  cardWidth: 280,
+                  // cardHeight: 250,
+                );
+              } else {
+                return HouseCard(house: house, tagPrefix: tagPrefix);
+              }
             },
           );
         },
@@ -334,91 +311,54 @@ class _HomePageState extends ConsumerState<HomePage> {
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
-
-    // return SizedBox(
-    //   height: 260,
-    //   child: ListView.builder(
-    //     scrollDirection: Axis.horizontal,
-    //     itemCount: 5,
-    //     itemBuilder: (context, index) {
-    //       return ItemCard(
-    //         cs: cs,
-    //         needsInfoChip: true,
-    //         index: index,
-    //         cardWidth: 280.0,
-    //         cardHeight: 250.0,
-    //         containerMargin: 12.0,
-    //       );
-    //     },
-    //   ),
-    // );
   }
 
-  /*   Widget _popularHotelsGrid() {
-    ColorScheme cs = Theme.of(context).colorScheme;
+  Widget _popularHotelsGrid({
+    required AsyncValue<List<HouseModel>> housesAsync,
+    required String tagPrefix,
+    required int limit,
+    required bool reverse,
+  }) {
+    // ColorScheme cs = Theme.of(context).colorScheme;
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 0.85,
-      ),
-      itemCount: 6,
-      itemBuilder: (context, index) {
-        // return _itemCard(
-        //   cs: cs,
-        //   needsInfoChip: false,
-        //   index: index,
-        // );
-        return Container(
-          decoration: BoxDecoration(
-            color: cs.onPrimary,
-            borderRadius: BorderRadius.circular(24),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.black12,
-            //     blurRadius: 10,
-            //     offset: Offset(0, 4),
-            //   ),
-            // ],
+    return housesAsync.when(
+      data: (allHouses) {
+        if (allHouses.isEmpty) {
+          return const Center(child: Text("No houses found"));
+        }
+
+        // Apply slicing logic:
+        Iterable<HouseModel> processed = reverse
+            ? allHouses.reversed
+            : allHouses;
+        final displayHouses = processed.take(limit).toList();
+
+        if (displayHouses.isEmpty) {
+          return const Center(child: Text("No houses to display"));
+        }
+
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            // Adjust aspect ratio to prevent overflow
+            // Height of card ~ 230-250px (140 img + padding + text)
+            // Width varies by screen, e.g. (360 - 40 - 16) / 2 = 152
+            // Ratio ~ 152 / 240 = 0.63
+            childAspectRatio: 0.68,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(24),
-                ),
-                child: Image.asset(
-                  'assets/images/popular${index + 1}.jpg',
-                  height: 140,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Luxury Suite ${index + 1}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'New York, USA',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          itemCount: displayHouses.length,
+          itemBuilder: (context, index) {
+            final house = displayHouses[index];
+            return HouseCard(house: house, tagPrefix: tagPrefix);
+          },
         );
       },
+      error: (err, stack) => Center(child: Text("Error: $err")),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
-  } */
+  }
 }
