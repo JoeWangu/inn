@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/presentation/controllers/create_house_controller.dart';
 import 'package:inn/presentation/pages/create_house/widgets/image_selector_sheet.dart';
+import 'package:inn/data/models/house_model.dart';
 
 class CreateHousePage extends ConsumerStatefulWidget {
-  const CreateHousePage({super.key});
+  final HouseModel? house;
+  const CreateHousePage({super.key, this.house});
 
   @override
   ConsumerState<CreateHousePage> createState() => _CreateHousePageState();
@@ -23,6 +25,26 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
 
   bool _available = true;
   bool _isActive = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.house != null) {
+      final h = widget.house!;
+      _titleController.text = h.title ?? '';
+      _priceController.text = h.price.toString();
+      _descController.text = h.description ?? '';
+      _categoryController.text = h.category ?? '';
+      _unitsController.text = h.totalUnits.toString();
+      _available = h.available;
+      _isActive = h.isActive;
+
+      // Defer provider call to next frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(createHouseControllerProvider.notifier).initializeForEdit(h);
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -49,6 +71,7 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
     final success = await ref
         .read(createHouseControllerProvider.notifier)
         .submit(
+          houseId: widget.house?.id,
           title: _titleController.text,
           price: double.tryParse(_priceController.text) ?? 0.0,
           description: _descController.text,
@@ -83,7 +106,11 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
     final asyncState = ref.watch(createHouseControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add New Property')),
+      appBar: AppBar(
+        title: Text(
+          widget.house != null ? 'Edit Property' : 'Add New Property',
+        ),
+      ),
       body: asyncState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
@@ -109,35 +136,7 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: state.imageId != null
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 40,
-                                  ),
-                                  Text(
-                                    "Image ID: ${state.imageId} Selected",
-                                  ), // Could show preview if we stored URL
-                                ],
-                              ),
-                            )
-                          : const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add_a_photo,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
-                                  Text("Select Image"),
-                                ],
-                              ),
-                            ),
+                      child: _buildImagePreview(state),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -229,6 +228,14 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                     },
                     validator: (v) => v == null ? 'Required' : null,
                   ),
+                  if (widget.house?.country != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 12),
+                      child: Text(
+                        "Current: ${widget.house!.country!.name}",
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                    ),
                   const SizedBox(height: 12),
 
                   DropdownButtonFormField<int>(
@@ -252,6 +259,14 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                           },
                     validator: (v) => v == null ? 'Required' : null,
                   ),
+                  if (widget.house?.state != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 12),
+                      child: Text(
+                        "Current: ${widget.house!.state!.name}",
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                    ),
                   const SizedBox(height: 12),
 
                   DropdownButtonFormField<int>(
@@ -272,6 +287,14 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                           },
                     validator: (v) => v == null ? 'Required' : null,
                   ),
+                  if (widget.house?.city != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 12),
+                      child: Text(
+                        "Current: ${widget.house!.city!.name}",
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                    ),
                   const SizedBox(height: 12),
 
                   DropdownButtonFormField<int>(
@@ -294,6 +317,14 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                           },
                     validator: (v) => v == null ? 'Required' : null,
                   ),
+                  if (widget.house?.neighborhood != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 12),
+                      child: Text(
+                        "Current: ${widget.house!.neighborhood!.name}",
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                    ),
 
                   const SizedBox(height: 24),
 
@@ -315,13 +346,81 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: const Text("Create Property"),
+                    child: Text(
+                      widget.house != null
+                          ? "Update Property"
+                          : "Create Property",
+                    ),
                   ),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildImagePreview(CreateHouseFormState state) {
+    // If state image ID matches the initial house image ID, show the network image
+    if (widget.house?.imageDetail != null &&
+        state.imageId == widget.house!.imageDetail!.id) {
+      final imgUrl = widget.house!.imageDetail!.image;
+      if (imgUrl != null) {
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: Image.network(
+                imgUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                    const Center(child: Icon(Icons.broken_image, size: 40)),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.black54,
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: const Text(
+                  "Current Image",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+    }
+
+    // Default or New Selection
+    if (state.imageId != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.check_circle, color: Colors.green, size: 40),
+            Text("Image ID: ${state.imageId} Selected"),
+            const SizedBox(height: 4),
+            const Text(
+              "(Tap to change)",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.add_a_photo, size: 40, color: Colors.grey),
+          Text("Select Image"),
+        ],
       ),
     );
   }
