@@ -1,8 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:inn/data/models/house_model.dart';
+import 'package:inn/data/models/rating_model.dart';
+import 'package:inn/presentation/controllers/ratings_controller/ratings_controller.dart';
 
-class HouseDetailsPage extends StatelessWidget {
+class HouseDetailsPage extends ConsumerWidget {
   final HouseModel house;
   final String heroTag;
 
@@ -13,9 +18,22 @@ class HouseDetailsPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+
+    // Watch user's ratings
+    final ratingsAsync = ref.watch(ratingsControllerProvider);
+
+    // Find if user has rated this house
+    RatingModel? userRating;
+    ratingsAsync.whenData((ratings) {
+      try {
+        userRating = ratings.firstWhere((r) => r.rental == house.id);
+      } catch (e) {
+        userRating = null;
+      }
+    });
 
     return Scaffold(
       body: Stack(
@@ -28,16 +46,37 @@ class HouseDetailsPage extends StatelessWidget {
                 pinned: true,
                 backgroundColor: colorScheme.surface,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Hero(
-                    tag: heroTag,
-                    child: CachedNetworkImage(
-                      imageUrl: house.imageDetail?.image ?? '',
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          Container(color: Colors.grey[200]),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Hero(
+                        tag: heroTag,
+                        child: CachedNetworkImage(
+                          imageUrl: house.imageDetail?.image ?? '',
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              Container(color: Colors.grey[200]),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        right: 16,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            context.pushNamed('photo-gallery', extra: house.id);
+                          },
+                          icon: const Icon(Icons.grid_view, size: 18),
+                          label: const Text('View Photos'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            elevation: 4,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -55,11 +94,39 @@ class HouseDetailsPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: Text(
-                              house.title ?? '',
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  house.title ?? '',
+                                  style: theme.textTheme.headlineSmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                // OVERALL RATING DISPLAY
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      house.avgRating.toStringAsFixed(1),
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Text(
+                                      " (Overall)",
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                           Text(
@@ -107,6 +174,109 @@ class HouseDetailsPage extends StatelessWidget {
                             Colors.black87,
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 24),
+
+                      // YOUR RATING SECTION
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: colorScheme.secondaryContainer.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: colorScheme.secondaryContainer,
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  userRating == null
+                                      ? "Rate this place"
+                                      : "Your Rating",
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
+                                if (userRating != null)
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete_outline,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () async {
+                                      try {
+                                        await ref
+                                            .read(
+                                              ratingsControllerProvider
+                                                  .notifier,
+                                            )
+                                            .deleteRating(userRating!.id);
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Rating removed'),
+                                            ),
+                                          );
+                                        }
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                'Failed to remove rating. check connection',
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            if (userRating != null) ...[
+                              Text(
+                                userRating!.ratingReason ?? '',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.grey[700],
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                            RatingBar.builder(
+                              initialRating: userRating?.stars.toDouble() ?? 0,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: false,
+                              itemCount: 5,
+                              itemSize: 32,
+                              itemBuilder: (context, _) =>
+                                  const Icon(Icons.star, color: Colors.amber),
+                              onRatingUpdate: (rating) {
+                                _showRatingDialog(
+                                  context,
+                                  ref,
+                                  rating.toInt(),
+                                  userRating,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 24),
 
@@ -237,6 +407,104 @@ class HouseDetailsPage extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(color: fg, fontWeight: FontWeight.w500, fontSize: 12),
+      ),
+    );
+  }
+
+  void _showRatingDialog(
+    BuildContext context,
+    WidgetRef ref,
+    int stars,
+    RatingModel? currentRating,
+  ) {
+    final TextEditingController reasonController = TextEditingController(
+      text: currentRating?.ratingReason ?? '',
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          currentRating == null ? "Rate this Place" : "Update Rating",
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: List.generate(
+                5,
+                (index) => Icon(
+                  index < stars ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: reasonController,
+              decoration: const InputDecoration(
+                labelText: "Reason (Optional)",
+                border: OutlineInputBorder(),
+                hintText: "What did you like or dislike?",
+              ),
+              maxLines: 2,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context); // Close dialog first
+
+              try {
+                if (currentRating == null) {
+                  // Add
+                  await ref
+                      .read(ratingsControllerProvider.notifier)
+                      .addRating(
+                        houseId: house.id,
+                        stars: stars,
+                        reason: reasonController.text,
+                      );
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Rating added!')),
+                    );
+                  }
+                } else {
+                  // Update
+                  await ref
+                      .read(ratingsControllerProvider.notifier)
+                      .updateRating(
+                        ratingId: currentRating.id,
+                        houseId: house.id,
+                        stars: stars,
+                        reason: reasonController.text,
+                      );
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Rating updated!')),
+                    );
+                  }
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Failed to save rating. Please try again.'),
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text("Submit"),
+          ),
+        ],
       ),
     );
   }
