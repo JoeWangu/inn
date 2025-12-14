@@ -7,6 +7,10 @@ import 'package:inn/core/storage/secure_storage_provider.dart';
 import 'package:inn/data/models/auth_models/signup_response.dart';
 import 'package:inn/data/models/auth_models/sign_up_request.dart';
 import 'package:inn/data/datasources/remote/auth_api.dart';
+import 'package:inn/data/models/user_profile_model.dart';
+import 'dart:io';
+
+import 'package:inn/core/database/app_database.dart';
 
 part 'auth_repository.g.dart';
 
@@ -14,17 +18,23 @@ part 'auth_repository.g.dart';
 AuthRepository authRepository(Ref ref) {
   final api = ref.read(authApiProvider);
   final storage = ref.read(secureStorageProvider);
+  final db = ref.read(appDatabaseProvider);
 
-  return AuthRepository(api: api, storage: storage);
+  return AuthRepository(api: api, storage: storage, db: db);
 }
 
 class AuthRepository {
   final AuthApi _api;
   final FlutterSecureStorage _storage;
+  final AppDatabase _db;
 
-  AuthRepository({required AuthApi api, required FlutterSecureStorage storage})
-    : _api = api,
-      _storage = storage;
+  AuthRepository({
+    required AuthApi api,
+    required FlutterSecureStorage storage,
+    required AppDatabase db,
+  }) : _api = api,
+       _storage = storage,
+       _db = db;
 
   Future<SignupResponse> signUp({
     required String username,
@@ -57,5 +67,100 @@ class AuthRepository {
     // await _storage.delete(key: 'access_token');
     // await _storage.delete(key: 'refresh_token');
     await _storage.deleteAll();
+  }
+
+  // --- User Profile ---
+
+  Future<UserProfileModel?> getUserProfile({bool forceRefresh = false}) async {
+    if (!forceRefresh) {
+      try {
+        final local = await _db.getUserProfile();
+        if (local != null) return local;
+      } catch (e) {
+        print("Local DB Error: $e");
+      }
+    }
+
+    try {
+      final remote = await _api.getUserProfile();
+      try {
+        await _db.insertUserProfile(remote);
+      } catch (dbError) {
+        print("DB Insert Error: $dbError");
+      }
+      return remote;
+    } catch (e) {
+      if (forceRefresh) rethrow; // If explicitly refreshing, bubble up error
+      // If we failed to get remote and we are here, checking local again is one last hope
+      try {
+        return await _db.getUserProfile();
+      } catch (_) {
+        throw e;
+      }
+    }
+  }
+
+  Future<UserProfileModel> createUserProfile({
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    String? dob,
+    String? gender,
+    String? address,
+    String? bio,
+    int? country,
+    int? state,
+    int? city,
+    int? neighborhood,
+    File? profilePicture,
+  }) async {
+    final response = await _api.createUserProfile(
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phoneNumber,
+      dob: dob,
+      gender: gender,
+      address: address,
+      bio: bio,
+      country: country,
+      state: state,
+      city: city,
+      neighborhood: neighborhood,
+      profilePicture: profilePicture,
+    );
+    await _db.insertUserProfile(response);
+    return response;
+  }
+
+  Future<UserProfileModel> updateUserProfile({
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    String? dob,
+    String? gender,
+    String? address,
+    String? bio,
+    int? country,
+    int? state,
+    int? city,
+    int? neighborhood,
+    File? profilePicture,
+  }) async {
+    final response = await _api.updateUserProfile(
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phoneNumber,
+      dob: dob,
+      gender: gender,
+      address: address,
+      bio: bio,
+      country: country,
+      state: state,
+      city: city,
+      neighborhood: neighborhood,
+      profilePicture: profilePicture,
+    );
+    await _db.insertUserProfile(response);
+    return response;
   }
 }
