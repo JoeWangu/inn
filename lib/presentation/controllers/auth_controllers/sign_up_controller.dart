@@ -17,9 +17,12 @@ class SignUpController extends _$SignUpController {
     required String password,
   }) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() async{
+    final newState = await AsyncValue.guard(() async {
       final repository = ref.read(authRepositoryProvider);
       await repository.signUp(username: name, email: email, password: password);
     });
+    if (ref.mounted) {
+      state = newState;
+    }
   }
 }
