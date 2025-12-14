@@ -34,7 +34,7 @@ final class ExploreHouseControllerProvider
 }
 
 String _$exploreHouseControllerHash() =>
-    r'ed99eaf23bd2942ab91f3e6325ee8722f634b8a7';
+    r'9e8dd3f4b49d9e796ea16a2e52423183df252a76';
 
 abstract class _$ExploreHouseController extends $AsyncNotifier<bool> {
   FutureOr<bool> build();

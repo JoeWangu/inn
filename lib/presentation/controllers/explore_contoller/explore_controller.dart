@@ -32,7 +32,7 @@ class ExploreHouseController extends _$ExploreHouseController {
     state = const AsyncLoading<bool>();
     // .copyWithPrevious(state);
 
-    state = await AsyncValue.guard(() async {
+    final newState = await AsyncValue.guard(() async {
       final repository = ref.read(houseRepositoryProvider);
 
       // Fetch data
@@ -43,5 +43,9 @@ class ExploreHouseController extends _$ExploreHouseController {
 
       return hasNext; // Returns bool, matching FutureOr<bool>
     });
+
+    if (ref.mounted) {
+      state = newState;
+    }
   }
 }
