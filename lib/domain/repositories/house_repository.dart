@@ -1,10 +1,11 @@
-// import 'package:drift/drift.dart'; // For 'Value'
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:inn/core/database/app_database.dart';
 // import 'package:inn/core/errors/error_handler.dart'; // Optional, for logging
 import 'package:inn/data/models/paginated_response.dart';
+import 'package:inn/data/models/extra_image_model.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:inn/data/models/create_house_request.dart';
 import 'package:inn/data/datasources/remote/houses_api.dart';
@@ -187,6 +188,8 @@ class HouseRepository {
     final newHouse = await _api.createHouse(house);
     // Insert into 'MyHousesTable' immediately so UI updates
     await _db.insertMyHouses([newHouse]);
+    // ALSO insert into global 'HousesTable' so Home/Explore updates immediately
+    await _db.insertHouses([newHouse]);
     return newHouse;
   }
 
@@ -194,7 +197,31 @@ class HouseRepository {
     final updatedHouse = await _api.updateHouse(id, house);
     // Update 'MyHousesTable'
     await _db.insertMyHouses([updatedHouse]);
+    // ALSO update global 'HousesTable' so Home/Explore updates immediately
+    await _db.insertHouses([updatedHouse]);
     return updatedHouse;
+  }
+
+  Future<void> deleteRating(int id) async {
+    await _api.deleteRating(id);
+  }
+
+  // --- Extra Images ---
+
+  Future<List<ExtraImageModel>> getExtraImages({int? rentalId}) async {
+    final response = await _api.getExtraImages(rentalId: rentalId);
+    return response.results;
+  }
+
+  Future<List<ExtraImageModel>> uploadExtraImages(
+    int rentalId,
+    List<File> images,
+  ) async {
+    return _api.uploadExtraImages(rental: rentalId, images: images);
+  }
+
+  Future<void> deleteExtraImage(int id) async {
+    await _api.deleteExtraImage(id);
   }
 
   Future<void> deleteHouse(int id) async {
