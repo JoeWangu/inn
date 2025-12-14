@@ -69,11 +69,15 @@ class CreateHouseController extends _$CreateHouseController {
     if (id != null) {
       try {
         final states = await ref.read(locationRepositoryProvider).getStates(id);
-        state = AsyncData(
-          state.value!.copyWith(states: states, isLoadingLocations: false),
-        );
+        if (ref.mounted) {
+          state = AsyncData(
+            state.value!.copyWith(states: states, isLoadingLocations: false),
+          );
+        }
       } catch (e) {
-        state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
+        if (ref.mounted) {
+          state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
+        }
         // Handle error (maybe toast)
       }
     } else {
@@ -98,11 +102,15 @@ class CreateHouseController extends _$CreateHouseController {
     if (id != null) {
       try {
         final cities = await ref.read(locationRepositoryProvider).getCities(id);
-        state = AsyncData(
-          state.value!.copyWith(cities: cities, isLoadingLocations: false),
-        );
+        if (ref.mounted) {
+          state = AsyncData(
+            state.value!.copyWith(cities: cities, isLoadingLocations: false),
+          );
+        }
       } catch (e) {
-        state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
+        if (ref.mounted) {
+          state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
+        }
       }
     } else {
       state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
@@ -126,14 +134,18 @@ class CreateHouseController extends _$CreateHouseController {
         final neighborhoods = await ref
             .read(locationRepositoryProvider)
             .getNeighborhoods(id);
-        state = AsyncData(
-          state.value!.copyWith(
-            neighborhoods: neighborhoods,
-            isLoadingLocations: false,
-          ),
-        );
+        if (ref.mounted) {
+          state = AsyncData(
+            state.value!.copyWith(
+              neighborhoods: neighborhoods,
+              isLoadingLocations: false,
+            ),
+          );
+        }
       } catch (e) {
-        state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
+        if (ref.mounted) {
+          state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
+        }
       }
     } else {
       state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
@@ -150,9 +162,62 @@ class CreateHouseController extends _$CreateHouseController {
     state = AsyncData(state.value!.copyWith(imageId: id));
   }
 
+  // --- Initialization for Edit ---
+  Future<void> initializeForEdit(HouseModel house) async {
+    // Ensure initialization is complete so we have countries
+    final currentState = await future;
+
+    state = AsyncData(
+      currentState.copyWith(
+        countryId: house.country?.id,
+        stateId: house.state?.id,
+        cityId: house.city?.id,
+        neighborhoodId: house.neighborhood?.id,
+        imageId: house.imageDetail?.id ?? house.image,
+        isLoadingLocations: true,
+      ),
+    );
+
+    try {
+      final repo = ref.read(locationRepositoryProvider);
+
+      // Fetch cascading data based on existing IDs
+      List<StateData> states = [];
+      List<City> cities = [];
+      List<Neighborhood> neighborhoods = [];
+
+      if (house.country?.id != null) {
+        states = await repo.getStates(house.country!.id);
+      }
+      if (house.state?.id != null) {
+        cities = await repo.getCities(house.state!.id);
+      }
+      if (house.city?.id != null) {
+        neighborhoods = await repo.getNeighborhoods(house.city!.id);
+      }
+
+      if (ref.mounted) {
+        state = AsyncData(
+          state.value!.copyWith(
+            states: states,
+            cities: cities,
+            neighborhoods: neighborhoods,
+            isLoadingLocations: false,
+          ),
+        );
+      }
+    } catch (e) {
+      print("Error initializing edit: $e");
+      if (ref.mounted) {
+        state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
+      }
+    }
+  }
+
   // --- Submit ---
 
   Future<bool> submit({
+    int? houseId, // If provided, we update instead of create
     required String title,
     required double price,
     required String description,
@@ -182,13 +247,21 @@ class CreateHouseController extends _$CreateHouseController {
         neighborhood: s.neighborhoodId,
       );
 
-      await ref.read(houseRepositoryProvider).createHouse(request);
+      if (houseId != null) {
+        await ref.read(houseRepositoryProvider).updateHouse(houseId, request);
+      } else {
+        await ref.read(houseRepositoryProvider).createHouse(request);
+      }
 
-      state = AsyncData(s.copyWith(isSubmitting: false));
+      if (ref.mounted) {
+        state = AsyncData(s.copyWith(isSubmitting: false));
+      }
       return true;
     } catch (e) {
       print("Submit Error: $e");
-      state = AsyncData(s.copyWith(isSubmitting: false));
+      if (ref.mounted) {
+        state = AsyncData(s.copyWith(isSubmitting: false));
+      }
       return false;
     }
   }
