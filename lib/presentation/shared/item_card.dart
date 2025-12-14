@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/data/models/house_model.dart';
 
-class ItemCard extends StatelessWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:inn/presentation/controllers/favorites_controller/favorites_controller.dart';
+
+class ItemCard extends ConsumerWidget {
   final HouseModel house;
   final String tagPrefix;
   final bool needsInfoChip;
@@ -24,10 +27,15 @@ class ItemCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Generate unique Hero tag
     final tag = '${tagPrefix}_${house.id}';
     final cs = Theme.of(context).colorScheme;
+    final favoritesAsync = ref.watch(favoritesProvider);
+    final isFavorite = favoritesAsync.maybeWhen(
+      data: (ids) => ids.contains(house.id),
+      orElse: () => false,
+    );
 
     return GestureDetector(
       onTap: () => context.pushNamed(
@@ -61,6 +69,41 @@ class ItemCard extends StatelessWidget {
                       errorWidget: (context, url, error) => Image.asset(
                         'assets/img_assets/default.png',
                         fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () async {
+                      try {
+                        await ref
+                            .read(favoritesProvider.notifier)
+                            .toggleFavorite(house);
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Failed to update favorite: Check your connection and try again',
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.7),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.red : Colors.grey,
+                        size: 20,
                       ),
                     ),
                   ),

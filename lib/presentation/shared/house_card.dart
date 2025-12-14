@@ -3,15 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/data/models/house_model.dart';
 
-class HouseCard extends StatelessWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:inn/presentation/controllers/favorites_controller/favorites_controller.dart';
+
+class HouseCard extends ConsumerWidget {
   final HouseModel house;
   final String tagPrefix;
 
   const HouseCard({super.key, required this.house, this.tagPrefix = 'home'});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tag = '${tagPrefix}_${house.id}';
+    final favoritesAsync = ref.watch(favoritesProvider);
+    final isFavorite = favoritesAsync.maybeWhen(
+      data: (ids) => ids.contains(house.id),
+      orElse: () => false,
+    );
 
     return GestureDetector(
       onTap: () => context.pushNamed(
@@ -34,22 +42,62 @@ class HouseCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(16),
-              ),
-              child: Hero(
-                tag: tag,
-                child: CachedNetworkImage(
-                  imageUrl: house.imageDetail?.image ?? '',
-                  height: 140,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(color: Colors.grey[200]),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                  child: Hero(
+                    tag: tag,
+                    child: CachedNetworkImage(
+                      imageUrl: house.imageDetail?.image ?? '',
+                      height: 140,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          Container(color: Colors.grey[200]),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () async {
+                      try {
+                        await ref
+                            .read(favoritesProvider.notifier)
+                            .toggleFavorite(house);
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Failed to update favorite: Check your connection and try again',
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.7),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.red : Colors.grey,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             // Details
             Padding(
