@@ -46,9 +46,13 @@ class HomeHouseController extends _$HomeHouseController {
 
   Future<void> refresh() async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
+    final newState = await AsyncValue.guard(() async {
       final repository = ref.read(houseRepositoryProvider);
       await repository.fetchRecentHouses();
     });
+
+    if (ref.mounted) {
+      state = newState;
+    }
   }
 }

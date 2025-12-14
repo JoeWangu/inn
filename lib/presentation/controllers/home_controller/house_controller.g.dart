@@ -73,7 +73,7 @@ final class HomeHouseControllerProvider
 }
 
 String _$homeHouseControllerHash() =>
-    r'618eaef6150cc322ffc16de4e1755b687a39787b';
+    r'3a6b69a38703560414b6aa6ba37a497f0387e433';
 
 abstract class _$HomeHouseController extends $AsyncNotifier<void> {
   FutureOr<void> build();
