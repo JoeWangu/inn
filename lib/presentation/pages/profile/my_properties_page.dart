@@ -85,10 +85,34 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
                     ),
                     Positioned(
                       top: 10,
-                      right: 10,
-                      child: IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _confirmDelete(context, ref, house.id),
+                      right: 4,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.photo_library,
+                              color: Colors.green,
+                            ),
+                            onPressed: () {
+                              context.pushNamed(
+                                'manage-images',
+                                extra: house.id,
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () {
+                              context.pushNamed('create-house', extra: house);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () =>
+                                _confirmDelete(context, ref, house.id),
+                          ),
+                        ],
                       ),
                     ),
                   ],
