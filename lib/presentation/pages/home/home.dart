@@ -288,7 +288,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
           return ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            // padding: const EdgeInsets.symmetric(horizontal: 0),
             itemCount: displayHouses.length,
             separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
