@@ -46,6 +46,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   shared_preferences: ^2.5.3
   drift: ^2.30.0
+  sqlite3_flutter_libs: ^0.5.41
   # networking
   dio: ^5.9.0
   retrofit: ^4.9.1
