@@ -14,6 +14,10 @@ import 'package:inn/presentation/pages/profile/profile_page.dart';
 import 'package:inn/presentation/pages/profile/my_properties_page.dart';
 import 'package:inn/presentation/pages/create_house/create_house_page.dart';
 import 'package:inn/presentation/shared/scaffold_with_nav_bar.dart';
+import 'package:inn/data/models/user_profile_model.dart';
+import 'package:inn/presentation/pages/profile/edit_profile_page.dart';
+import 'package:inn/presentation/pages/create_house/manage_images_page.dart';
+import 'package:inn/presentation/pages/home/photo_gallery_page.dart';
 
 // final GoRouter router =
 GoRouter createRouter(String initialPath) {
@@ -141,7 +145,34 @@ GoRouter createRouter(String initialPath) {
       GoRoute(
         name: 'create-house',
         path: '/create-house',
-        builder: (context, state) => const CreateHousePage(),
+        builder: (context, state) {
+          final house = state.extra as HouseModel?;
+          return CreateHousePage(house: house);
+        },
+      ),
+      GoRoute(
+        name: 'edit-profile',
+        path: '/edit-profile',
+        builder: (context, state) {
+          final profile = state.extra as UserProfileModel?;
+          return EditProfilePage(userProfile: profile);
+        },
+      ),
+      GoRoute(
+        name: 'manage-images',
+        path: '/manage-images',
+        builder: (context, state) {
+          final rentalId = state.extra as int;
+          return ManageImagesPage(rentalId: rentalId);
+        },
+      ),
+      GoRoute(
+        name: 'photo-gallery',
+        path: '/photo-gallery',
+        builder: (context, state) {
+          final rentalId = state.extra as int;
+          return PhotoGalleryPage(rentalId: rentalId);
+        },
       ),
     ],
   );
