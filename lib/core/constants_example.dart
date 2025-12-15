@@ -4,6 +4,7 @@ class ConstantsExample {
   static const String loginUsersEndpoint = "users/login/";
   static const String loginTokenObtainEndpoint = "login/";
   static const String tokenRefreshEndpoint = "refresh/";
+  static const String userProfileEndpoint = "profile/";
   static const String rentals = "houses/";
   static const String manageRentals = "manage/";
 
@@ -12,6 +13,7 @@ class ConstantsExample {
   static const String cities = "cities/";
   static const String neighborhoods = "neighborhoods/";
   static const String images = "images/";
-  // static const String tokenRefreshEndpoint = "api/auth/refresh/";
-  // static const String usersEndpoint = "/users";
+  static const String favorites = "favorites/";
+  static const String ratings = "ratings/";
+  static const String extraImagesEndpoint = "extra_images/";
 }
