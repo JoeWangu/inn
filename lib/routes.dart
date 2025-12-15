@@ -18,42 +18,11 @@ import 'package:inn/data/models/user_profile_model.dart';
 import 'package:inn/presentation/pages/profile/edit_profile_page.dart';
 import 'package:inn/presentation/pages/create_house/manage_images_page.dart';
 import 'package:inn/presentation/pages/home/photo_gallery_page.dart';
+import 'package:inn/presentation/pages/settings/settings_page.dart';
 
-// final GoRouter router =
 GoRouter createRouter(String initialPath) {
   return GoRouter(
     initialLocation: initialPath,
-    /*     // redirect: (context, state) async {
-    //   final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-    //   final bool seenOnboarding =
-    //       await prefs.getBool('seen_onboarding') ?? false;
-    //   final bool loggedIn = await prefs.getBool('logged_in') ?? false;
-    //   final isFirstLaunch = !seenOnboarding;
-
-    //   // final token = await prefs.getString('auth_token');
-    //   // final loggedIn = token != null && token.isNotEmpty;
-    //   // bool loggingIn = state.uri.path == '/login';
-    //   // current path
-    //   final path = state.uri.path;
-
-    //   if (isFirstLaunch && path != '/welcome') {
-    //     // return '/login';
-    //     return '/welcome';
-    //   }
-
-    //   if (!loggedIn &&
-    //       path != '/login' &&
-    //       path != '/welcome' &&
-    //       path != '/signup') {
-    //     return '/login';
-    //   }
-
-    //   if (!isFirstLaunch && path == '/welcome') {
-    //     return '/';
-    //   }
-
-    //   return null;
-    // }, */
     routes: <RouteBase>[
       // Routes WITHOUT the Bottom Bar
       GoRoute(
@@ -173,6 +142,11 @@ GoRouter createRouter(String initialPath) {
           final rentalId = state.extra as int;
           return PhotoGalleryPage(rentalId: rentalId);
         },
+      ),
+      GoRoute(
+        name: 'settings',
+        path: '/settings',
+        builder: (context, state) => const SettingsPage(),
       ),
     ],
   );
