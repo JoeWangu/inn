@@ -5,7 +5,7 @@ import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'dart:convert';
 import 'package:inn/data/models/user_profile_model.dart';
-// Import the table & model
+
 import 'package:inn/data/datasources/local/favorites_table.dart';
 import 'package:inn/data/datasources/local/houses_table.dart';
 import 'package:inn/data/datasources/local/my_houses_table.dart';
@@ -50,10 +50,6 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
-  // --- DAO METHODS ---
-
-  // Insert or Replace (Upsert)
-  // Saves a list of houses to the DB. If one exists, it updates it.
   Future<void> insertHouses(List<HouseModel> houses) async {
     await batch((batch) {
       for (final house in houses) {
@@ -61,7 +57,7 @@ class AppDatabase extends _$AppDatabase {
           housesTable,
           HousesTableCompanion.insert(
             id: Value(house.id),
-            data: house, // The converter handles this automatically!
+            data: house,
             category: house.category ?? '',
             fetchedAt: Value(DateTime.now()),
           ),
@@ -71,38 +67,27 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  // Get All Houses (Reactive Stream)
-  // Returns a stream that automatically updates when 'insertHouses' is called.
   Stream<List<HouseModel>> watchHouses() {
-    return (select(housesTable)
-          // You might want to order by datePosted from inside the JSON,
-          // but for now, we order by when we fetched it.
-          // ..orderBy([(t) => OrderingTerm.desc(t.fetchedAt)]))
-          ..orderBy([(t) => OrderingTerm.asc(t.id)]))
-        .map((row) => row.data) // Extract the HouseModel object
-        .watch();
+    return (select(
+      housesTable,
+    )..orderBy([(t) => OrderingTerm.asc(t.id)])).map((row) => row.data).watch();
   }
 
-  // Clear Cache (Optional, good for pull-to-refresh)
   Future<void> clearHouses() => delete(housesTable).go();
 
-  // Check if DB is empty
   Future<int> getHouseCount() {
     final countExp = housesTable.id.count();
     final query = selectOnly(housesTable)..addColumns([countExp]);
     return query.map((row) => row.read(countExp)!).getSingle();
   }
 
-  // Get the timestamp of the most recently saved item
   Future<DateTime?> getLatestFetchTime() {
     return (select(housesTable)
-          ..orderBy([(t) => OrderingTerm.desc(t.fetchedAt)]) // Newest first
-          ..limit(1)) // Only need one
+          ..orderBy([(t) => OrderingTerm.desc(t.fetchedAt)])
+          ..limit(1))
         .map((row) => row.fetchedAt)
         .getSingleOrNull();
   }
-
-  // --- MY HOUSES DAO ---
 
   Future<void> insertMyHouses(List<HouseModel> houses) async {
     await batch((batch) {
@@ -144,18 +129,14 @@ class AppDatabase extends _$AppDatabase {
     return (delete(myHousesTable)..where((t) => t.id.equals(id))).go();
   }
 
-  // --- FAVORITES DAO ---
-
   Future<void> insertFavorite({
     required HouseModel house,
     int? apiId,
     bool isSynced = true,
   }) async {
     return transaction(() async {
-      // 1. Ensure house exists in HousesTable
       await insertHouses([house]);
 
-      // 2. Insert into FavoritesTable
       await into(favoritesTable).insert(
         FavoritesTableCompanion.insert(
           houseId: house.id,
@@ -173,21 +154,17 @@ class AppDatabase extends _$AppDatabase {
     )..where((t) => t.houseId.equals(houseId))).go();
   }
 
-  // Helper to delete by API ID (useful during sync)
   Future<void> deleteFavoriteByApiId(int apiId) {
     return (delete(
       favoritesTable,
     )..where((t) => t.apiFavoriteId.equals(apiId))).go();
   }
 
-  // Watch favorites joined with House data
   Stream<List<HouseModel>> watchFavorites() {
     final query = select(favoritesTable).join([
       innerJoin(housesTable, housesTable.id.equalsExp(favoritesTable.houseId)),
     ]);
 
-    // Order by createdAt desc (recently favorited first)
-    // Note: To sort by FavoritesTable.createdAt, we need to add it to query
     query.orderBy([OrderingTerm.desc(favoritesTable.createdAt)]);
 
     return query
@@ -196,7 +173,6 @@ class AppDatabase extends _$AppDatabase {
         })
         .watch()
         .map((houses) => houses.map((h) => h).toList());
-    // Drift returns List<HouseModel>, map it cleanly
   }
 
   Future<int?> getFavoriteApiId(int houseId) {
@@ -209,7 +185,6 @@ class AppDatabase extends _$AppDatabase {
     return (select(favoritesTable)).map((row) => row.houseId).watch();
   }
 
-  // Check if a house is favorited
   Future<bool> isHouseFavorite(int houseId) async {
     final count = await (select(
       favoritesTable,
@@ -217,10 +192,8 @@ class AppDatabase extends _$AppDatabase {
     return count.isNotEmpty;
   }
 
-  // --- USER PROFILE DAO ---
-
   Future<void> insertUserProfile(UserProfileModel profile) async {
-    await delete(userProfileTable).go(); // Only keep one profile
+    await delete(userProfileTable).go();
     await into(userProfileTable).insert(
       UserProfileTableCompanion.insert(
         jsonData: jsonEncode(profile.toJson()),
@@ -243,9 +216,7 @@ class AppDatabase extends _$AppDatabase {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    print(dbFolder.path);
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    print(file.path);
     return NativeDatabase.createInBackground(file);
   });
 }
