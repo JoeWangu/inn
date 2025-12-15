@@ -17,12 +17,3 @@ String? passwordValidator(String? v) {
   if (!RegExp(r'[0-9]').hasMatch(v)) return 'Must contain a number';
   return null;
 }
-
-// String? confirmPasswordValidator(String? v, String original) {
-//   final base = passwordValidator(v);
-//   if (base != null) return base;
-//   if (v != original) {
-//     return 'Passwords do not match';
-//   }
-//   return null;
-// }
