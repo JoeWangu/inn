@@ -13,5 +13,6 @@ abstract class LoginRequest with _$LoginRequest {
   factory LoginRequest.fromJson(Map<String, dynamic> json) =>
       _$LoginRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson();
 }

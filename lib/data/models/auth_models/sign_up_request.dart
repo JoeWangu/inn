@@ -14,5 +14,6 @@ abstract class SignUpRequest with _$SignUpRequest {
   factory SignUpRequest.fromJson(Map<String, dynamic> json) =>
       _$SignUpRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson();
 }
