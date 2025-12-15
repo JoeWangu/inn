@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 /// you provided in main.dart material theme.
 /// To use this just put he code below in any page you want.
 ///               Expanded(
-///                 /// ← This prevents infinity overflow
 ///                 child: Container(
 ///                   margin: const EdgeInsets.all(16),
 ///                   decoration: BoxDecoration(
@@ -18,7 +17,7 @@ import 'package:flutter/material.dart';
 ///                       ),
 ///                     ],
 ///                   ),
-///                   child: const ColorPaletteDebug(), /// ← Your debug widget
+///                   child: const ColorPaletteDebug(),
 ///                 ),
 ///               ),
 
@@ -101,7 +100,6 @@ class ColorPaletteDebug extends StatelessWidget {
     leading: CircleAvatar(backgroundColor: color),
     title: Text(name),
     trailing: SelectableText(
-      // ← bonus: you can copy the hex!
       '#${color.toARGB32().toRadixString(16).substring(2).toUpperCase()}',
       style: const TextStyle(fontFamily: 'monospace'),
     ),
