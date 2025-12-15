@@ -5,19 +5,16 @@ part 'create_house_request.g.dart';
 
 @freezed
 abstract class CreateHouseRequest with _$CreateHouseRequest {
-  @JsonSerializable(
-    includeIfNull: true,
-  ) // Ensure nulls are sent if needed, or false if not
+  @JsonSerializable(includeIfNull: true)
   const factory CreateHouseRequest({
     required String title,
-    @JsonKey(name: 'image') int? image, // Assuming API accepts null or valid ID
+    @JsonKey(name: 'image') int? image,
     required double price,
     required String description,
     required String category,
     required bool available,
     @JsonKey(name: 'total_units') required int totalUnits,
     @JsonKey(name: 'is_active') required bool isActive,
-    // Location IDs
     int? country,
     int? state,
     int? city,
@@ -27,5 +24,6 @@ abstract class CreateHouseRequest with _$CreateHouseRequest {
   factory CreateHouseRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateHouseRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson();
 }
