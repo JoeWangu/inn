@@ -15,17 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/core/storage/secure_storage_provider.dart';
+import 'package:inn/core/theme/app_theme.dart';
 import 'package:inn/core/utils/jwt_utils.dart';
+import 'package:inn/presentation/providers/theme_provider.dart';
 import 'package:inn/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// A scroll behavior that enables mouse/track‑pad dragging for all axes.
 class DesktopDragScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
@@ -37,16 +39,12 @@ class DesktopDragScrollBehavior extends MaterialScrollBehavior {
   };
 }
 
-// void main() {
-//   runApp(const ProviderScope(child: InnApp()));
-// }
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   final container = ProviderContainer();
   final storage = container.read(secureStorageProvider);
-  // final token = await storage.read(key: 'access_token');
 
   final values = await Future.wait([
     storage.read(key: 'access_token'),
@@ -63,28 +61,20 @@ Future<void> main() async {
   bool isLoggedIn = false;
 
   if (accessToken != null && !JwtUtils.isExpired(accessToken)) {
-    // 1. Access Token is valid? Great.
     isLoggedIn = true;
   } else if (refreshToken != null && !JwtUtils.isExpired(refreshToken)) {
-    // 2. Access Token expired, BUT Refresh Token is still valid?
-    // We let them in! The 'AuthInterceptor' will detect the expired access token
-    // on the very first API call and silently refresh it in the background.
     isLoggedIn = true;
   } else {
-    // 3. Both are expired or missing? Login required.
     isLoggedIn = false;
   }
 
   String initialPath;
 
-if (isLoggedIn) {
-    // IF LOGGED IN -> GO TO HOMEPAGE (Ignores onboarding status)
+  if (isLoggedIn) {
     initialPath = '/';
   } else if (!seenOnboarding) {
-    // IF NOT LOGGED IN + NOT ONBOARDED -> GO TO ONBOARDING
     initialPath = '/welcome';
   } else {
-    // IF NOT LOGGED IN + ALREADY ONBOARDED -> GO LOGIN
     initialPath = '/login';
   }
 
@@ -93,30 +83,60 @@ if (isLoggedIn) {
   runApp(
     UncontrolledProviderScope(
       container: container,
-      child: InnApp(router: appRouter,),
+      child: InnApp(router: appRouter),
     ),
   );
 
   FlutterNativeSplash.remove();
 }
 
-class InnApp extends StatelessWidget {
+class InnApp extends ConsumerWidget {
   final GoRouter router;
   const InnApp({super.key, required this.router});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Inn App',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromARGB(255, 43, 95, 86),
-        ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeSettingsAsync = ref.watch(themeControllerProvider);
+
+    return themeSettingsAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => MaterialApp(
+        home: Scaffold(body: Center(child: Text('Error: $err'))),
       ),
-      routerConfig: router,
-      scrollBehavior: DesktopDragScrollBehavior(),
+      data: (themeSettings) {
+        return DynamicColorBuilder(
+          builder: (lightDynamic, darkDynamic) {
+            ColorScheme? lightScheme;
+            ColorScheme? darkScheme;
+            Color? targetSeedColor;
+
+            if (themeSettings.colorSource == AppColorSource.dynamic) {
+              lightScheme = lightDynamic;
+              darkScheme = darkDynamic;
+            } else if (themeSettings.colorSource == AppColorSource.custom) {
+              targetSeedColor = themeSettings.customColor;
+            }
+
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Inn App',
+              theme: AppTheme.createTheme(
+                colorScheme: lightScheme,
+                brightness: Brightness.light,
+                seedColor: targetSeedColor,
+              ),
+              darkTheme: AppTheme.createTheme(
+                colorScheme: darkScheme,
+                brightness: Brightness.dark,
+                seedColor: targetSeedColor,
+              ),
+              themeMode: themeSettings.themeMode,
+              routerConfig: router,
+              scrollBehavior: DesktopDragScrollBehavior(),
+            );
+          },
+        );
+      },
     );
   }
 }
