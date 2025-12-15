@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/gestures.dart';
-// import 'package:url_launcher/url_launcher.dart';
 
 class TermsCheckbox extends StatefulWidget {
   const TermsCheckbox({
@@ -16,7 +14,6 @@ class TermsCheckbox extends StatefulWidget {
 }
 
 class _TermsCheckboxState extends State<TermsCheckbox> {
-  // The recogniser must be disposed to avoid memory leaks.
   // late final TapGestureRecognizer _linkRecognizer;
 
   // @override
@@ -32,17 +29,16 @@ class _TermsCheckboxState extends State<TermsCheckbox> {
   // }
 
   // Future<void> _openTerms() async {
-  //   const url = 'https://example.com/terms'; // <-- replace with your real URL
+  //   const url = '${Constants.terms}';
   //   final uri = Uri.parse(url);
   //   if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-  //     // show a snackbar or fallback UI here.
+  //     // will show a snackbar or fallback UI here.
   //     debugPrint('Could not launch $url');
   //   }
   // }
 
   @override
   Widget build(BuildContext context) {
-    // Wrap the whole row in InkWell so the *checkbox* toggles when the user taps the text.
     return InkWell(
       onTap: () => widget.onChanged(!widget.value),
       borderRadius: BorderRadius.circular(4),

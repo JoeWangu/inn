@@ -14,19 +14,16 @@ import 'package:inn/data/models/extra_image_model.dart';
 
 part 'houses_api.g.dart';
 
-// 1. Provider
 @riverpod
 HousesApi housesApi(Ref ref) {
   final dio = ref.read(dioProvider);
   return HousesApi(dio);
 }
 
-// 2. Interface
 @RestApi()
 abstract class HousesApi {
   factory HousesApi(Dio dio, {String baseUrl}) = _HousesApi;
 
-  // We use @GET to fetch data and @Query to pass the '?page=1' parameter
   @GET(Constants.rentals)
   Future<PaginatedResponse<HouseModel>> fetchHouses({
     @Query('page') int page = 1,
@@ -39,8 +36,6 @@ abstract class HousesApi {
 
   @GET("${Constants.rentals}{id}/")
   Future<HouseModel> getHouse(@Path('id') int id);
-
-  // --- Manage Rentals ---
 
   @GET(Constants.manageRentals)
   Future<PaginatedResponse<HouseModel>> getMyHouses();
@@ -56,8 +51,6 @@ abstract class HousesApi {
 
   @DELETE("${Constants.manageRentals}{id}/")
   Future<void> deleteHouse(@Path('id') int id);
-
-  // --- Location Dropdowns ---
 
   @GET(Constants.countries)
   Future<PaginatedResponse<Country>> getCountries();
@@ -75,16 +68,12 @@ abstract class HousesApi {
     @Query('city') int cityId,
   );
 
-  // --- Images ---
-
   @GET(Constants.images)
   Future<PaginatedResponse<ImageDetail>> getImages();
 
   @POST(Constants.images)
   @MultiPart()
   Future<ImageDetail> uploadImage(@Part(name: "image") File image);
-
-  // --- Favorites ---
 
   @GET(Constants.favorites)
   Future<PaginatedResponse<FavoriteModel>> getFavorites();
@@ -94,8 +83,6 @@ abstract class HousesApi {
 
   @DELETE("${Constants.favorites}{id}/")
   Future<void> deleteFavorite(@Path('id') int id);
-
-  // --- Ratings ---
 
   @GET(Constants.ratings)
   Future<PaginatedResponse<RatingModel>> getRatings();
@@ -111,8 +98,6 @@ abstract class HousesApi {
 
   @DELETE("${Constants.ratings}{id}/")
   Future<void> deleteRating(@Path('id') int id);
-
-  // --- Extra Images ---
 
   @GET(Constants.extraImagesEndpoint)
   Future<PaginatedResponse<ExtraImageModel>> getExtraImages({

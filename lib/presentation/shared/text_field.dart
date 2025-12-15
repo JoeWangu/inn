@@ -9,11 +9,6 @@ class InnTextField extends StatelessWidget {
   final bool isPassword;
   final bool obscureText;
   final VoidCallback? onToggleObscure;
-  // final bool isConfirmPassword;
-  // final bool obscurePassword;
-  // final VoidCallback? onToggleObscure;
-  // final bool? obscureConfirmPassword;
-  // final VoidCallback? onToggleConfirmPassword;
   final String? Function(String?)? validator;
 
   const InnTextField({
@@ -26,11 +21,6 @@ class InnTextField extends StatelessWidget {
     this.isPassword = false,
     required this.obscureText,
     this.onToggleObscure,
-    // this.isConfirmPassword = false,
-    // required this.obscurePassword,
-    // this.onToggleObscure,
-    // this.obscureConfirmPassword = false,
-    // this.onToggleConfirmPassword,
     this.validator,
   });
 
@@ -62,19 +52,6 @@ class InnTextField extends StatelessWidget {
                 onPressed: onToggleObscure,
               )
             : null,
-        // suffixIcon: isPassword
-        //     ? IconButton(
-        //         icon: Icon(
-        //           obscurePassword ? Icons.visibility_off : Icons.visibility,
-        //           color: Colors.grey,
-        //         ),
-        //         onPressed: isPassword
-        //             ? onToggleObscure
-        //             : isConfirmPassword
-        //             ? onToggleConfirmPassword
-        //             : null,
-        //       )
-        //     : null,
         filled: true,
         // fillColor: Colors.grey.shade100,
         fillColor: cs.surface,
@@ -89,11 +66,7 @@ class InnTextField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(
-            // color: Color(0xFF2B5F56),
-            color: cs.primary,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: cs.primary, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),

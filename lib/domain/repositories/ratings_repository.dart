@@ -15,7 +15,6 @@ class RatingsRepository {
   RatingsRepository(this._api);
 
   Future<List<RatingModel>> getUserRatings() async {
-    // API returns paginated response, we just get results for now
     final response = await _api.getRatings();
     return response.results;
   }

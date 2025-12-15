@@ -22,10 +22,8 @@ class HouseDetailsPage extends ConsumerWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    // Watch user's ratings
     final ratingsAsync = ref.watch(ratingsControllerProvider);
 
-    // Find if user has rated this house
     RatingModel? userRating;
     ratingsAsync.whenData((ratings) {
       try {
@@ -40,7 +38,7 @@ class HouseDetailsPage extends ConsumerWidget {
         children: [
           CustomScrollView(
             slivers: [
-              // 1. APP BAR IMAGE
+              // APP BAR IMAGE
               SliverAppBar(
                 expandedHeight: 300,
                 pinned: true,
@@ -81,7 +79,7 @@ class HouseDetailsPage extends ConsumerWidget {
                 ),
               ),
 
-              // 2. CONTENT
+              // CONTENT
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -177,7 +175,7 @@ class HouseDetailsPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 24),
 
-                      // YOUR RATING SECTION
+                      // RATING SECTION
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
@@ -339,7 +337,6 @@ class HouseDetailsPage extends ConsumerWidget {
                         ),
                       ),
 
-                      // Extra padding for bottom button
                       const SizedBox(height: 100),
                     ],
                   ),
@@ -348,7 +345,7 @@ class HouseDetailsPage extends ConsumerWidget {
             ],
           ),
 
-          // 3. BOTTOM BUTTON (Floating)
+          // BOTTOM BUTTON (Floating)
           Positioned(
             bottom: 0,
             left: 0,
@@ -371,7 +368,7 @@ class HouseDetailsPage extends ConsumerWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Implement Call or Booking logic here
+                      // TODO: Implement Call or Booking logic here
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorScheme.primary,
@@ -459,7 +456,7 @@ class HouseDetailsPage extends ConsumerWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              Navigator.pop(context); // Close dialog first
+              Navigator.pop(context);
 
               try {
                 if (currentRating == null) {

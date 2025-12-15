@@ -64,12 +64,8 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
-    // await _storage.delete(key: 'access_token');
-    // await _storage.delete(key: 'refresh_token');
     await _storage.deleteAll();
   }
-
-  // --- User Profile ---
 
   Future<UserProfileModel?> getUserProfile({bool forceRefresh = false}) async {
     if (!forceRefresh) {
@@ -77,7 +73,7 @@ class AuthRepository {
         final local = await _db.getUserProfile();
         if (local != null) return local;
       } catch (e) {
-        print("Local DB Error: $e");
+        // print("Local DB Error: $e");
       }
     }
 
@@ -86,12 +82,11 @@ class AuthRepository {
       try {
         await _db.insertUserProfile(remote);
       } catch (dbError) {
-        print("DB Insert Error: $dbError");
+        // print("DB Insert Error: $dbError");
       }
       return remote;
     } catch (e) {
-      if (forceRefresh) rethrow; // If explicitly refreshing, bubble up error
-      // If we failed to get remote and we are here, checking local again is one last hope
+      if (forceRefresh) rethrow;
       try {
         return await _db.getUserProfile();
       } catch (_) {

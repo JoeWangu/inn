@@ -13,6 +13,6 @@ abstract class SignupResponse with _$SignupResponse {
     required String? message,
   }) = _SignupResponse;
 
-  factory SignupResponse.fromJson(Map<String, dynamic> json) => 
+  factory SignupResponse.fromJson(Map<String, dynamic> json) =>
       _$SignupResponseFromJson(json);
 }

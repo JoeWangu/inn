@@ -9,7 +9,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
   void _goBranch(int index) {
     navigationShell.goBranch(
       index,
-      // A common pattern: if tapping the current tab, go to the top of that tab
       initialLocation: index == navigationShell.currentIndex,
     );
   }
@@ -19,10 +18,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
     final ColorScheme cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      // The 'body' is the current Tab (Home, Explore, etc.)
       body: navigationShell,
 
-      // Your Custom Bottom Bar
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: cs.onPrimary,
@@ -39,7 +36,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
           child: BottomNavigationBar(
             currentIndex: navigationShell.currentIndex,
-            onTap: _goBranch, // We use our helper function
+            onTap: _goBranch,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: const Color(0xFF2B5F56),
             unselectedItemColor: Colors.grey[500],

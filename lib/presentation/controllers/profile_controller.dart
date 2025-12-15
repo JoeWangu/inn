@@ -9,7 +9,6 @@ part 'profile_controller.g.dart';
 class ProfileController extends _$ProfileController {
   @override
   FutureOr<UserProfileModel?> build() async {
-    // Initial load: prefer cache (forceRefresh: false)
     return _fetchProfile(forceRefresh: false);
   }
 
@@ -18,16 +17,13 @@ class ProfileController extends _$ProfileController {
       final repo = ref.read(authRepositoryProvider);
       return await repo.getUserProfile(forceRefresh: forceRefresh);
     } catch (e) {
-      print("ProfileController Error: $e");
-      // 404 means profile doesn't exist yet, which is fine
-      // We return null so UI knows to show "Create Profile"
+      // print("ProfileController Error: $e");
       return null;
     }
   }
 
   Future<void> refresh() async {
     state = const AsyncLoading();
-    // Explicit refresh: force API call
     state = await AsyncValue.guard(
       () async => _fetchProfile(forceRefresh: true),
     );

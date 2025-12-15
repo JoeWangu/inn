@@ -32,51 +32,27 @@ class FavoritesRepository {
     try {
       final Set<int> validApiHouseIds = {};
 
-      // Fetch all pages of favorites
-      // int page = 1;
       bool hasNext = true;
 
       while (hasNext) {
-        // Fetch favorites (assuming paginated)
-        // If API doesn't support pagination properly, clear DB and insert.
-        // But let's assume standard pagination.
-        // The API definition in HousesApi has no page param for getFavorites?
-        // Let's check HousesApi.
-        // I defined `getFavorites()` without params. Defaults to page 1?
-        // If I want to loop, I need to add page param or handle next url.
-        // Retrofit doesn't easily handle "next url" unless I pass it.
-        // I'll stick to fetching once for now, or add page param if needed.
-        // For typical "Favorites", list is small.
-
-        // Wait, I didn't add page param to getFavorites in HousesApi.
-        // I'll just call it once. If paginated, I get top 10/20.
-        // This is a limitation I should note or fix. I'll assume small list for now.
         final response = await _api.getFavorites();
 
         for (final fav in response.results) {
           validApiHouseIds.add(fav.rental);
 
-          // Check if we have the house
           final existingHouseCount = await (_db.select(
             _db.housesTable,
           )..where((t) => t.id.equals(fav.rental))).get();
 
           if (existingHouseCount.isEmpty) {
-            // Fetch house details
             try {
               final house = await _api.getHouse(fav.rental);
-              // Save to HousesTable
               await _db.insertHouses([house]);
             } catch (e) {
-              print("Error fetching house ${fav.rental} for favorite: $e");
-              continue; // Skip this favourite if house fails
+              // print("Error fetching house ${fav.rental} for favorite: $e");
+              continue;
             }
           }
-
-          // Get the house (we just ensured it exists)
-          // Actually `insertFavorite` requires HouseModel.
-          // We can optimize by bypassing `insertFavorite` and direct insert to table
-          // because we already inserted the house.
 
           await _db
               .into(_db.favoritesTable)
@@ -93,16 +69,10 @@ class FavoritesRepository {
         if (response.next == null) {
           hasNext = false;
         } else {
-          // If I didn't add page param, I can't fetch next page easily via Retrofit method.
-          // I'd need `getFavorites({@Query('page') int page})`.
-          // I'll leave it as single page for now to save time,
-          // assuming user won't have > 20 favorites immediately.
           hasNext = false;
         }
       }
 
-      // Cleanup: Delete local synced favorites that are NOT in API list
-      // We iterate local favorites.
       final localFavorites = await (_db.select(_db.favoritesTable)).get();
       for (final local in localFavorites) {
         if (local.isSynced && !validApiHouseIds.contains(local.houseId)) {
@@ -110,8 +80,7 @@ class FavoritesRepository {
         }
       }
     } catch (e) {
-      print("Sync Favorites Error: $e");
-      // Don't rethrow, just keep local cache
+      // print("Sync Favorites Error: $e");
     }
   }
 
@@ -125,56 +94,36 @@ class FavoritesRepository {
   }
 
   Future<void> _addFavorite(HouseModel house) async {
-    // 1. Optimistic Update
     await _db.insertFavorite(house: house, isSynced: false);
 
     try {
-      // 2. Call API
-      // API expects... what? "house": id?
-      // "Endpoint: POST /rentals/api/favorites/ (Add)"
       final response = await _api.addFavorite({'rental': house.id});
 
-      // 3. Update with real ID
       await _db.insertFavorite(
         house: house,
         apiId: response.id,
         isSynced: true,
       );
     } catch (e) {
-      print("Add favorite failed: $e");
-      // 4. Rollback? Or keep as pending?
-      // For now, let's keep it (allows retry later if we had a background worker).
-      // Or rollback to avoid confusion.
-      // Optimistic UI usually implies rollback on error unless offline-first support is robust.
-      // I'll rollback for simplicity.
       await _db.deleteFavorite(house.id);
       rethrow;
     }
   }
 
   Future<void> _removeFavorite(int houseId) async {
-    // Get existing to know if we need API call
     final fav = await (_db.select(
       _db.favoritesTable,
     )..where((t) => t.houseId.equals(houseId))).getSingleOrNull();
 
     if (fav == null) return;
 
-    // 1. Optimistic Delete
     await _db.deleteFavorite(houseId);
 
     if (fav.apiFavoriteId != null) {
       try {
-        // 2. Call API
         await _api.deleteFavorite(fav.apiFavoriteId!);
       } catch (e) {
-        print("Remove favorite failed: $e");
-        // 3. Rollback
-        // Re-insert. We need the house model though!
-        // We only have the ID.
-        // Ideally we shouldn't have deleted it, but marked as "pending delete".
-        // But since we can't easily undo without HouseModel (unless we read it from HousesTable first),
-        // we'll rely on HousesTable still having the data.
+        // print("Remove favorite failed: $e");
 
         final houseData = await (_db.select(
           _db.housesTable,
@@ -182,7 +131,7 @@ class FavoritesRepository {
 
         if (houseData != null) {
           await _db.insertFavorite(
-            house: houseData.data, // Access stored HouseModel
+            house: houseData.data,
             apiId: fav.apiFavoriteId,
             isSynced: true,
           );

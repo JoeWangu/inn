@@ -10,7 +10,7 @@ class ItemCard extends ConsumerWidget {
   final HouseModel house;
   final String tagPrefix;
   final bool needsInfoChip;
-  final int index; // kept if needed for fallback styling, but less critical now
+  final int index;
   final double? cardWidth;
   final double? cardHeight;
   final double? containerMargin;
@@ -28,7 +28,6 @@ class ItemCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Generate unique Hero tag
     final tag = '${tagPrefix}_${house.id}';
     final cs = Theme.of(context).colorScheme;
     final favoritesAsync = ref.watch(favoritesProvider);
@@ -112,7 +111,6 @@ class ItemCard extends ConsumerWidget {
                 // ---------- BOTTOM INFO CARD ----------
                 Align(
                   alignment: Alignment.bottomCenter,
-                  // Small padding so the inner “info card” doesn’t touch the outer edges
                   child: Card(
                     margin: const EdgeInsets.all(8.0),
                     color: cs.surface.withValues(alpha: 0.9),
@@ -147,8 +145,6 @@ class ItemCard extends ConsumerWidget {
                           ),
                           if (needsInfoChip) ...[
                             const SizedBox(height: 12),
-                            // HouseModel doesn't have bedrooms/bathrooms yet,
-                            // showing total units or just category as placeholder
                             Row(
                               children: [
                                 _infoChip(

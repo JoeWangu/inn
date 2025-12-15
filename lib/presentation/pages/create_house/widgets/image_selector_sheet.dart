@@ -15,9 +15,6 @@ class ImageSelectorSheet extends ConsumerStatefulWidget {
 }
 
 class _ImageSelectorSheetState extends ConsumerState<ImageSelectorSheet> {
-  // We manage the "fetch" state locally or via a provider.
-  // Ideally, use a FutureProvider for the list.
-  // For simplicity, I'll fetch in initState.
   List<ImageDetail> _images = [];
   bool _isLoading = true;
   final ImagePicker _picker = ImagePicker();
@@ -40,7 +37,6 @@ class _ImageSelectorSheetState extends ConsumerState<ImageSelectorSheet> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        // Show error
       }
     }
   }
@@ -57,21 +53,13 @@ class _ImageSelectorSheetState extends ConsumerState<ImageSelectorSheet> {
 
         await ref.read(imageRepositoryProvider).uploadImage(file);
 
-        // Refresh list from API to show the uploaded image
         await _fetchImages();
-
-        // Log selection (optional: maybe just show it in the list now and let user select)
-        // If we want to auto-select, we can still do:
-        // _onSelect(newImage);
-        // But the user might want to confirm it in the grid first.
-        // Let's just refresh the list as requested.
 
         setState(() {
           _isLoading = false;
         });
       } catch (e) {
         if (mounted) setState(() => _isLoading = false);
-        // Show error?
       }
     }
   }
@@ -134,13 +122,7 @@ class _ImageSelectorSheetState extends ConsumerState<ImageSelectorSheet> {
                     itemCount: _images.length,
                     itemBuilder: (context, index) {
                       final img = _images[index];
-                      // Construct full URL if needed, depending on API response.
-                      // Assuming 'img.image' is a full URL or relative path.
-                      // If relative, prepend constants.baseUrl.
-                      // Usually backend returns full URL if configured right.
                       final imageUrl = img.image ?? '';
-                      // If it's relative, we might need to handle it.
-                      // Let's assume full URL for now or use a heuristic.
 
                       return GestureDetector(
                         onTap: () => _onSelect(img),

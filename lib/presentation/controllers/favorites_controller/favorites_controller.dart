@@ -9,8 +9,6 @@ class Favorites extends _$Favorites {
   @override
   Stream<List<int>> build() {
     final repo = ref.watch(favoritesRepositoryProvider);
-    // Determine sync on startup?
-    // We can fire and forget sync here
     repo.syncFavorites();
 
     return repo.watchFavoriteIds();
@@ -22,7 +20,6 @@ class Favorites extends _$Favorites {
   }
 }
 
-// Separate provider for the list of favorite objects (for the Favorites Page)
 @Riverpod(keepAlive: true)
 Stream<List<HouseModel>> favoriteHouses(Ref ref) {
   final repo = ref.watch(favoritesRepositoryProvider);

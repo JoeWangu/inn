@@ -17,7 +17,6 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Trigger fetch logic
       ref.read(houseRepositoryProvider).fetchMyProperties();
     });
   }
@@ -79,10 +78,7 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
                 final house = houses[index];
                 return Stack(
                   children: [
-                    HouseCard(
-                      house: house,
-                      tagPrefix: 'my_prop', // Unique tag
-                    ),
+                    HouseCard(house: house, tagPrefix: 'my_prop'),
                     Positioned(
                       top: 10,
                       right: 4,
@@ -150,7 +146,6 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
     );
 
     if (confirmed == true && context.mounted) {
-      // Show blocking loader
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -161,14 +156,14 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
         await ref.read(houseRepositoryProvider).deleteHouse(houseId);
 
         if (context.mounted) {
-          Navigator.pop(context); // Pop loader
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Property deleted successfully')),
           );
         }
       } catch (e) {
         if (context.mounted) {
-          Navigator.pop(context); // Pop loader
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Failed to delete property. Please try again.'),

@@ -72,8 +72,7 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
 
     return Container(
       padding: const EdgeInsets.all(24.0),
-      height:
-          MediaQuery.of(context).size.height * 0.75, // Take up 75% of screen
+      height: MediaQuery.of(context).size.height * 0.75, // 75% of screen
       decoration: BoxDecoration(
         color: cs.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
@@ -105,7 +104,6 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Price Range
                   Text("Price Range", style: theme.textTheme.titleMedium),
                   const SizedBox(height: 12),
                   Row(

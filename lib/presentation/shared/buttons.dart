@@ -45,16 +45,12 @@ class InnButton extends StatelessWidget {
                       }
                       return null;
                     }),
-                    // shadowColor: WidgetStateProperty.all(Colors.grey),
                     shadowColor: WidgetStateProperty.all(cs.outlineVariant),
                     elevation: WidgetStateProperty.all(8),
                   ),
               child: Ink(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    // colors: [Color(0xFF2E7166), Color(0xFF1E5A50)],
-                    colors: [c1, c2],
-                  ),
+                  gradient: LinearGradient(colors: [c1, c2]),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Center(

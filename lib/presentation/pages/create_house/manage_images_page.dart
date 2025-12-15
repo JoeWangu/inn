@@ -109,7 +109,7 @@ class _ManageImagesPageState extends ConsumerState<ManageImagesPage> {
       appBar: AppBar(title: const Text('Manage Images')),
       body: Column(
         children: [
-          // 1. Upload Section
+          // Upload Section
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -183,7 +183,7 @@ class _ManageImagesPageState extends ConsumerState<ManageImagesPage> {
           ),
           const Divider(),
 
-          // 2. Existing Images
+          // Existing Images
           Expanded(
             child: imagesAsync.when(
               data: (images) {

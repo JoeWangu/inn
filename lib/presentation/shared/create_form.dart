@@ -63,7 +63,6 @@ class CreateForm extends StatelessWidget {
                     cs: cs,
                     validator: usernameValidator,
                     obscureText: false,
-                    // onToggleObscure: () {},
                   ),
                   SizedBox(height: gap),
                   InnTextField(

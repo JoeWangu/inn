@@ -88,7 +88,7 @@ class ProfilePage extends ConsumerWidget {
                       title: const Text('Settings'),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
-                        // context.pushNamed('settings');
+                        context.pushNamed('settings');
                       },
                     ),
                     ListTile(

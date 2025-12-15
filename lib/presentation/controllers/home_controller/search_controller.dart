@@ -11,7 +11,6 @@ class SearchHouseController extends _$SearchHouseController {
   int _currentPage = 1;
   bool _hasMore = true;
 
-  // Store last search params for pagination
   String _lastQuery = '';
   num? _lastMinPrice;
   num? _lastMaxPrice;
@@ -20,7 +19,7 @@ class SearchHouseController extends _$SearchHouseController {
 
   @override
   FutureOr<List<HouseModel>> build() {
-    return []; // Start with empty list
+    return [];
   }
 
   void search(
@@ -30,7 +29,6 @@ class SearchHouseController extends _$SearchHouseController {
     String? city,
     String? category,
   }) {
-    // cancel any pending search
     _debounceTimer?.cancel();
 
     if (query.trim().isEmpty &&
@@ -42,7 +40,6 @@ class SearchHouseController extends _$SearchHouseController {
       return;
     }
 
-    // Wait 500ms before hitting the API
     _debounceTimer = Timer(const Duration(milliseconds: 500), () {
       _performSearch(
         query,
@@ -87,7 +84,6 @@ class SearchHouseController extends _$SearchHouseController {
       _lastCategory = category;
     }
 
-    // We guard the state update
     final newState = await AsyncValue.guard(() async {
       final repository = ref.read(houseRepositoryProvider);
       final response = await repository.searchHouses(
@@ -99,18 +95,15 @@ class SearchHouseController extends _$SearchHouseController {
         category: category,
       );
 
-      // Update Pagination Info
       if (response.next == null) {
         _hasMore = false;
       } else {
         _currentPage++;
       }
 
-      // If new search -> return new list
       if (isNewSearch) {
         return response.results;
       } else {
-        // If pagination -> append to existing list
         return [...?state.value, ...response.results];
       }
     });

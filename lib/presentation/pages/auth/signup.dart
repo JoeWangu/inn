@@ -33,11 +33,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   void _termsOnPressed(bool? newValue) => setState(() {
     _termsAgreed = newValue!;
-    // if (_termsAgreed) {
-    //   // TODOs: Here goes your functionality that remembers the user.
-    // } else {
-    //   // TODOs: Forget the user
-    // }
   });
 
   void _showAgreementMissingMessage() {

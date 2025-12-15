@@ -5,14 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inn/data/models/user_profile_model.dart';
 import 'package:inn/presentation/controllers/profile_controller.dart';
-// Reusing location logic if possible, or build new
-// Actually, let's keep it simple for now and maybe not reuse intricate location logic unless requested.
-// But the user said "the location fields" so we should probably offer dropdowns?
-// Reuse CreateHouse logic is tricky because it's tied to house model.
-// FOR NOW: Let's simpler text fields or basic dropdowns if we can easily replicate.
-// Wait, the user said "It expects these fields... [first_name... & the location fields]".
-// So I should try to support location. I'll define a separate small controller for location if needed or just use the repository directly in the widget for simple dropdowns.
-// Better: Copy the logic from CreateHouseController location setters but simplified.
 
 class EditProfilePage extends ConsumerStatefulWidget {
   final UserProfileModel? userProfile;
@@ -38,20 +30,6 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   String _selectedCountryCode = '+254';
 
   final List<String> _countryCodes = ['+254', '+255', '+256', '+1', '+44'];
-
-  // Location IDs
-  // I will assume for now simple text inputs for simplicity unless I see "Country, State, City" models being strictly required.
-  // Checking UserProfileModel... yes, Country, StateData, City, Neighborhood are objects.
-  // So the API expects IDs.
-  // Implementation of full cascading dropdowns here is large.
-  // I will implement basic TextFields for non-dropdowns first, and leave placeholders for location or implement them if I have time.
-  // Given the complexity, I'll stick to text fields for personal info and maybe simpler UI for location (or just ID inputs? No that's bad).
-  // I'll skip cascading location dropdowns for this exact step to keep it manageable and just pass nulls if not selected,
-  // OR I can try to reuse `CreateHouseController` logic? No, that's coupled to House creation state.
-  // I will add TODO for location dropdowns and focus on personal info first as "location" is complex.
-  // actually, let's try to add at least simple text fields or ensure we handle it?
-  // The API expects IDs. Sending nulls is safer than sending bad data.
-  // I'll focus on the personal details first as requested.
 
   @override
   void initState() {
@@ -186,7 +164,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                         SizedBox(
                           width: 100,
                           child: DropdownButtonFormField<String>(
-                            value: _selectedCountryCode,
+                            initialValue: _selectedCountryCode,
                             decoration: const InputDecoration(
                               labelText: 'Code',
                               contentPadding: EdgeInsets.symmetric(
@@ -235,7 +213,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                     ),
                     const SizedBox(height: 10),
                     DropdownButtonFormField<String>(
-                      value: _gender,
+                      initialValue: _gender,
                       decoration: const InputDecoration(labelText: 'Gender'),
                       items: const [
                         DropdownMenuItem(value: 'Male', child: Text('Male')),
@@ -299,9 +277,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
 
                             if (success && context.mounted) {
                               context.pop();
-                              ref.invalidate(
-                                profileControllerProvider,
-                              ); // Access the provider using the accessor if needed, or invalidate from controller
+                              ref.invalidate(profileControllerProvider);
                             } else if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

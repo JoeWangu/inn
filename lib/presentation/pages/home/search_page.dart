@@ -82,7 +82,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           onPressed: () => context.pop(),
         ),
         title: Padding(
-          padding: const EdgeInsets.only(right: 8.0), // Reduced right padding
+          padding: const EdgeInsets.only(right: 8.0),
           child: TextField(
             controller: _textController,
             autofocus: true,

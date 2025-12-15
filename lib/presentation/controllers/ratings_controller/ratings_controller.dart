@@ -24,7 +24,6 @@ class RatingsController extends _$RatingsController {
       reason: reason,
     );
 
-    // Update state
     if (ref.mounted) {
       final previous = state.value ?? [];
       state = AsyncData([...previous, newRating]);
@@ -45,7 +44,6 @@ class RatingsController extends _$RatingsController {
       reason: reason,
     );
 
-    // Update state
     if (ref.mounted) {
       final previous = state.value ?? [];
       state = AsyncData([
@@ -59,7 +57,6 @@ class RatingsController extends _$RatingsController {
     final repo = ref.read(ratingsRepositoryProvider);
     await repo.deleteRating(ratingId);
 
-    // Update state
     if (ref.mounted) {
       final previous = state.value ?? [];
       state = AsyncData([

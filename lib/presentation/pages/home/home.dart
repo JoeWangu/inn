@@ -1,4 +1,3 @@
-// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,8 +14,6 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  // int _selectedIndex = 0;
-
   @override
   void initState() {
     super.initState();
@@ -256,7 +253,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  // Renamed from _recentlyViewedList to be more generic since it handles both
   Widget _horizontalHouseList({
     required AsyncValue<List<HouseModel>> housesAsync,
     required String tagPrefix,
@@ -264,8 +260,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     required int limit,
     required bool reverse,
   }) {
-    // ColorScheme cs = Theme.of(context).colorScheme;
-
     return SizedBox(
       height: 260,
       child: housesAsync.when(
@@ -274,12 +268,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             return const Center(child: Text("No houses found"));
           }
 
-          // Apply slicing logic:
-          // 1. Reverse if needed
           Iterable<HouseModel> processed = reverse
               ? allHouses.reversed
               : allHouses;
-          // 2. Take limit
           final displayHouses = processed.take(limit).toList();
 
           if (displayHouses.isEmpty) {
@@ -288,7 +279,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
           return ListView.separated(
             scrollDirection: Axis.horizontal,
-            // padding: const EdgeInsets.symmetric(horizontal: 0),
             itemCount: displayHouses.length,
             separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
@@ -319,15 +309,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     required int limit,
     required bool reverse,
   }) {
-    // ColorScheme cs = Theme.of(context).colorScheme;
-
     return housesAsync.when(
       data: (allHouses) {
         if (allHouses.isEmpty) {
           return const Center(child: Text("No houses found"));
         }
 
-        // Apply slicing logic:
         Iterable<HouseModel> processed = reverse
             ? allHouses.reversed
             : allHouses;
@@ -344,10 +331,6 @@ class _HomePageState extends ConsumerState<HomePage> {
             crossAxisCount: 2,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
-            // Adjust aspect ratio to prevent overflow
-            // Height of card ~ 230-250px (140 img + padding + text)
-            // Width varies by screen, e.g. (360 - 40 - 16) / 2 = 152
-            // Ratio ~ 152 / 240 = 0.63
             childAspectRatio: 0.68,
           ),
           itemCount: displayHouses.length,

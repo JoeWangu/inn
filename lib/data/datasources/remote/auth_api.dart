@@ -21,17 +21,14 @@ AuthApi authApi(Ref ref) {
 @RestApi()
 abstract class AuthApi {
   factory AuthApi(Dio dio, {String baseUrl}) = _AuthApi;
-  // create the user
+
   @POST(Constants.createUsersEndpoint)
   @Headers({'requiresToken': 'false'})
   Future<SignupResponse> signUp(@Body() SignUpRequest request);
 
-  // log in the user
   @POST(Constants.loginUsersEndpoint)
   @Headers({'requiresToken': 'false'})
   Future<LoginResponse> login(@Body() LoginRequest request);
-
-  // --- User Profile ---
 
   @GET(Constants.userProfileEndpoint)
   Future<UserProfileModel> getUserProfile();

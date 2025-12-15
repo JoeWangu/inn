@@ -11,19 +11,16 @@ part 'create_house_controller.g.dart';
 @freezed
 abstract class CreateHouseFormState with _$CreateHouseFormState {
   const factory CreateHouseFormState({
-    // IDs
     int? countryId,
     int? stateId,
     int? cityId,
     int? neighborhoodId,
-    int? imageId, // Selected image ID
-    // Dropdown Data
+    int? imageId,
     @Default([]) List<Country> countries,
     @Default([]) List<StateData> states,
     @Default([]) List<City> cities,
     @Default([]) List<Neighborhood> neighborhoods,
 
-    // Loading States
     @Default(false) bool isSubmitting,
     @Default(false) bool isLoadingLocations,
   }) = _CreateHouseFormState;
@@ -34,25 +31,19 @@ class CreateHouseController extends _$CreateHouseController {
   @override
   Future<CreateHouseFormState> build() async {
     try {
-      // Initial fetch of countries
       final countries = await ref
           .read(locationRepositoryProvider)
           .getCountries();
       return CreateHouseFormState(countries: countries);
     } catch (e) {
-      // Log error or rethrow safely
-      print("Error fetching countries: $e");
-      // Return empty state or rethrow if you want the UI to show error
+      // print("Error fetching countries: $e");
       rethrow;
     }
   }
 
-  // --- Location Setters ---
-
   void setCountry(int? id) async {
     if (id == state.value?.countryId) return;
 
-    // Update ID and clear downstream, set loading
     state = AsyncData(
       state.value!.copyWith(
         countryId: id,
@@ -78,7 +69,6 @@ class CreateHouseController extends _$CreateHouseController {
         if (ref.mounted) {
           state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
         }
-        // Handle error (maybe toast)
       }
     } else {
       state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
@@ -156,15 +146,11 @@ class CreateHouseController extends _$CreateHouseController {
     state = AsyncData(state.value!.copyWith(neighborhoodId: id));
   }
 
-  // --- Image ---
-
   void setImage(int id) {
     state = AsyncData(state.value!.copyWith(imageId: id));
   }
 
-  // --- Initialization for Edit ---
   Future<void> initializeForEdit(HouseModel house) async {
-    // Ensure initialization is complete so we have countries
     final currentState = await future;
 
     state = AsyncData(
@@ -181,7 +167,6 @@ class CreateHouseController extends _$CreateHouseController {
     try {
       final repo = ref.read(locationRepositoryProvider);
 
-      // Fetch cascading data based on existing IDs
       List<StateData> states = [];
       List<City> cities = [];
       List<Neighborhood> neighborhoods = [];
@@ -207,17 +192,15 @@ class CreateHouseController extends _$CreateHouseController {
         );
       }
     } catch (e) {
-      print("Error initializing edit: $e");
+      // print("Error initializing edit: $e");
       if (ref.mounted) {
         state = AsyncData(state.value!.copyWith(isLoadingLocations: false));
       }
     }
   }
 
-  // --- Submit ---
-
   Future<bool> submit({
-    int? houseId, // If provided, we update instead of create
+    int? houseId,
     required String title,
     required double price,
     required String description,
@@ -258,7 +241,7 @@ class CreateHouseController extends _$CreateHouseController {
       }
       return true;
     } catch (e) {
-      print("Submit Error: $e");
+      // print("Submit Error: $e");
       if (ref.mounted) {
         state = AsyncData(s.copyWith(isSubmitting: false));
       }

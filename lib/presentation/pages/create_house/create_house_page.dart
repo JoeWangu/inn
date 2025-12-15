@@ -16,11 +16,10 @@ class CreateHousePage extends ConsumerStatefulWidget {
 class _CreateHousePageState extends ConsumerState<CreateHousePage> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers for text fields
   final _titleController = TextEditingController();
   final _priceController = TextEditingController();
   final _descController = TextEditingController();
-  final _categoryController = TextEditingController(); // Or dropdown?
+  final _categoryController = TextEditingController();
   final _unitsController = TextEditingController();
 
   bool _available = true;
@@ -39,7 +38,6 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
       _available = h.available;
       _isActive = h.isActive;
 
-      // Defer provider call to next frame
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(createHouseControllerProvider.notifier).initializeForEdit(h);
       });
@@ -59,7 +57,6 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    // Check if image selected
     final state = ref.read(createHouseControllerProvider).asData?.value;
     if (state?.imageId == null) {
       ScaffoldMessenger.of(
@@ -82,7 +79,7 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
         );
 
     if (success && mounted) {
-      context.pop(); // Go back to "My Properties"
+      context.pop();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Property created successfully!')),
       );
@@ -241,9 +238,6 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                   DropdownButtonFormField<int>(
                     decoration: const InputDecoration(labelText: 'State'),
                     initialValue: state.stateId,
-                    // Disable if no states available (or no country selected)
-                    // Actually checking state.states.isEmpty might trigger briefly during load
-                    // But 'isLoadingLocations' helps via UI feedback if we wanted
                     items: state.states.map((s) {
                       return DropdownMenuItem<int>(
                         value: s.id,
@@ -362,7 +356,6 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
   }
 
   Widget _buildImagePreview(CreateHouseFormState state) {
-    // If state image ID matches the initial house image ID, show the network image
     if (widget.house?.imageDetail != null &&
         state.imageId == widget.house!.imageDetail!.id) {
       final imgUrl = widget.house!.imageDetail!.image;
@@ -373,7 +366,7 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
               child: Image.network(
                 imgUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
+                errorBuilder: (_, _, _) =>
                     const Center(child: Icon(Icons.broken_image, size: 40)),
               ),
             ),
@@ -396,7 +389,6 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
       }
     }
 
-    // Default or New Selection
     if (state.imageId != null) {
       return Center(
         child: Column(
