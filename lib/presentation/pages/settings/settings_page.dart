@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:inn/core/theme/app_theme.dart';
 import 'package:inn/presentation/providers/theme_provider.dart';
 
@@ -15,6 +16,15 @@ class SettingsPage extends ConsumerWidget {
       appBar: AppBar(title: const Text('Settings')),
       body: ListView(
         children: [
+          _buildSectionHeader(context, 'Security'),
+          ListTile(
+            leading: const Icon(Icons.security),
+            title: const Text('Security & Privacy'),
+            subtitle: const Text('PIN, Biometrics'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => context.push('/security_settings'),
+          ),
+          const Divider(),
           _buildSectionHeader(context, 'Appearance'),
           _buildThemeModeSelector(
             context,
