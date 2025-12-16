@@ -27,6 +27,7 @@ import 'package:inn/core/utils/jwt_utils.dart';
 import 'package:inn/presentation/providers/theme_provider.dart';
 import 'package:inn/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:inn/presentation/widgets/app_lifecycle_wrapper.dart';
 
 class DesktopDragScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -117,22 +118,25 @@ class InnApp extends ConsumerWidget {
               targetSeedColor = themeSettings.customColor;
             }
 
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: 'Inn App',
-              theme: AppTheme.createTheme(
-                colorScheme: lightScheme,
-                brightness: Brightness.light,
-                seedColor: targetSeedColor,
+            return AppLifecycleWrapper(
+              router: router,
+              child: MaterialApp.router(
+                debugShowCheckedModeBanner: false,
+                title: 'Inn App',
+                theme: AppTheme.createTheme(
+                  colorScheme: lightScheme,
+                  brightness: Brightness.light,
+                  seedColor: targetSeedColor,
+                ),
+                darkTheme: AppTheme.createTheme(
+                  colorScheme: darkScheme,
+                  brightness: Brightness.dark,
+                  seedColor: targetSeedColor,
+                ),
+                themeMode: themeSettings.themeMode,
+                routerConfig: router,
+                scrollBehavior: DesktopDragScrollBehavior(),
               ),
-              darkTheme: AppTheme.createTheme(
-                colorScheme: darkScheme,
-                brightness: Brightness.dark,
-                seedColor: targetSeedColor,
-              ),
-              themeMode: themeSettings.themeMode,
-              routerConfig: router,
-              scrollBehavior: DesktopDragScrollBehavior(),
             );
           },
         );
