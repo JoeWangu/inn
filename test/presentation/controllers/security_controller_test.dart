@@ -124,9 +124,9 @@ void main() {
       expect(result, true);
       verify(
         mockAuth.authenticate(
-          localizedReason: 'Authenticate to unlock',
-          biometricOnly: false,
-          persistAcrossBackgrounding: true,
+          localizedReason: 'Authenticate to unlock the app',
+          biometricOnly: true,
+          persistAcrossBackgrounding: false,
         ),
       ).called(1);
 
