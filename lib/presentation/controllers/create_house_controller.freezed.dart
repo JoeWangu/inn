@@ -14,11 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateHouseFormState {
 
-// IDs
- int? get countryId; int? get stateId; int? get cityId; int? get neighborhoodId; int? get imageId;// Selected image ID
-// Dropdown Data
- List<Country> get countries; List<StateData> get states; List<City> get cities; List<Neighborhood> get neighborhoods;// Loading States
- bool get isSubmitting; bool get isLoadingLocations;
+ int? get countryId; int? get stateId; int? get cityId; int? get neighborhoodId; int? get imageId; List<Country> get countries; List<StateData> get states; List<City> get cities; List<Neighborhood> get neighborhoods; bool get isSubmitting; bool get isLoadingLocations;
 /// Create a copy of CreateHouseFormState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -223,17 +219,12 @@ class _CreateHouseFormState implements CreateHouseFormState {
   const _CreateHouseFormState({this.countryId, this.stateId, this.cityId, this.neighborhoodId, this.imageId, final  List<Country> countries = const [], final  List<StateData> states = const [], final  List<City> cities = const [], final  List<Neighborhood> neighborhoods = const [], this.isSubmitting = false, this.isLoadingLocations = false}): _countries = countries,_states = states,_cities = cities,_neighborhoods = neighborhoods;
   
 
-// IDs
 @override final  int? countryId;
 @override final  int? stateId;
 @override final  int? cityId;
 @override final  int? neighborhoodId;
 @override final  int? imageId;
-// Selected image ID
-// Dropdown Data
  final  List<Country> _countries;
-// Selected image ID
-// Dropdown Data
 @override@JsonKey() List<Country> get countries {
   if (_countries is EqualUnmodifiableListView) return _countries;
   // ignore: implicit_dynamic_type
@@ -261,7 +252,6 @@ class _CreateHouseFormState implements CreateHouseFormState {
   return EqualUnmodifiableListView(_neighborhoods);
 }
 
-// Loading States
 @override@JsonKey() final  bool isSubmitting;
 @override@JsonKey() final  bool isLoadingLocations;
 
