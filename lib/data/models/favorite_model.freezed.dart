@@ -15,8 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FavoriteModel {
 
- int get id;// The ID of the favorite record
- int get rental;
+ int get id; int get rental;
 /// Create a copy of FavoriteModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -215,7 +214,6 @@ class _FavoriteModel implements FavoriteModel {
   factory _FavoriteModel.fromJson(Map<String, dynamic> json) => _$FavoriteModelFromJson(json);
 
 @override final  int id;
-// The ID of the favorite record
 @override final  int rental;
 
 /// Create a copy of FavoriteModel
