@@ -15,11 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfileModel {
 
-@JsonKey(name: 'first_name') String? get firstName;@JsonKey(name: 'last_name') String? get lastName;@JsonKey(name: 'phone_number') String? get phoneNumber; String? get dob;// YYYY-MM-DD
- String? get gender;// 'M', 'F', 'O'
- String? get address;@JsonKey(name: 'profile_picture') String? get profilePicture; String? get bio;// Location Fields (IDs from backend)
-@JsonKey(name: 'country') int? get countryId;@JsonKey(name: 'state') int? get stateId;@JsonKey(name: 'city') int? get cityId;@JsonKey(name: 'neighborhood') int? get neighborhoodId;// Location Objects (Details from backend)
-@JsonKey(name: 'countryDetails') Country? get country;@JsonKey(name: 'stateDetails') StateData? get state;@JsonKey(name: 'cityDetails') City? get city;@JsonKey(name: 'neighborhoodDetails') Neighborhood? get neighborhood;
+@JsonKey(name: 'first_name') String? get firstName;@JsonKey(name: 'last_name') String? get lastName;@JsonKey(name: 'phone_number') String? get phoneNumber; String? get dob; String? get gender; String? get address;@JsonKey(name: 'profile_picture') String? get profilePicture; String? get bio;@JsonKey(name: 'country') int? get countryId;@JsonKey(name: 'state') int? get stateId;@JsonKey(name: 'city') int? get cityId;@JsonKey(name: 'neighborhood') int? get neighborhoodId;@JsonKey(name: 'countryDetails') Country? get country;@JsonKey(name: 'stateDetails') StateData? get state;@JsonKey(name: 'cityDetails') City? get city;@JsonKey(name: 'neighborhoodDetails') Neighborhood? get neighborhood;
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -283,18 +279,14 @@ class _UserProfileModel implements UserProfileModel {
 @override@JsonKey(name: 'last_name') final  String? lastName;
 @override@JsonKey(name: 'phone_number') final  String? phoneNumber;
 @override final  String? dob;
-// YYYY-MM-DD
 @override final  String? gender;
-// 'M', 'F', 'O'
 @override final  String? address;
 @override@JsonKey(name: 'profile_picture') final  String? profilePicture;
 @override final  String? bio;
-// Location Fields (IDs from backend)
 @override@JsonKey(name: 'country') final  int? countryId;
 @override@JsonKey(name: 'state') final  int? stateId;
 @override@JsonKey(name: 'city') final  int? cityId;
 @override@JsonKey(name: 'neighborhood') final  int? neighborhoodId;
-// Location Objects (Details from backend)
 @override@JsonKey(name: 'countryDetails') final  Country? country;
 @override@JsonKey(name: 'stateDetails') final  StateData? state;
 @override@JsonKey(name: 'cityDetails') final  City? city;
