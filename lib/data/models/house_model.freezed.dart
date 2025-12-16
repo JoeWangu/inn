@@ -15,14 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HouseModel {
 
- int get id;// The ID reference to the image (int)
- int? get image; double get price;@JsonKey(name: 'total_units') int get totalUnits; String? get title; String? get description; String? get category;// Dates are automatically parsed if in YYYY-MM-DD format
-@JsonKey(name: 'date_posted') DateTime get datePosted;@JsonKey(name: 'date_modified') DateTime get dateModified;// Times are usually safer as Strings unless you combine them with dates
-@JsonKey(name: 'time_posted') String? get timePosted;@JsonKey(name: 'time_modified') String? get timeModified; bool get available;@JsonKey(name: 'is_active') bool get isActive;// Nested Objects
-@JsonKey(name: 'author_detail') AuthorDetail get authorDetail;@JsonKey(name: 'image_detail') ImageDetail? get imageDetail;// Rating
-@JsonKey(name: 'avg_rating') num get avgRating;// num handles int or double
- Country? get country; StateData? get state; City? get city; Neighborhood? get neighborhood;// The flat username string
- String? get author;
+ int get id; int? get image; double get price;@JsonKey(name: 'total_units') int get totalUnits; String? get title; String? get description; String? get category;@JsonKey(name: 'date_posted') DateTime get datePosted;@JsonKey(name: 'date_modified') DateTime get dateModified;@JsonKey(name: 'time_posted') String? get timePosted;@JsonKey(name: 'time_modified') String? get timeModified; bool get available;@JsonKey(name: 'is_active') bool get isActive;@JsonKey(name: 'author_detail') AuthorDetail get authorDetail;@JsonKey(name: 'image_detail') ImageDetail? get imageDetail;@JsonKey(name: 'avg_rating') num get avgRating; Country? get country; StateData? get state; City? get city; Neighborhood? get neighborhood; String? get author;
 /// Create a copy of HouseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -309,32 +302,25 @@ class _HouseModel implements HouseModel {
   factory _HouseModel.fromJson(Map<String, dynamic> json) => _$HouseModelFromJson(json);
 
 @override final  int id;
-// The ID reference to the image (int)
 @override final  int? image;
 @override final  double price;
 @override@JsonKey(name: 'total_units') final  int totalUnits;
 @override final  String? title;
 @override final  String? description;
 @override final  String? category;
-// Dates are automatically parsed if in YYYY-MM-DD format
 @override@JsonKey(name: 'date_posted') final  DateTime datePosted;
 @override@JsonKey(name: 'date_modified') final  DateTime dateModified;
-// Times are usually safer as Strings unless you combine them with dates
 @override@JsonKey(name: 'time_posted') final  String? timePosted;
 @override@JsonKey(name: 'time_modified') final  String? timeModified;
 @override final  bool available;
 @override@JsonKey(name: 'is_active') final  bool isActive;
-// Nested Objects
 @override@JsonKey(name: 'author_detail') final  AuthorDetail authorDetail;
 @override@JsonKey(name: 'image_detail') final  ImageDetail? imageDetail;
-// Rating
 @override@JsonKey(name: 'avg_rating') final  num avgRating;
-// num handles int or double
 @override final  Country? country;
 @override final  StateData? state;
 @override final  City? city;
 @override final  Neighborhood? neighborhood;
-// The flat username string
 @override final  String? author;
 
 /// Create a copy of HouseModel
