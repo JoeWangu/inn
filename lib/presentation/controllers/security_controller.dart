@@ -86,15 +86,15 @@ class SecurityController extends _$SecurityController {
         ? AutoLockTimeout.values[int.parse(timeoutIndexStr)]
         : AutoLockTimeout.immediate;
 
-    // Reset failed attempts on app launch? Maybe not, strictly speaking.
-    // But for simplicity/UX, we'll start fresh unless we persist it.
-    // The requirement is 3 consecutive attempts.
+    // On app launch, if PIN is enabled, start locked
+    final shouldLock = pinEnabled;
 
     return SecurityState(
       isSupported: isSupported,
       isPinEnabled: pinEnabled,
       isBiometricsEnabled: bioEnabled,
       autoLockTimeout: timeout,
+      isLocked: shouldLock,
     );
   }
 
@@ -206,9 +206,9 @@ class SecurityController extends _$SecurityController {
     try {
       print('Starting biometric authentication...');
       final authenticated = await _auth.authenticate(
-        localizedReason: 'Authenticate to unlock',
-        biometricOnly: false,
-        persistAcrossBackgrounding: true,
+        localizedReason: 'Authenticate to unlock the app',
+        biometricOnly: true, // Only allow biometrics, no fallback to PIN
+        persistAcrossBackgrounding: false, // Don't persist across backgrounding
       );
       print('Biometric authentication result: $authenticated');
 
@@ -217,13 +217,22 @@ class SecurityController extends _$SecurityController {
           currentState!.copyWith(isLocked: false, failedAttempts: 0),
         );
         _updateLastActiveTime();
+        return true;
+      } else {
+        // User cancelled or failed - don't retry automatically
+        print('Biometric authentication failed or was cancelled');
+        return false;
       }
-      return authenticated;
     } catch (e) {
       // Handle LocalAuthException (e.g., userCanceled, notAvailable) and others
       print('Biometric authentication error: $e');
       if (e is LocalAuthException) {
         print('Error Code: ${e.code}');
+        // For certain errors, we might want to disable biometrics
+        if (e.code == 'notAvailable' || e.code == 'notEnrolled') {
+          // Biometrics not available, disable it
+          await toggleBiometrics(false);
+        }
       }
       return false;
     }
@@ -257,11 +266,8 @@ class SecurityController extends _$SecurityController {
       if (difference >= currentState.autoLockTimeout.duration) {
         lockApp();
       }
-    } else {
-      // First launch or lost state, if PIN enabled, lock it?
-      // Usually we want to lock on fresh start if PIN is enabled.
-      lockApp();
     }
+    // Note: App now starts locked if PIN is enabled, so this else clause is removed
   }
 
   // Call this when user interacts with the app
