@@ -42,7 +42,7 @@ class _SecuritySettingsPAGEState extends ConsumerState<SecuritySettingsPage> {
                     value: state.isBiometricsEnabled,
                     onChanged: (value) async {
                       if (value) {
-                        // Verify biometrics before enabling
+                        // Verify biometrics can be used before enabling
                         final success = await ref
                             .read(securityControllerProvider.notifier)
                             .authenticateBiometrics();
@@ -50,6 +50,14 @@ class _SecuritySettingsPAGEState extends ConsumerState<SecuritySettingsPage> {
                           ref
                               .read(securityControllerProvider.notifier)
                               .toggleBiometrics(true);
+                        } else {
+                          // If verification fails, don't enable biometrics
+                          // The toggle will remain false
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Biometric verification failed. Please try again.'),
+                            ),
+                          );
                         }
                       } else {
                         ref
