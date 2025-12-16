@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 
+import "package:flutter/services.dart";
 import 'package:inn/core/storage/secure_storage_provider.dart';
 
 import 'package:inn/core/security/local_auth_provider.dart';
@@ -102,7 +103,7 @@ class SecurityController extends _$SecurityController {
     try {
       final isDeviceSupported = await _auth.isDeviceSupported();
       final canCheckBiometrics = await _auth.canCheckBiometrics;
-      return isDeviceSupported && canCheckBiometrics;
+      return isDeviceSupported || canCheckBiometrics;
     } catch (e) {
       return false;
     }
@@ -194,6 +195,8 @@ class SecurityController extends _$SecurityController {
     }
   }
 
+  bool _isAuthenticating = false;
+
   Future<bool> authenticateBiometrics() async {
     final currentState = state.value;
 
@@ -203,12 +206,14 @@ class SecurityController extends _$SecurityController {
         return false;
       }
     }
+
+    _isAuthenticating = true;
     try {
       print('Starting biometric authentication...');
-      final authenticated = await _auth.authenticate(
+      final bool authenticated = await _auth.authenticate(
         localizedReason: 'Authenticate to unlock the app',
         biometricOnly: true, // Only allow biometrics, no fallback to PIN
-        persistAcrossBackgrounding: false, // Don't persist across backgrounding
+        persistAcrossBackgrounding: true, // Don't persist across backgrounding
       );
       print('Biometric authentication result: $authenticated');
 
@@ -223,18 +228,22 @@ class SecurityController extends _$SecurityController {
         print('Biometric authentication failed or was cancelled');
         return false;
       }
-    } catch (e) {
+    } on LocalAuthException catch (e) {
       // Handle LocalAuthException (e.g., userCanceled, notAvailable) and others
       print('Biometric authentication error: $e');
-      if (e is LocalAuthException) {
-        print('Error Code: ${e.code}');
-        // For certain errors, we might want to disable biometrics
-        if (e.code == 'notAvailable' || e.code == 'notEnrolled') {
-          // Biometrics not available, disable it
-          await toggleBiometrics(false);
-        }
+      if (e.code == LocalAuthExceptionCode.noBiometricHardware ||
+          e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
+        // Biometrics not available/enrolled, disable it so we don't loop
+        await toggleBiometrics(false);
       }
       return false;
+    } on PlatformException catch (e) {
+      print('Biometric authentication platform error: $e');
+      return false;
+    } finally {
+      // In Riverpod Controller, we don't have 'mounted' but the object lifecycle is managed by the provider.
+      // We accept that if it's disposed, this assignment might be ignored or harmless.
+      _isAuthenticating = false;
     }
   }
 
@@ -255,6 +264,9 @@ class SecurityController extends _$SecurityController {
   }
 
   void checkAutoLock() {
+    // Prevent auto-lock if we are currently authenticating (e.g. biometric dialog is open)
+    if (_isAuthenticating) return;
+
     final currentState = state.value;
     if (currentState == null || !currentState.isPinEnabled) return;
 
@@ -267,7 +279,6 @@ class SecurityController extends _$SecurityController {
         lockApp();
       }
     }
-    // Note: App now starts locked if PIN is enabled, so this else clause is removed
   }
 
   // Call this when user interacts with the app
