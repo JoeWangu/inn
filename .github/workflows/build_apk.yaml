@@ -23,6 +23,12 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+
+      - name: Create constants.dart
+        env:
+          CONSTANTS_FILE: ${{ secrets.CONSTANTS_FILE_BASE64 }}
+        run: |
+          echo "$CONSTANTS_FILE" | base64 -d > lib/core/constants.dart
           
       - name: Get Dependencies
         run: flutter pub get
