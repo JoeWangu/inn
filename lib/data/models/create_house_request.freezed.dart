@@ -15,9 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateHouseRequest {
 
- String get title;@JsonKey(name: 'image') int? get image;// Assuming API accepts null or valid ID
- double get price; String get description; String get category; bool get available;@JsonKey(name: 'total_units') int get totalUnits;@JsonKey(name: 'is_active') bool get isActive;// Location IDs
- int? get country; int? get state; int? get city; int? get neighborhood;
+ String get title;@JsonKey(name: 'image') int? get image; double get price; String get description; String get category; bool get available;@JsonKey(name: 'total_units') int get totalUnits;@JsonKey(name: 'is_active') bool get isActive; int? get country; int? get state; int? get city; int? get neighborhood;
 /// Create a copy of CreateHouseRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -227,14 +225,12 @@ class _CreateHouseRequest implements CreateHouseRequest {
 
 @override final  String title;
 @override@JsonKey(name: 'image') final  int? image;
-// Assuming API accepts null or valid ID
 @override final  double price;
 @override final  String description;
 @override final  String category;
 @override final  bool available;
 @override@JsonKey(name: 'total_units') final  int totalUnits;
 @override@JsonKey(name: 'is_active') final  bool isActive;
-// Location IDs
 @override final  int? country;
 @override final  int? state;
 @override final  int? city;
