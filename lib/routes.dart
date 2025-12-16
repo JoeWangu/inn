@@ -19,6 +19,8 @@ import 'package:inn/presentation/pages/profile/edit_profile_page.dart';
 import 'package:inn/presentation/pages/create_house/manage_images_page.dart';
 import 'package:inn/presentation/pages/home/photo_gallery_page.dart';
 import 'package:inn/presentation/pages/settings/settings_page.dart';
+import 'package:inn/presentation/pages/settings/security_settings_page.dart';
+import 'package:inn/presentation/pages/auth/lock_screen_page.dart';
 
 GoRouter createRouter(String initialPath) {
   return GoRouter(
@@ -147,6 +149,16 @@ GoRouter createRouter(String initialPath) {
         name: 'settings',
         path: '/settings',
         builder: (context, state) => const SettingsPage(),
+      ),
+      GoRoute(
+        name: 'security-settings',
+        path: '/security_settings',
+        builder: (context, state) => const SecuritySettingsPage(),
+      ),
+      GoRoute(
+        name: 'lock-screen',
+        path: '/lock_screen',
+        builder: (context, state) => const LockScreenPage(),
       ),
     ],
   );
