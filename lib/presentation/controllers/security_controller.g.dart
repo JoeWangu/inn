@@ -34,7 +34,7 @@ final class SecurityControllerProvider
 }
 
 String _$securityControllerHash() =>
-    r'4afed98f1daac20e11cd088032d6b0a74351d032';
+    r'cc15ba382c64e2f5b0e189815fd62f3f59f39766';
 
 abstract class _$SecurityController extends $AsyncNotifier<SecurityState> {
   FutureOr<SecurityState> build();
