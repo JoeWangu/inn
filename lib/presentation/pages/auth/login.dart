@@ -70,12 +70,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(200, 43, 95, 86),
-              Color.fromARGB(240, 43, 95, 86),
-            ],
+            colors: [cs.primary.withAlpha(200), cs.primary.withAlpha(240)],
           ),
         ),
         child: isDesktop
@@ -111,6 +108,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     required bool isLoading,
     required ColorScheme cs,
   }) {
+    final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.sizeOf(context);
     final double baseDiameter = (size.width * 0.62).clamp(180.0, 360.0);
     final bool isShortScreen = size.height < 700;
@@ -129,22 +127,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   children: [
                     const SizedBox(height: 50),
                     _HouseCircle(diameter: diameter),
-                    const Text(
+                    Text(
                       'INN',
-                      style: TextStyle(
-                        color: Color(0xFFF3B633),
-                        fontSize: 50,
+                      style: textTheme.displayLarge?.copyWith(
+                        color: const Color(
+                          0xFFF3B633,
+                        ), // Brand accent, keeping for now
                         fontWeight: FontWeight.w700,
                         letterSpacing: 4.0,
                       ),
                     ),
                     Transform.translate(
                       offset: const Offset(0, -10),
-                      child: const Text(
+                      child: Text(
                         'FIND YOUR PERFECT HOME',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                        style: textTheme.titleMedium?.copyWith(
+                          color: cs.onPrimary,
                           letterSpacing: 2,
                           fontWeight: FontWeight.w400,
                         ),
@@ -182,9 +180,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               // BOTTOM SHEET
               Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(45)),
+                decoration: BoxDecoration(
+                  color: cs.surface,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(45),
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
@@ -192,9 +192,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     children: [
                       TextButton(
                         onPressed: isLoading ? null : () {},
-                        child: const Text(
+                        child: Text(
                           'Forgot Password?',
-                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: cs.onSurfaceVariant,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -207,7 +209,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
 
                       const SizedBox(height: 5),
-                      const Text('or', style: TextStyle(color: Colors.grey)),
+                      Text('or', style: TextStyle(color: cs.onSurfaceVariant)),
                       const SizedBox(height: 5),
 
                       InnButton(
@@ -230,6 +232,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   // ==================== DESKTOP / TABLET ====================
   Widget _buildDesktop({required bool isLoading, required ColorScheme cs}) {
+    final textTheme = Theme.of(context).textTheme;
     return LayoutBuilder(
       builder: (context, constraints) {
         final double screenWidth = constraints.maxWidth;
@@ -363,14 +366,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       validator: (v) => v!.trim().isEmpty ? 'Required' : null,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.grey),
-        prefixIcon: Icon(icon, color: Colors.grey),
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
 
         suffixIcon: isPassword
             ? IconButton(
                 icon: Icon(
                   _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 onPressed: () {
                   setState(() {
@@ -381,19 +389,30 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             : null,
 
         filled: true,
-        fillColor: Colors.grey.shade100,
+        fillColor: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest, // roughly grey[100] equivalent in M3
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.outline,
+            width: 1,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.outline,
+            width: 1,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(color: Color(0xFF2B5F56), width: 1.4),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 1.4,
+          ),
         ),
       ),
     );
