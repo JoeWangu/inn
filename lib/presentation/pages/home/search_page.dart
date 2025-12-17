@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/presentation/controllers/home_controller/search_controller.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 import 'package:inn/presentation/shared/search_filter_sheet.dart';
 
@@ -174,7 +175,16 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             ),
           );
         },
-        error: (err, stack) => Center(child: Text("Error: $err")),
+        error: (err, stack) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              getReadableError(err),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
