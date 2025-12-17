@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:inn/debug.dart';
+import 'package:inn/presentation/controllers/auth_controllers/auth_check_controller.dart';
 import 'package:inn/presentation/pages/auth/login.dart';
 import 'package:inn/presentation/pages/auth/signup.dart';
 import 'package:inn/presentation/pages/explore/explore.dart';
@@ -21,10 +22,48 @@ import 'package:inn/presentation/pages/home/photo_gallery_page.dart';
 import 'package:inn/presentation/pages/settings/settings_page.dart';
 import 'package:inn/presentation/pages/settings/security_settings_page.dart';
 import 'package:inn/presentation/pages/auth/lock_screen_page.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-GoRouter createRouter(String initialPath) {
+part 'routes.g.dart';
+
+@riverpod
+GoRouter router(Ref ref) {
+  final authState = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
+
+  ref.listen<AsyncValue<bool>>(authCheckControllerProvider, (_, next) {
+    authState.value = next;
+  }, fireImmediately: true);
+
   return GoRouter(
-    initialLocation: initialPath,
+    initialLocation: '/',
+    refreshListenable: authState,
+    redirect: (context, state) {
+      final auth = authState.value;
+
+      // While loading, don't redirect yet or show a splash?
+      // For now, let's assume we wait or default to /welcome/login if unknown
+      if (auth.isLoading) return null;
+
+      final isLoggedIn = auth.asData?.value ?? false;
+
+      final isLogin = state.uri.path == '/login';
+      final isSignup = state.uri.path == '/signup';
+      final isWelcome = state.uri.path == '/welcome';
+
+      if (!isLoggedIn) {
+        if (isLogin || isSignup || isWelcome) {
+          return null;
+        }
+        return '/login';
+      }
+
+      // If logged in and on auth pages, go home
+      if (isLoggedIn && (isLogin || isSignup || isWelcome)) {
+        return '/';
+      }
+
+      return null;
+    },
     routes: <RouteBase>[
       // Routes WITHOUT the Bottom Bar
       GoRoute(
