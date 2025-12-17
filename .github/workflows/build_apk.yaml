@@ -40,6 +40,9 @@ jobs:
         run: |
           echo $ENCODED_STRING | base64 -d > android/app/keystore.jks
 
+      - name: Get Dependencies
+        run: flutter pub get
+
       - name: Build APK
         env:
           KEYSTORE_PATH: keystore.jks
@@ -47,8 +50,6 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: flutter build apk --release
 
-      - name: Get Dependencies
-        run: flutter pub get
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
