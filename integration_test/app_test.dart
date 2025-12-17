@@ -4,7 +4,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:inn/main.dart'; // For InnApp
-import 'package:inn/routes.dart'; // For createRouter
+
 import 'package:inn/domain/repositories/auth_repository.dart';
 import 'package:inn/domain/repositories/house_repository.dart';
 import 'package:inn/domain/repositories/favorites_repository.dart';
@@ -95,7 +95,7 @@ void main() {
           ),
           themeControllerProvider.overrideWith(() => FakeThemeController()),
         ],
-        child: InnApp(router: createRouter('/login')),
+        child: const InnApp(),
       ),
     );
     await tester.pumpAndSettle();
