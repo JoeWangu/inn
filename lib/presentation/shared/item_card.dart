@@ -62,7 +62,7 @@ class ItemCard extends ConsumerWidget {
                       imageUrl: house.imageDetail?.image ?? '',
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
-                        color: Colors.grey[200],
+                        color: cs.surfaceContainerHighest,
                         child: const Center(child: CircularProgressIndicator()),
                       ),
                       errorWidget: (context, url, error) => Image.asset(
@@ -96,12 +96,12 @@ class ItemCard extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: cs.surface.withValues(alpha: 0.7),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Colors.red : Colors.grey,
+                        color: isFavorite ? cs.error : cs.onSurfaceVariant,
                         size: 20,
                       ),
                     ),
@@ -131,28 +131,28 @@ class ItemCard extends ConsumerWidget {
                             house.title ?? 'Unknown Property',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             house.city?.name ??
                                 house.neighborhood?.name ??
                                 'Unknown Location',
-                            style: TextStyle(color: Colors.grey[600]),
+                            style: TextStyle(color: cs.onSurfaceVariant),
                           ),
                           if (needsInfoChip) ...[
                             const SizedBox(height: 12),
                             Row(
                               children: [
                                 _infoChip(
+                                  context,
                                   Icons.home_work_outlined,
                                   '${house.totalUnits} Units',
                                 ),
                                 const SizedBox(width: 8),
                                 _infoChip(
+                                  context,
                                   Icons.category_outlined,
                                   house.category ?? 'N/A',
                                 ),
@@ -172,19 +172,20 @@ class ItemCard extends ConsumerWidget {
     );
   }
 
-  Widget _infoChip(IconData icon, String label) {
+  Widget _infoChip(BuildContext context, IconData icon, String label) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: cs.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: Colors.grey[700]),
+          Icon(icon, size: 14, color: cs.onSurfaceVariant),
           const SizedBox(width: 4),
-          Text(label, style: const TextStyle(fontSize: 12)),
+          Text(label, style: Theme.of(context).textTheme.labelSmall),
         ],
       ),
     );
