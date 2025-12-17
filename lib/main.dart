@@ -20,13 +20,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:inn/core/storage/secure_storage_provider.dart';
 import 'package:inn/core/theme/app_theme.dart';
-import 'package:inn/core/utils/jwt_utils.dart';
 import 'package:inn/presentation/providers/theme_provider.dart';
 import 'package:inn/routes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:inn/presentation/widgets/app_lifecycle_wrapper.dart';
 
 class DesktopDragScrollBehavior extends MaterialScrollBehavior {
@@ -44,60 +40,18 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  final container = ProviderContainer();
-  final storage = container.read(secureStorageProvider);
-
-  final values = await Future.wait([
-    storage.read(key: 'access_token'),
-    storage.read(key: 'refresh_token'),
-    SharedPreferencesAsync().getBool('seen_onboarding'),
-  ]);
-
-  final accessToken = values[0] as String?;
-  final refreshToken = values[1] as String?;
-  final prefs = values[2] as bool?;
-
-  final bool seenOnboarding = prefs ?? false;
-
-  bool isLoggedIn = false;
-
-  if (accessToken != null && !JwtUtils.isExpired(accessToken)) {
-    isLoggedIn = true;
-  } else if (refreshToken != null && !JwtUtils.isExpired(refreshToken)) {
-    isLoggedIn = true;
-  } else {
-    isLoggedIn = false;
-  }
-
-  String initialPath;
-
-  if (isLoggedIn) {
-    initialPath = '/';
-  } else if (!seenOnboarding) {
-    initialPath = '/welcome';
-  } else {
-    initialPath = '/login';
-  }
-
-  final appRouter = createRouter(initialPath);
-
-  runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: InnApp(router: appRouter),
-    ),
-  );
+  runApp(const ProviderScope(child: InnApp()));
 
   FlutterNativeSplash.remove();
 }
 
 class InnApp extends ConsumerWidget {
-  final GoRouter router;
-  const InnApp({super.key, required this.router});
+  const InnApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeSettingsAsync = ref.watch(themeControllerProvider);
+    final router = ref.watch(routerProvider);
 
     return themeSettingsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
