@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:inn/data/models/extra_image_model.dart';
 import 'package:inn/domain/repositories/house_repository.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class PhotoGalleryPage extends ConsumerStatefulWidget {
   final int rentalId;
@@ -60,8 +61,16 @@ class _PhotoGalleryPageState extends ConsumerState<PhotoGalleryPage> {
             },
           );
         },
-        error: (err, stack) =>
-            Center(child: Text('Error loading photos: $err')),
+        error: (err, stack) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              getReadableError(err),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
