@@ -47,7 +47,7 @@ class InnTextField extends StatelessWidget {
             ? IconButton(
                 icon: Icon(
                   obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey,
+                  color: cs.onSurfaceVariant,
                 ),
                 onPressed: onToggleObscure,
               )
