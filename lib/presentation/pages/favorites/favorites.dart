@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:inn/presentation/controllers/favorites_controller/favorites_controller.dart';
 import 'package:inn/presentation/shared/item_card.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class FavoritesPage extends ConsumerStatefulWidget {
   const FavoritesPage({super.key});
@@ -40,7 +41,16 @@ class _FavoritesPageState extends ConsumerState<FavoritesPage> {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, s) => Center(child: Text("Error loading favorites")),
+        error: (e, s) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              getReadableError(e),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ),
       ),
     );
   }
