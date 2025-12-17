@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inn/presentation/controllers/create_house_controller.dart';
 import 'package:inn/presentation/pages/create_house/widgets/image_selector_sheet.dart';
 import 'package:inn/data/models/house_model.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class CreateHousePage extends ConsumerStatefulWidget {
   final HouseModel? house;
@@ -110,7 +111,16 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
       ),
       body: asyncState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              getReadableError(err),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ),
         data: (state) {
           if (state.isSubmitting) {
             return const Center(child: CircularProgressIndicator());
@@ -129,11 +139,18 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                     child: Container(
                       height: 150,
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.grey),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: _buildImagePreview(state),
+                      child: _buildImagePreview(
+                        state,
+                        Theme.of(context).colorScheme,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -230,7 +247,9 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                       padding: const EdgeInsets.only(top: 4, left: 12),
                       child: Text(
                         "Current: ${widget.house!.country!.name}",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
                   const SizedBox(height: 12),
@@ -258,7 +277,9 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                       padding: const EdgeInsets.only(top: 4, left: 12),
                       child: Text(
                         "Current: ${widget.house!.state!.name}",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
                   const SizedBox(height: 12),
@@ -286,7 +307,9 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                       padding: const EdgeInsets.only(top: 4, left: 12),
                       child: Text(
                         "Current: ${widget.house!.city!.name}",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
                   const SizedBox(height: 12),
@@ -316,7 +339,9 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
                       padding: const EdgeInsets.only(top: 4, left: 12),
                       child: Text(
                         "Current: ${widget.house!.neighborhood!.name}",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
 
@@ -355,7 +380,7 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
     );
   }
 
-  Widget _buildImagePreview(CreateHouseFormState state) {
+  Widget _buildImagePreview(CreateHouseFormState state, ColorScheme cs) {
     if (widget.house?.imageDetail != null &&
         state.imageId == widget.house!.imageDetail!.id) {
       final imgUrl = widget.house!.imageDetail!.image;
@@ -394,24 +419,24 @@ class _CreateHousePageState extends ConsumerState<CreateHousePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.check_circle, color: Colors.green, size: 40),
+            Icon(Icons.check_circle, color: cs.primary, size: 40),
             Text("Image ID: ${state.imageId} Selected"),
             const SizedBox(height: 4),
-            const Text(
+            Text(
               "(Tap to change)",
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
             ),
           ],
         ),
       );
     }
 
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.add_a_photo, size: 40, color: Colors.grey),
-          Text("Select Image"),
+          Icon(Icons.add_a_photo, size: 40, color: cs.onSurfaceVariant),
+          const Text("Select Image"),
         ],
       ),
     );
