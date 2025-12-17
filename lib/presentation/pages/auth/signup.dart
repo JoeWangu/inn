@@ -157,12 +157,13 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   }
 
   Widget _title({required ColorScheme cs}) {
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       // height: 100,
       width: double.infinity,
       decoration: BoxDecoration(
         color: cs.primary.withAlpha(200),
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
@@ -174,9 +175,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             Text(
               'Let\'s',
               // textAlign: TextAlign.start,
-              style: TextStyle(
+              style: textTheme.displayMedium?.copyWith(
                 color: cs.onPrimary,
-                fontSize: 40.0,
                 fontWeight: FontWeight.w300,
                 letterSpacing: 1.0,
                 height: 1.0,
@@ -185,9 +185,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             Text(
               'Create',
               // textAlign: TextAlign.center,
-              style: TextStyle(
+              style: textTheme.displayLarge?.copyWith(
                 color: cs.onPrimary,
-                fontSize: 50.0,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.0,
                 height: 1.0,
@@ -196,9 +195,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             Text(
               'Your',
               // textAlign: TextAlign.center,
-              style: TextStyle(
+              style: textTheme.displayLarge?.copyWith(
                 color: cs.onPrimary,
-                fontSize: 50.0,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.0,
                 height: 1.0,
@@ -207,9 +205,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             Text(
               'Account',
               // textAlign: TextAlign.center,
-              style: TextStyle(
+              style: textTheme.displayLarge?.copyWith(
                 color: cs.onPrimary,
-                fontSize: 50.0,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.0,
                 height: 1.0,
