@@ -19,7 +19,7 @@ String getReadableError(Object error) {
         return "Request cancelled.";
 
       default:
-        return "An unexpected network error occurred.";
+        return "Network error. Please check your connection.";
     }
   }
   return "Something went wrong. Please try again.";
