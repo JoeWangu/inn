@@ -45,10 +45,10 @@ android {
             // Logic: If the file exists (GitHub), use it. 
             // If not (Local computer), use your local file if you have one, or fail gracefully.
             if (keystorePath != null && keystorePassword != null) {
-                storeFile file(keystorePath)
-                storePassword keystorePassword
-                keyAlias keyAlias
-                keyPassword keyPassword
+                storeFile = file(keystorePath)
+                storePassword = keystorePassword
+                keyAlias = keyAlias
+                keyPassword = keyPassword
             } else {
                 // Optional: Fallback for local builds if you want
                 // println "No CI keys found, strictly using local defaults"
@@ -62,8 +62,8 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             // Apply the signing config from above
             signingConfig = signingConfigs.getByName("release")
-            minifyEnabled = true
-            shrinkResources = true
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles.add(file("proguard-rules.pro"))
         }
     }
