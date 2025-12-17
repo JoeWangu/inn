@@ -19,9 +19,9 @@ Dio dio(Ref ref) {
     ),
   );
 
-  // dio.interceptors.add(
-  //   LogInterceptor(requestBody: true, responseBody: true, error: true),
-  // );
+  dio.interceptors.add(
+    LogInterceptor(requestBody: true, responseBody: true, error: true),
+  );
   dio.interceptors.add(AuthInterceptor(ref, dio));
 
   return dio;
