@@ -1,4 +1,4 @@
-package com.example.inn
+package com.joey.inn
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
