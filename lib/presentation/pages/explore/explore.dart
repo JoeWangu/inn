@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/presentation/controllers/explore_contoller/explore_controller.dart';
 import 'package:inn/presentation/controllers/home_controller/house_controller.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class ExplorePage extends ConsumerWidget {
   const ExplorePage({super.key});
@@ -67,7 +68,16 @@ class ExplorePage extends ConsumerWidget {
               },
             );
           },
-          error: (e, s) => Center(child: Text("$e")),
+          error: (e, s) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                getReadableError(e),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          ),
           loading: () => const Center(child: CircularProgressIndicator()),
         ),
       ),
