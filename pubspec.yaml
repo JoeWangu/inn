@@ -66,6 +66,7 @@ dependencies:
   integration_test:
     sdk: flutter
   local_auth: ^3.0.0
+  google_fonts: ^6.3.3
 
 dev_dependencies:
   flutter_test:
