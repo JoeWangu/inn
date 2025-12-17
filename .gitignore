@@ -46,3 +46,4 @@ app.*.map.json
 
 # constants
 /lib/core/constants.dart
+android/keystore_b64.txt
