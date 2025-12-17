@@ -5,6 +5,7 @@ import 'package:inn/data/models/house_model.dart';
 import 'package:inn/presentation/controllers/home_controller/house_controller.dart';
 import 'package:inn/presentation/shared/house_card.dart';
 import 'package:inn/presentation/shared/item_card.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -91,22 +92,26 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             const SizedBox(width: 6),
                                             Text(
                                               'SUNNY',
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                color:
-                                                    cs.surfaceContainerHighest,
-                                                fontWeight: FontWeight.w400,
-                                                decorationThickness: 2.0,
-                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall
+                                                  ?.copyWith(
+                                                    color: cs
+                                                        .surfaceContainerHighest,
+                                                    fontWeight: FontWeight.w400,
+                                                    decorationThickness: 2.0,
+                                                  ),
                                             ),
                                           ],
                                         ),
-                                        const Text(
+                                        Text(
                                           'Jay',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                         ),
                                       ],
                                     ),
@@ -233,7 +238,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const Spacer(),
         TextButton(
@@ -243,7 +250,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             children: [
               Text(
                 'See all',
-                style: TextStyle(color: cs.primary, fontSize: 14),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelLarge?.copyWith(color: cs.primary),
               ),
               Icon(Icons.keyboard_arrow_right, size: 16, color: cs.primary),
             ],
@@ -297,7 +306,16 @@ class _HomePageState extends ConsumerState<HomePage> {
             },
           );
         },
-        error: (err, stack) => Center(child: Text("Error: $err")),
+        error: (err, stack) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              getReadableError(err),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
