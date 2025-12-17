@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:inn/core/constants.dart';
 import 'package:inn/core/storage/secure_storage_provider.dart';
+import 'package:inn/presentation/controllers/auth_controllers/auth_check_controller.dart';
 
 class AuthInterceptor extends Interceptor {
   final Ref ref;
@@ -67,8 +68,8 @@ class AuthInterceptor extends Interceptor {
 
         return handler.resolve(clonedRequest);
       } catch (e) {
-        await storage.deleteAll();
-
+        // Token refresh failed, log out the user
+        await ref.read(authCheckControllerProvider.notifier).logout();
         return handler.reject(err);
       }
     }
