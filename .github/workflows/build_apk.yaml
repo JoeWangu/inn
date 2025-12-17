@@ -38,7 +38,7 @@ jobs:
         env:
           ENCODED_STRING: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
         run: |
-          echo $ENCODED_STRING | base64 --decode > android/app/keystore.jks
+          echo $ENCODED_STRING | base64 -d > android/app/keystore.jks
 
       - name: Build APK
         env:
