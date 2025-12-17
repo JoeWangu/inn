@@ -213,7 +213,8 @@ class SecurityController extends _$SecurityController {
       final bool authenticated = await _auth.authenticate(
         localizedReason: 'Authenticate to unlock the app',
         biometricOnly: true, // Only allow biometrics, no fallback to PIN
-        persistAcrossBackgrounding: true, // Don't persist across backgrounding
+        persistAcrossBackgrounding:
+            true, // Persist authentication across backgrounding
       );
       print('Biometric authentication result: $authenticated');
 
@@ -222,6 +223,8 @@ class SecurityController extends _$SecurityController {
           currentState!.copyWith(isLocked: false, failedAttempts: 0),
         );
         _updateLastActiveTime();
+        // Prevent the immediate Lifecycle resume from re-locking the app
+        _ignoreNextResume = true;
         return true;
       } else {
         // User cancelled or failed - don't retry automatically
@@ -263,9 +266,17 @@ class SecurityController extends _$SecurityController {
     _lastActiveTime = DateTime.now();
   }
 
+  bool _ignoreNextResume = false;
+
   void checkAutoLock() {
     // Prevent auto-lock if we are currently authenticating (e.g. biometric dialog is open)
     if (_isAuthenticating) return;
+
+    // If we just authenticated, ignore this resume event (prevent loop)
+    if (_ignoreNextResume) {
+      _ignoreNextResume = false;
+      return;
+    }
 
     final currentState = state.value;
     if (currentState == null || !currentState.isPinEnabled) return;
