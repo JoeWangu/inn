@@ -112,10 +112,7 @@ class SecurityController extends _$SecurityController {
   Future<void> setPin(String pin) async {
     await _storage.write(key: _pinKey, value: pin);
     await _storage.write(key: _pinEnabledKey, value: 'true');
-    state = const AsyncValue.data(
-      SecurityState(),
-    ).whenData((s) => s.copyWith(isPinEnabled: true));
-    // Explicitly update current state to ensure UI reflects it
+
     if (state.hasValue) {
       state = AsyncValue.data(state.value!.copyWith(isPinEnabled: true));
     }

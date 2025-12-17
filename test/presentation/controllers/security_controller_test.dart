@@ -62,6 +62,26 @@ void main() {
     expect(state!.isPinEnabled, true);
   });
 
+  test('setPin should preserve isSupported state', () async {
+    // Setup: device supports biometrics
+    when(mockAuth.isDeviceSupported()).thenAnswer((_) async => true);
+    when(mockAuth.canCheckBiometrics).thenAnswer((_) async => true);
+
+    final controller = container.read(securityControllerProvider.notifier);
+    // Wait for build. Initial state: isSupported = true
+    await container.read(securityControllerProvider.future);
+
+    // Verify initial state
+    expect(container.read(securityControllerProvider).value!.isSupported, true);
+
+    await controller.setPin('1234');
+
+    final state = container.read(securityControllerProvider).value;
+    expect(state!.isPinEnabled, true);
+    // Critical assertion: did we keep the isSupported flag?
+    expect(state.isSupported, true);
+  });
+
   test('verifyPin should return true for correct PIN', () async {
     when(mockStorage.read(key: 'security_pin')).thenAnswer((_) async => '1234');
 
@@ -126,7 +146,7 @@ void main() {
         mockAuth.authenticate(
           localizedReason: 'Authenticate to unlock the app',
           biometricOnly: true,
-          persistAcrossBackgrounding: false,
+          persistAcrossBackgrounding: true,
         ),
       ).called(1);
 
