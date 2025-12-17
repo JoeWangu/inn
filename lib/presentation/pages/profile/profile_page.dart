@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inn/presentation/controllers/auth_controllers/auth_check_controller.dart';
 import 'package:inn/presentation/controllers/profile_controller.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -104,9 +106,7 @@ class ProfilePage extends ConsumerWidget {
                         style: TextStyle(color: Colors.red),
                       ),
                       onTap: () {
-                        // Implement logout logic
-                        // ref.read(authControllerProvider.notifier).logout();
-                        // For now just navigate to login
+                        ref.read(authCheckControllerProvider.notifier).logout();
                         context.goNamed('login');
                       },
                     ),
@@ -116,7 +116,16 @@ class ProfilePage extends ConsumerWidget {
             ],
           );
         },
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              getReadableError(err),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
