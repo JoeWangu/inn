@@ -65,7 +65,11 @@ class InnButton extends StatelessWidget {
                         )
                       : Text(
                           buttonText,
-                          style: TextStyle(color: cs.onPrimary, fontSize: 18),
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: cs.onPrimary,
+                            fontSize:
+                                18, // Keeping explicit size if needed for button height consistency, or rely on style.
+                          ),
                         ),
                 ),
               ),
