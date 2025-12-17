@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:inn/domain/repositories/house_repository.dart';
 import 'package:inn/presentation/shared/house_card.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class MyPropertiesPage extends ConsumerStatefulWidget {
   const MyPropertiesPage({super.key});
@@ -40,7 +41,16 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  getReadableError(snapshot.error!),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+              ),
+            );
           }
 
           final houses = snapshot.data ?? [];
@@ -164,11 +174,9 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
       } catch (e) {
         if (context.mounted) {
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to delete property. Please try again.'),
-            ),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(getReadableError(e))));
         }
       }
     }
