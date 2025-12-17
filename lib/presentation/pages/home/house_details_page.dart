@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:inn/data/models/rating_model.dart';
 import 'package:inn/presentation/controllers/ratings_controller/ratings_controller.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class HouseDetailsPage extends ConsumerWidget {
   final HouseModel house;
@@ -52,8 +53,9 @@ class HouseDetailsPage extends ConsumerWidget {
                         child: CachedNetworkImage(
                           imageUrl: house.imageDetail?.image ?? '',
                           fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              Container(color: Colors.grey[200]),
+                          placeholder: (context, url) => Container(
+                            color: colorScheme.surfaceContainerHighest,
+                          ),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                         ),
@@ -68,8 +70,8 @@ class HouseDetailsPage extends ConsumerWidget {
                           icon: const Icon(Icons.grid_view, size: 18),
                           label: const Text('View Photos'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
+                            backgroundColor: colorScheme.surface,
+                            foregroundColor: colorScheme.onSurface,
                             elevation: 4,
                           ),
                         ),
@@ -144,14 +146,16 @@ class HouseDetailsPage extends ConsumerWidget {
                           Icon(
                             Icons.location_on,
                             size: 16,
-                            color: Colors.grey[600],
+                            color: colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             house.neighborhood?.name ??
                                 house.city?.name ??
                                 "Unknown Location",
-                            style: TextStyle(color: Colors.grey[600]),
+                            style: TextStyle(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                           ),
                         ],
                       ),
@@ -168,8 +172,8 @@ class HouseDetailsPage extends ConsumerWidget {
                           const SizedBox(width: 10),
                           _buildTag(
                             "${house.totalUnits} Units",
-                            Colors.grey[200]!,
-                            Colors.black87,
+                            colorScheme.surfaceContainerHighest,
+                            colorScheme.onSurfaceVariant,
                           ),
                         ],
                       ),
@@ -206,9 +210,9 @@ class HouseDetailsPage extends ConsumerWidget {
                                 ),
                                 if (userRating != null)
                                   IconButton(
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.delete_outline,
-                                      color: Colors.red,
+                                      color: colorScheme.error,
                                     ),
                                     onPressed: () async {
                                       try {
@@ -232,9 +236,9 @@ class HouseDetailsPage extends ConsumerWidget {
                                           ScaffoldMessenger.of(
                                             context,
                                           ).showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                               content: Text(
-                                                'Failed to remove rating. check connection',
+                                                getReadableError(e),
                                               ),
                                             ),
                                           );
@@ -250,7 +254,7 @@ class HouseDetailsPage extends ConsumerWidget {
                                 userRating!.ratingReason ?? '',
                                 style: TextStyle(
                                   fontStyle: FontStyle.italic,
-                                  color: Colors.grey[700],
+                                  color: colorScheme.onSurfaceVariant,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -282,7 +286,7 @@ class HouseDetailsPage extends ConsumerWidget {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -310,7 +314,7 @@ class HouseDetailsPage extends ConsumerWidget {
                                   "Posted: ${house.datePosted.toString().split(' ')[0]}",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.grey[600],
+                                    color: colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ],
@@ -332,7 +336,7 @@ class HouseDetailsPage extends ConsumerWidget {
                         house.description ?? "No description provided.",
                         style: TextStyle(
                           height: 1.5,
-                          color: Colors.grey[800],
+                          color: colorScheme.onSurface,
                           fontSize: 16,
                         ),
                       ),
@@ -353,10 +357,10 @@ class HouseDetailsPage extends ConsumerWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: colorScheme.shadow.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, -5),
                   ),
@@ -376,10 +380,10 @@ class HouseDetailsPage extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Contact Host",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: colorScheme.onPrimary,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -491,11 +495,9 @@ class HouseDetailsPage extends ConsumerWidget {
                 }
               } catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Failed to save rating. Please try again.'),
-                    ),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(getReadableError(e))));
                 }
               }
             },
