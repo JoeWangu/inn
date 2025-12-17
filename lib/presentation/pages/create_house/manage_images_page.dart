@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inn/data/models/extra_image_model.dart';
 import 'package:inn/domain/repositories/house_repository.dart';
+import 'package:inn/core/errors/error_handler.dart';
 
 class ManageImagesPage extends ConsumerStatefulWidget {
   final int rentalId;
@@ -71,7 +72,7 @@ class _ManageImagesPageState extends ConsumerState<ManageImagesPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error uploading images: $e')));
+        ).showSnackBar(SnackBar(content: Text(getReadableError(e))));
       }
     } finally {
       if (mounted) {
@@ -96,7 +97,7 @@ class _ManageImagesPageState extends ConsumerState<ManageImagesPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error deleting image: $e')));
+        ).showSnackBar(SnackBar(content: Text(getReadableError(e))));
       }
     }
   }
@@ -230,7 +231,18 @@ class _ManageImagesPageState extends ConsumerState<ManageImagesPage> {
                   },
                 );
               },
-              error: (err, stack) => Center(child: Text('Error: $err')),
+              error: (err, stack) => Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    getReadableError(err),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ),
+              ),
               loading: () => const Center(child: CircularProgressIndicator()),
             ),
           ),
