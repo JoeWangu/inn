@@ -1,8 +1,8 @@
-import 'dart:io';
+// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:inn/presentation/controllers/home_controller/house_controller.dart';
 import 'package:inn/presentation/shared/house_card.dart';
@@ -19,9 +19,9 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  Future<InitializationStatus> _initGoogleMobileAds() async {
-    return MobileAds.instance.initialize();
-  }
+  // Future<InitializationStatus> _initGoogleMobileAds() async {
+  //   return MobileAds.instance.initialize();
+  // }
 
   @override
   void initState() {
@@ -29,9 +29,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(homeHouseControllerProvider);
     });
-    if (Platform.isAndroid || Platform.isIOS) {
-      _initGoogleMobileAds();
-    }
+    // if (Platform.isAndroid || Platform.isIOS) {
+    //   _initGoogleMobileAds();
+    // }
   }
 
   String _getGreeting() {
