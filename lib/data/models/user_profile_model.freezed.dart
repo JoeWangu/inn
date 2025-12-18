@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfileModel {
 
-@JsonKey(name: 'first_name') String? get firstName;@JsonKey(name: 'last_name') String? get lastName;@JsonKey(name: 'phone_number') String? get phoneNumber; String? get dob; String? get gender; String? get address;@JsonKey(name: 'profile_picture') String? get profilePicture; String? get bio;@JsonKey(name: 'country') int? get countryId;@JsonKey(name: 'state') int? get stateId;@JsonKey(name: 'city') int? get cityId;@JsonKey(name: 'neighborhood') int? get neighborhoodId;@JsonKey(name: 'countryDetails') Country? get country;@JsonKey(name: 'stateDetails') StateData? get state;@JsonKey(name: 'cityDetails') City? get city;@JsonKey(name: 'neighborhoodDetails') Neighborhood? get neighborhood;
+@JsonKey(name: 'first_name') String? get firstName;@JsonKey(name: 'last_name') String? get lastName;@JsonKey(name: 'phone_number') String? get phoneNumber; String? get dob; String? get gender; String? get address;@JsonKey(name: 'profile_picture') String? get profilePicture; String? get bio; String? get username;@JsonKey(name: 'country') int? get countryId;@JsonKey(name: 'state') int? get stateId;@JsonKey(name: 'city') int? get cityId;@JsonKey(name: 'neighborhood') int? get neighborhoodId;@JsonKey(name: 'countryDetails') Country? get country;@JsonKey(name: 'stateDetails') StateData? get state;@JsonKey(name: 'cityDetails') City? get city;@JsonKey(name: 'neighborhoodDetails') Neighborhood? get neighborhood;
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserProfileModelCopyWith<UserProfileModel> get copyWith => _$UserProfileModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.dob, dob) || other.dob == dob)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.address, address) || other.address == address)&&(identical(other.profilePicture, profilePicture) || other.profilePicture == profilePicture)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.countryId, countryId) || other.countryId == countryId)&&(identical(other.stateId, stateId) || other.stateId == stateId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.neighborhoodId, neighborhoodId) || other.neighborhoodId == neighborhoodId)&&(identical(other.country, country) || other.country == country)&&(identical(other.state, state) || other.state == state)&&(identical(other.city, city) || other.city == city)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.dob, dob) || other.dob == dob)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.address, address) || other.address == address)&&(identical(other.profilePicture, profilePicture) || other.profilePicture == profilePicture)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.username, username) || other.username == username)&&(identical(other.countryId, countryId) || other.countryId == countryId)&&(identical(other.stateId, stateId) || other.stateId == stateId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.neighborhoodId, neighborhoodId) || other.neighborhoodId == neighborhoodId)&&(identical(other.country, country) || other.country == country)&&(identical(other.state, state) || other.state == state)&&(identical(other.city, city) || other.city == city)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,phoneNumber,dob,gender,address,profilePicture,bio,countryId,stateId,cityId,neighborhoodId,country,state,city,neighborhood);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,phoneNumber,dob,gender,address,profilePicture,bio,username,countryId,stateId,cityId,neighborhoodId,country,state,city,neighborhood);
 
 @override
 String toString() {
-  return 'UserProfileModel(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, bio: $bio, countryId: $countryId, stateId: $stateId, cityId: $cityId, neighborhoodId: $neighborhoodId, country: $country, state: $state, city: $city, neighborhood: $neighborhood)';
+  return 'UserProfileModel(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, bio: $bio, username: $username, countryId: $countryId, stateId: $stateId, cityId: $cityId, neighborhoodId: $neighborhoodId, country: $country, state: $state, city: $city, neighborhood: $neighborhood)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserProfileModelCopyWith<$Res>  {
   factory $UserProfileModelCopyWith(UserProfileModel value, $Res Function(UserProfileModel) _then) = _$UserProfileModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'first_name') String? firstName,@JsonKey(name: 'last_name') String? lastName,@JsonKey(name: 'phone_number') String? phoneNumber, String? dob, String? gender, String? address,@JsonKey(name: 'profile_picture') String? profilePicture, String? bio,@JsonKey(name: 'country') int? countryId,@JsonKey(name: 'state') int? stateId,@JsonKey(name: 'city') int? cityId,@JsonKey(name: 'neighborhood') int? neighborhoodId,@JsonKey(name: 'countryDetails') Country? country,@JsonKey(name: 'stateDetails') StateData? state,@JsonKey(name: 'cityDetails') City? city,@JsonKey(name: 'neighborhoodDetails') Neighborhood? neighborhood
+@JsonKey(name: 'first_name') String? firstName,@JsonKey(name: 'last_name') String? lastName,@JsonKey(name: 'phone_number') String? phoneNumber, String? dob, String? gender, String? address,@JsonKey(name: 'profile_picture') String? profilePicture, String? bio, String? username,@JsonKey(name: 'country') int? countryId,@JsonKey(name: 'state') int? stateId,@JsonKey(name: 'city') int? cityId,@JsonKey(name: 'neighborhood') int? neighborhoodId,@JsonKey(name: 'countryDetails') Country? country,@JsonKey(name: 'stateDetails') StateData? state,@JsonKey(name: 'cityDetails') City? city,@JsonKey(name: 'neighborhoodDetails') Neighborhood? neighborhood
 });
 
 
@@ -65,7 +65,7 @@ class _$UserProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? phoneNumber = freezed,Object? dob = freezed,Object? gender = freezed,Object? address = freezed,Object? profilePicture = freezed,Object? bio = freezed,Object? countryId = freezed,Object? stateId = freezed,Object? cityId = freezed,Object? neighborhoodId = freezed,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? phoneNumber = freezed,Object? dob = freezed,Object? gender = freezed,Object? address = freezed,Object? profilePicture = freezed,Object? bio = freezed,Object? username = freezed,Object? countryId = freezed,Object? stateId = freezed,Object? cityId = freezed,Object? neighborhoodId = freezed,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,}) {
   return _then(_self.copyWith(
 firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
@@ -75,6 +75,7 @@ as String?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nul
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String?,profilePicture: freezed == profilePicture ? _self.profilePicture : profilePicture // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
+as String?,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String?,countryId: freezed == countryId ? _self.countryId : countryId // ignore: cast_nullable_to_non_nullable
 as int?,stateId: freezed == stateId ? _self.stateId : stateId // ignore: cast_nullable_to_non_nullable
 as int?,cityId: freezed == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable
@@ -216,10 +217,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'phone_number')  String? phoneNumber,  String? dob,  String? gender,  String? address, @JsonKey(name: 'profile_picture')  String? profilePicture,  String? bio, @JsonKey(name: 'country')  int? countryId, @JsonKey(name: 'state')  int? stateId, @JsonKey(name: 'city')  int? cityId, @JsonKey(name: 'neighborhood')  int? neighborhoodId, @JsonKey(name: 'countryDetails')  Country? country, @JsonKey(name: 'stateDetails')  StateData? state, @JsonKey(name: 'cityDetails')  City? city, @JsonKey(name: 'neighborhoodDetails')  Neighborhood? neighborhood)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'phone_number')  String? phoneNumber,  String? dob,  String? gender,  String? address, @JsonKey(name: 'profile_picture')  String? profilePicture,  String? bio,  String? username, @JsonKey(name: 'country')  int? countryId, @JsonKey(name: 'state')  int? stateId, @JsonKey(name: 'city')  int? cityId, @JsonKey(name: 'neighborhood')  int? neighborhoodId, @JsonKey(name: 'countryDetails')  Country? country, @JsonKey(name: 'stateDetails')  StateData? state, @JsonKey(name: 'cityDetails')  City? city, @JsonKey(name: 'neighborhoodDetails')  Neighborhood? neighborhood)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfileModel() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that.gender,_that.address,_that.profilePicture,_that.bio,_that.countryId,_that.stateId,_that.cityId,_that.neighborhoodId,_that.country,_that.state,_that.city,_that.neighborhood);case _:
+return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that.gender,_that.address,_that.profilePicture,_that.bio,_that.username,_that.countryId,_that.stateId,_that.cityId,_that.neighborhoodId,_that.country,_that.state,_that.city,_that.neighborhood);case _:
   return orElse();
 
 }
@@ -237,10 +238,10 @@ return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'phone_number')  String? phoneNumber,  String? dob,  String? gender,  String? address, @JsonKey(name: 'profile_picture')  String? profilePicture,  String? bio, @JsonKey(name: 'country')  int? countryId, @JsonKey(name: 'state')  int? stateId, @JsonKey(name: 'city')  int? cityId, @JsonKey(name: 'neighborhood')  int? neighborhoodId, @JsonKey(name: 'countryDetails')  Country? country, @JsonKey(name: 'stateDetails')  StateData? state, @JsonKey(name: 'cityDetails')  City? city, @JsonKey(name: 'neighborhoodDetails')  Neighborhood? neighborhood)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'phone_number')  String? phoneNumber,  String? dob,  String? gender,  String? address, @JsonKey(name: 'profile_picture')  String? profilePicture,  String? bio,  String? username, @JsonKey(name: 'country')  int? countryId, @JsonKey(name: 'state')  int? stateId, @JsonKey(name: 'city')  int? cityId, @JsonKey(name: 'neighborhood')  int? neighborhoodId, @JsonKey(name: 'countryDetails')  Country? country, @JsonKey(name: 'stateDetails')  StateData? state, @JsonKey(name: 'cityDetails')  City? city, @JsonKey(name: 'neighborhoodDetails')  Neighborhood? neighborhood)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileModel():
-return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that.gender,_that.address,_that.profilePicture,_that.bio,_that.countryId,_that.stateId,_that.cityId,_that.neighborhoodId,_that.country,_that.state,_that.city,_that.neighborhood);case _:
+return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that.gender,_that.address,_that.profilePicture,_that.bio,_that.username,_that.countryId,_that.stateId,_that.cityId,_that.neighborhoodId,_that.country,_that.state,_that.city,_that.neighborhood);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -257,10 +258,10 @@ return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'phone_number')  String? phoneNumber,  String? dob,  String? gender,  String? address, @JsonKey(name: 'profile_picture')  String? profilePicture,  String? bio, @JsonKey(name: 'country')  int? countryId, @JsonKey(name: 'state')  int? stateId, @JsonKey(name: 'city')  int? cityId, @JsonKey(name: 'neighborhood')  int? neighborhoodId, @JsonKey(name: 'countryDetails')  Country? country, @JsonKey(name: 'stateDetails')  StateData? state, @JsonKey(name: 'cityDetails')  City? city, @JsonKey(name: 'neighborhoodDetails')  Neighborhood? neighborhood)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'phone_number')  String? phoneNumber,  String? dob,  String? gender,  String? address, @JsonKey(name: 'profile_picture')  String? profilePicture,  String? bio,  String? username, @JsonKey(name: 'country')  int? countryId, @JsonKey(name: 'state')  int? stateId, @JsonKey(name: 'city')  int? cityId, @JsonKey(name: 'neighborhood')  int? neighborhoodId, @JsonKey(name: 'countryDetails')  Country? country, @JsonKey(name: 'stateDetails')  StateData? state, @JsonKey(name: 'cityDetails')  City? city, @JsonKey(name: 'neighborhoodDetails')  Neighborhood? neighborhood)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileModel() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that.gender,_that.address,_that.profilePicture,_that.bio,_that.countryId,_that.stateId,_that.cityId,_that.neighborhoodId,_that.country,_that.state,_that.city,_that.neighborhood);case _:
+return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that.gender,_that.address,_that.profilePicture,_that.bio,_that.username,_that.countryId,_that.stateId,_that.cityId,_that.neighborhoodId,_that.country,_that.state,_that.city,_that.neighborhood);case _:
   return null;
 
 }
@@ -272,7 +273,7 @@ return $default(_that.firstName,_that.lastName,_that.phoneNumber,_that.dob,_that
 
 @JsonSerializable(explicitToJson: true)
 class _UserProfileModel implements UserProfileModel {
-  const _UserProfileModel({@JsonKey(name: 'first_name') this.firstName, @JsonKey(name: 'last_name') this.lastName, @JsonKey(name: 'phone_number') this.phoneNumber, this.dob, this.gender, this.address, @JsonKey(name: 'profile_picture') this.profilePicture, this.bio, @JsonKey(name: 'country') this.countryId, @JsonKey(name: 'state') this.stateId, @JsonKey(name: 'city') this.cityId, @JsonKey(name: 'neighborhood') this.neighborhoodId, @JsonKey(name: 'countryDetails') this.country, @JsonKey(name: 'stateDetails') this.state, @JsonKey(name: 'cityDetails') this.city, @JsonKey(name: 'neighborhoodDetails') this.neighborhood});
+  const _UserProfileModel({@JsonKey(name: 'first_name') this.firstName, @JsonKey(name: 'last_name') this.lastName, @JsonKey(name: 'phone_number') this.phoneNumber, this.dob, this.gender, this.address, @JsonKey(name: 'profile_picture') this.profilePicture, this.bio, this.username, @JsonKey(name: 'country') this.countryId, @JsonKey(name: 'state') this.stateId, @JsonKey(name: 'city') this.cityId, @JsonKey(name: 'neighborhood') this.neighborhoodId, @JsonKey(name: 'countryDetails') this.country, @JsonKey(name: 'stateDetails') this.state, @JsonKey(name: 'cityDetails') this.city, @JsonKey(name: 'neighborhoodDetails') this.neighborhood});
   factory _UserProfileModel.fromJson(Map<String, dynamic> json) => _$UserProfileModelFromJson(json);
 
 @override@JsonKey(name: 'first_name') final  String? firstName;
@@ -283,6 +284,7 @@ class _UserProfileModel implements UserProfileModel {
 @override final  String? address;
 @override@JsonKey(name: 'profile_picture') final  String? profilePicture;
 @override final  String? bio;
+@override final  String? username;
 @override@JsonKey(name: 'country') final  int? countryId;
 @override@JsonKey(name: 'state') final  int? stateId;
 @override@JsonKey(name: 'city') final  int? cityId;
@@ -305,16 +307,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.dob, dob) || other.dob == dob)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.address, address) || other.address == address)&&(identical(other.profilePicture, profilePicture) || other.profilePicture == profilePicture)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.countryId, countryId) || other.countryId == countryId)&&(identical(other.stateId, stateId) || other.stateId == stateId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.neighborhoodId, neighborhoodId) || other.neighborhoodId == neighborhoodId)&&(identical(other.country, country) || other.country == country)&&(identical(other.state, state) || other.state == state)&&(identical(other.city, city) || other.city == city)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.dob, dob) || other.dob == dob)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.address, address) || other.address == address)&&(identical(other.profilePicture, profilePicture) || other.profilePicture == profilePicture)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.username, username) || other.username == username)&&(identical(other.countryId, countryId) || other.countryId == countryId)&&(identical(other.stateId, stateId) || other.stateId == stateId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.neighborhoodId, neighborhoodId) || other.neighborhoodId == neighborhoodId)&&(identical(other.country, country) || other.country == country)&&(identical(other.state, state) || other.state == state)&&(identical(other.city, city) || other.city == city)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,phoneNumber,dob,gender,address,profilePicture,bio,countryId,stateId,cityId,neighborhoodId,country,state,city,neighborhood);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,phoneNumber,dob,gender,address,profilePicture,bio,username,countryId,stateId,cityId,neighborhoodId,country,state,city,neighborhood);
 
 @override
 String toString() {
-  return 'UserProfileModel(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, bio: $bio, countryId: $countryId, stateId: $stateId, cityId: $cityId, neighborhoodId: $neighborhoodId, country: $country, state: $state, city: $city, neighborhood: $neighborhood)';
+  return 'UserProfileModel(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, bio: $bio, username: $username, countryId: $countryId, stateId: $stateId, cityId: $cityId, neighborhoodId: $neighborhoodId, country: $country, state: $state, city: $city, neighborhood: $neighborhood)';
 }
 
 
@@ -325,7 +327,7 @@ abstract mixin class _$UserProfileModelCopyWith<$Res> implements $UserProfileMod
   factory _$UserProfileModelCopyWith(_UserProfileModel value, $Res Function(_UserProfileModel) _then) = __$UserProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'first_name') String? firstName,@JsonKey(name: 'last_name') String? lastName,@JsonKey(name: 'phone_number') String? phoneNumber, String? dob, String? gender, String? address,@JsonKey(name: 'profile_picture') String? profilePicture, String? bio,@JsonKey(name: 'country') int? countryId,@JsonKey(name: 'state') int? stateId,@JsonKey(name: 'city') int? cityId,@JsonKey(name: 'neighborhood') int? neighborhoodId,@JsonKey(name: 'countryDetails') Country? country,@JsonKey(name: 'stateDetails') StateData? state,@JsonKey(name: 'cityDetails') City? city,@JsonKey(name: 'neighborhoodDetails') Neighborhood? neighborhood
+@JsonKey(name: 'first_name') String? firstName,@JsonKey(name: 'last_name') String? lastName,@JsonKey(name: 'phone_number') String? phoneNumber, String? dob, String? gender, String? address,@JsonKey(name: 'profile_picture') String? profilePicture, String? bio, String? username,@JsonKey(name: 'country') int? countryId,@JsonKey(name: 'state') int? stateId,@JsonKey(name: 'city') int? cityId,@JsonKey(name: 'neighborhood') int? neighborhoodId,@JsonKey(name: 'countryDetails') Country? country,@JsonKey(name: 'stateDetails') StateData? state,@JsonKey(name: 'cityDetails') City? city,@JsonKey(name: 'neighborhoodDetails') Neighborhood? neighborhood
 });
 
 
@@ -342,7 +344,7 @@ class __$UserProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? phoneNumber = freezed,Object? dob = freezed,Object? gender = freezed,Object? address = freezed,Object? profilePicture = freezed,Object? bio = freezed,Object? countryId = freezed,Object? stateId = freezed,Object? cityId = freezed,Object? neighborhoodId = freezed,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? phoneNumber = freezed,Object? dob = freezed,Object? gender = freezed,Object? address = freezed,Object? profilePicture = freezed,Object? bio = freezed,Object? username = freezed,Object? countryId = freezed,Object? stateId = freezed,Object? cityId = freezed,Object? neighborhoodId = freezed,Object? country = freezed,Object? state = freezed,Object? city = freezed,Object? neighborhood = freezed,}) {
   return _then(_UserProfileModel(
 firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
@@ -352,6 +354,7 @@ as String?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nul
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String?,profilePicture: freezed == profilePicture ? _self.profilePicture : profilePicture // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
+as String?,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String?,countryId: freezed == countryId ? _self.countryId : countryId // ignore: cast_nullable_to_non_nullable
 as int?,stateId: freezed == stateId ? _self.stateId : stateId // ignore: cast_nullable_to_non_nullable
 as int?,cityId: freezed == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable

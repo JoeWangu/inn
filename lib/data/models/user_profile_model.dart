@@ -16,6 +16,7 @@ abstract class UserProfileModel with _$UserProfileModel {
     String? address,
     @JsonKey(name: 'profile_picture') String? profilePicture,
     String? bio,
+    String? username,
 
     @JsonKey(name: 'country') int? countryId,
     @JsonKey(name: 'state') int? stateId,
