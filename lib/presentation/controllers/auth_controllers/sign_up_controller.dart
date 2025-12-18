@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:inn/domain/repositories/auth_repository.dart';
+import 'package:inn/presentation/controllers/auth_controllers/auth_check_controller.dart';
 import 'dart:async';
 
 part 'sign_up_controller.g.dart';
@@ -23,6 +24,9 @@ class SignUpController extends _$SignUpController {
     });
     if (ref.mounted) {
       state = newState;
+      if (state.hasValue && !state.hasError) {
+        ref.invalidate(authCheckControllerProvider);
+      }
     }
   }
 }
