@@ -24,6 +24,8 @@ import 'package:inn/core/theme/app_theme.dart';
 import 'package:inn/presentation/providers/theme_provider.dart';
 import 'package:inn/routes.dart';
 import 'package:inn/presentation/widgets/app_lifecycle_wrapper.dart';
+import 'package:inn/presentation/controllers/auth_controllers/auth_check_controller.dart';
+import 'package:inn/presentation/controllers/onboarding_controller.dart';
 
 class DesktopDragScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -41,8 +43,6 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   runApp(const ProviderScope(child: InnApp()));
-
-  FlutterNativeSplash.remove();
 }
 
 class InnApp extends ConsumerWidget {
@@ -52,6 +52,16 @@ class InnApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeSettingsAsync = ref.watch(themeControllerProvider);
     final router = ref.watch(routerProvider);
+
+    // Watch auth and onboarding to know when to remove splash
+    final authAsync = ref.watch(authCheckControllerProvider);
+    final onboardingAsync = ref.watch(onboardingControllerProvider);
+
+    if (authAsync.hasValue &&
+        onboardingAsync.hasValue &&
+        themeSettingsAsync.hasValue) {
+      FlutterNativeSplash.remove();
+    }
 
     return themeSettingsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
