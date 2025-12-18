@@ -206,14 +206,14 @@ class SecurityController extends _$SecurityController {
 
     _isAuthenticating = true;
     try {
-      print('Starting biometric authentication...');
+      // print('Starting biometric authentication...');
       final bool authenticated = await _auth.authenticate(
         localizedReason: 'Authenticate to unlock the app',
         biometricOnly: true, // Only allow biometrics, no fallback to PIN
         persistAcrossBackgrounding:
             true, // Persist authentication across backgrounding
       );
-      print('Biometric authentication result: $authenticated');
+      // print('Biometric authentication result: $authenticated');
 
       if (authenticated) {
         state = AsyncValue.data(
@@ -225,20 +225,20 @@ class SecurityController extends _$SecurityController {
         return true;
       } else {
         // User cancelled or failed - don't retry automatically
-        print('Biometric authentication failed or was cancelled');
+        // print('Biometric authentication failed or was cancelled');
         return false;
       }
     } on LocalAuthException catch (e) {
       // Handle LocalAuthException (e.g., userCanceled, notAvailable) and others
-      print('Biometric authentication error: $e');
+      // print('Biometric authentication error: $e');
       if (e.code == LocalAuthExceptionCode.noBiometricHardware ||
           e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
         // Biometrics not available/enrolled, disable it so we don't loop
         await toggleBiometrics(false);
       }
       return false;
-    } on PlatformException catch (e) {
-      print('Biometric authentication platform error: $e');
+    } on PlatformException catch (_) {
+      // print('Biometric authentication platform error: $e');
       return false;
     } finally {
       // In Riverpod Controller, we don't have 'mounted' but the object lifecycle is managed by the provider.
