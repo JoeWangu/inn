@@ -1,6 +1,6 @@
 String? usernameValidator(String? v) {
   if (v == null || v.trim().isEmpty) return 'Required';
-  if (v.length < 3) return 'Must have 3 or more letters';
+  if (v.length < 5) return 'Must have 5 or more letters';
   return null;
 }
 
