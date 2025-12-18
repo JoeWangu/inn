@@ -22,7 +22,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: cs.onPrimary,
+          color: cs.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
           boxShadow: [
             BoxShadow(
@@ -38,8 +38,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
             currentIndex: navigationShell.currentIndex,
             onTap: _goBranch,
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: const Color(0xFF2B5F56),
-            unselectedItemColor: Colors.grey[500],
+            selectedItemColor: cs.primary,
+            unselectedItemColor: cs.onSurfaceVariant,
             showSelectedLabels: true,
             showUnselectedLabels: true,
             items: const [
