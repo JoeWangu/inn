@@ -232,7 +232,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   // ==================== DESKTOP / TABLET ====================
   Widget _buildDesktop({required bool isLoading, required ColorScheme cs}) {
-    final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
     return LayoutBuilder(
       builder: (context, constraints) {
         final double screenWidth = constraints.maxWidth;
