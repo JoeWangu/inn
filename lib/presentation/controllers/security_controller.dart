@@ -265,6 +265,12 @@ class SecurityController extends _$SecurityController {
 
   bool _ignoreNextResume = false;
 
+  /// Call this before opening a system dialog (like ImagePicker) to prevent
+  /// the app from locking when it resumes focus.
+  void ignoreNextResume() {
+    _ignoreNextResume = true;
+  }
+
   void checkAutoLock() {
     // Prevent auto-lock if we are currently authenticating (e.g. biometric dialog is open)
     if (_isAuthenticating) return;

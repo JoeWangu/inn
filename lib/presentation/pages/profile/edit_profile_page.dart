@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inn/data/models/user_profile_model.dart';
 import 'package:inn/presentation/controllers/profile_controller.dart';
+import 'package:inn/presentation/controllers/security_controller.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {
   final UserProfileModel? userProfile;
@@ -72,6 +73,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   Future<void> _pickImage() async {
+    ref.read(securityControllerProvider.notifier).ignoreNextResume();
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
     if (picked != null) {

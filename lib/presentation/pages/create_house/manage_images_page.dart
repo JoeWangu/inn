@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:inn/data/models/extra_image_model.dart';
 import 'package:inn/domain/repositories/house_repository.dart';
 import 'package:inn/core/errors/error_handler.dart';
+import 'package:inn/presentation/controllers/security_controller.dart';
 
 class ManageImagesPage extends ConsumerStatefulWidget {
   final int rentalId;
@@ -27,6 +28,7 @@ class _ManageImagesPageState extends ConsumerState<ManageImagesPage> {
       });
 
   Future<void> _pickImages() async {
+    ref.read(securityControllerProvider.notifier).ignoreNextResume();
     final picker = ImagePicker();
     final pickedFiles = await picker.pickMultiImage();
     if (pickedFiles.isNotEmpty) {

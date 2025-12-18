@@ -155,4 +155,41 @@ void main() {
       expect(state.failedAttempts, 0);
     },
   );
+
+  test(
+    'checkAutoLock should not lock if ignoreNextResume was called',
+    () async {
+      when(mockAuth.isDeviceSupported()).thenAnswer((_) async => true);
+      when(mockAuth.canCheckBiometrics).thenAnswer((_) async => true);
+      when(
+        mockStorage.read(key: 'security_pin_enabled'),
+      ).thenAnswer((_) async => 'true');
+      when(
+        mockStorage.read(key: 'security_auto_lock_timeout'),
+      ).thenAnswer((_) async => '0'); // Immediate
+      when(
+        mockStorage.read(key: 'security_pin'),
+      ).thenAnswer((_) async => '1234');
+
+      final controller = container.read(securityControllerProvider.notifier);
+      // Trigger build and wait
+      await container.read(securityControllerProvider.future);
+
+      // Unlock and set last active time
+      await controller.verifyPin('1234');
+
+      // Set to ignore next resume
+      controller.ignoreNextResume();
+
+      // Trigger checkAutoLock (simulating Lifecycle resume)
+      controller.checkAutoLock();
+
+      final state = container.read(securityControllerProvider).value;
+      expect(
+        state!.isLocked,
+        false,
+        reason: 'Should NOT be locked after ignoreNextResume',
+      );
+    },
+  );
 }

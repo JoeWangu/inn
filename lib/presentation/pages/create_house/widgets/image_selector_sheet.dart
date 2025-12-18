@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inn/data/models/house_model.dart';
 import 'package:inn/domain/repositories/image_repository.dart';
+import 'package:inn/presentation/controllers/security_controller.dart';
 
 class ImageSelectorSheet extends ConsumerStatefulWidget {
   const ImageSelectorSheet({super.key});
@@ -42,6 +43,7 @@ class _ImageSelectorSheetState extends ConsumerState<ImageSelectorSheet> {
   }
 
   Future<void> _pickAndUploadImage() async {
+    ref.read(securityControllerProvider.notifier).ignoreNextResume();
     final XFile? pickedFile = await _picker.pickImage(
       source: ImageSource.gallery,
     );
