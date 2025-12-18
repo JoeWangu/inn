@@ -22,34 +22,42 @@ import 'package:inn/presentation/pages/home/photo_gallery_page.dart';
 import 'package:inn/presentation/pages/settings/settings_page.dart';
 import 'package:inn/presentation/pages/settings/security_settings_page.dart';
 import 'package:inn/presentation/pages/auth/lock_screen_page.dart';
+import 'package:inn/presentation/controllers/onboarding_controller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'routes.g.dart';
 
 @riverpod
 GoRouter router(Ref ref) {
-  final authState = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
-
-  ref.listen<AsyncValue<bool>>(authCheckControllerProvider, (_, next) {
-    authState.value = next;
-  }, fireImmediately: true);
+  final authAsync = ref.watch(authCheckControllerProvider);
+  final onboardingAsync = ref.watch(onboardingControllerProvider);
 
   return GoRouter(
     initialLocation: '/',
-    refreshListenable: authState,
+    refreshListenable: Listenable.merge([
+      ValueNotifier(authAsync),
+      ValueNotifier(onboardingAsync),
+    ]),
     redirect: (context, state) {
-      final auth = authState.value;
+      // Wait for both auth and onboarding to be resolved
+      if (authAsync.isLoading || onboardingAsync.isLoading) {
+        return null;
+      }
 
-      // While loading, don't redirect yet or show a splash?
-      // For now, let's assume we wait or default to /welcome/login if unknown
-      if (auth.isLoading) return null;
-
-      final isLoggedIn = auth.asData?.value ?? false;
+      final isLoggedIn = authAsync.asData?.value ?? false;
+      final seenOnboarding = onboardingAsync.asData?.value ?? false;
 
       final isLogin = state.uri.path == '/login';
       final isSignup = state.uri.path == '/signup';
       final isWelcome = state.uri.path == '/welcome';
 
+      // 1. Onboarding Check
+      if (!seenOnboarding) {
+        if (isWelcome) return null;
+        return '/welcome';
+      }
+
+      // 2. Auth Check
       if (!isLoggedIn) {
         if (isLogin || isSignup || isWelcome) {
           return null;
@@ -57,7 +65,7 @@ GoRouter router(Ref ref) {
         return '/login';
       }
 
-      // If logged in and on auth pages, go home
+      // 3. Logged in and on auth/onboarding pages, go home
       if (isLoggedIn && (isLogin || isSignup || isWelcome)) {
         return '/';
       }
