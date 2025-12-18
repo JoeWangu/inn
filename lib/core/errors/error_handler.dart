@@ -1,8 +1,5 @@
 import 'package:dio/dio.dart';
 
-// TODO: Redirect users to login automatically if
-// 401 error is caught in the UI logic
-
 String getReadableError(Object error) {
   if (error is DioException) {
     switch (error.type) {
