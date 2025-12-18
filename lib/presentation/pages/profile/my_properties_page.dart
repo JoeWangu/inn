@@ -25,6 +25,7 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
   @override
   Widget build(BuildContext context) {
     final stream = ref.watch(houseRepositoryProvider).watchMyProperties();
+    final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Properties')),
@@ -88,7 +89,7 @@ class _MyPropertiesPageState extends ConsumerState<MyPropertiesPage> {
                 final house = houses[index];
                 return Stack(
                   children: [
-                    HouseCard(house: house, tagPrefix: 'my_prop'),
+                    HouseCard(house: house, tagPrefix: 'my_prop', cs: cs),
                     Positioned(
                       top: 10,
                       right: 4,
