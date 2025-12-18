@@ -9,8 +9,14 @@ import 'package:inn/presentation/controllers/favorites_controller/favorites_cont
 class HouseCard extends ConsumerWidget {
   final HouseModel house;
   final String tagPrefix;
+  final ColorScheme cs;
 
-  const HouseCard({super.key, required this.house, this.tagPrefix = 'home'});
+  const HouseCard({
+    super.key,
+    required this.house,
+    this.tagPrefix = 'home',
+    required this.cs,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,11 +35,11 @@ class HouseCard extends ConsumerWidget {
       child: Container(
         width: 200,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: cs.surface,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: cs.surfaceContainerHighest.withValues(alpha: 0.05),
               blurRadius: 10,
             ),
           ],
@@ -56,7 +62,7 @@ class HouseCard extends ConsumerWidget {
                       width: double.infinity,
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
-                          Container(color: Colors.grey[200]),
+                          Container(color: cs.surfaceContainerHighest),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
                     ),
@@ -86,12 +92,12 @@ class HouseCard extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: cs.surfaceContainerHighest.withValues(alpha: 0.7),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Colors.red : Colors.grey,
+                        color: isFavorite ? Colors.red : cs.onSurface,
                         size: 20,
                       ),
                     ),
@@ -115,7 +121,7 @@ class HouseCard extends ConsumerWidget {
                   const SizedBox(height: 4),
                   Text(
                     house.title ?? '',
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
@@ -123,7 +129,7 @@ class HouseCard extends ConsumerWidget {
                     house.neighborhood?.name ??
                         house.city?.name ??
                         "Unknown Location",
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    style: TextStyle(color: cs.onSurface, fontSize: 12),
                   ),
                 ],
               ),
