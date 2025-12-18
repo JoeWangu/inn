@@ -49,6 +49,14 @@ class AuthRepository {
     final response = await _api.signUp(request);
     await _storage.write(key: 'access_token', value: response.token);
     await _storage.write(key: 'refresh_token', value: response.refresh);
+
+    // Save partial profile with username for immediate display
+    try {
+      await _db.insertUserProfile(
+        UserProfileModel(username: response.user.username),
+      );
+    } catch (_) {}
+
     return response;
   }
 
@@ -60,6 +68,14 @@ class AuthRepository {
     final response = await _api.login(request);
     await _storage.write(key: 'access_token', value: response.token);
     await _storage.write(key: 'refresh_token', value: response.refresh);
+
+    // Save partial profile with username for immediate display
+    try {
+      await _db.insertUserProfile(
+        UserProfileModel(username: response.user.username),
+      );
+    } catch (_) {}
+
     return response;
   }
 
