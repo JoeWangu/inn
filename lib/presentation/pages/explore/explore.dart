@@ -1,12 +1,9 @@
-// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inn/presentation/controllers/explore_contoller/explore_controller.dart';
 import 'package:inn/presentation/controllers/home_controller/house_controller.dart';
 import 'package:inn/core/errors/error_handler.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
-// import 'package:inn/ad_helper.dart';
 
 class ExplorePage extends ConsumerStatefulWidget {
   const ExplorePage({super.key});
@@ -16,53 +13,6 @@ class ExplorePage extends ConsumerStatefulWidget {
 }
 
 class _ExplorePageState extends ConsumerState<ExplorePage> {
-  // Future<InitializationStatus> _initGoogleMobileAds() async {
-  //   return MobileAds.instance.initialize();
-  // }
-
-  // static final _kAdIndex = 2;
-  // BannerAd? _ad;
-
-  // int _getDestinationItemIndex(int rawIndex) {
-  //   if (rawIndex >= _kAdIndex && _ad != null) {
-  //     return rawIndex - 1;
-  //   }
-  //   return rawIndex;
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if (Platform.isAndroid || Platform.isIOS) {
-  //     _initGoogleMobileAds();
-  //     BannerAd(
-  //       adUnitId: AdHelper.bannerAdUnitId,
-  //       size: AdSize.banner,
-  //       request: AdRequest(),
-  //       listener: BannerAdListener(
-  //         onAdLoaded: (ad) {
-  //           setState(() {
-  //             _ad = ad as BannerAd;
-  //           });
-  //         },
-  //         onAdFailedToLoad: (ad, error) {
-  //           // Releases an ad resource when it fails to load
-  //           ad.dispose();
-  //           debugPrint(
-  //             'Ad load failed (code=${error.code} message=${error.message})',
-  //           );
-  //         },
-  //       ),
-  //     ).load();
-  //   }
-  // }
-
-  // @override
-  // void dispose() {
-  //   _ad?.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final housesAsync = ref.watch(houseStreamProvider);
@@ -87,7 +37,6 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
 
             return ListView.builder(
               itemCount: houses.length + 1,
-              // itemCount: houses.length + (_ad != null ? 1 : 0),
               itemBuilder: (context, index) {
                 // === FOOTER LOGIC ===
                 if (index == houses.length) {
@@ -96,16 +45,6 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                     child: Center(child: _buildFooter(paginationState)),
                   );
                 }
-
-                // if (_ad != null && index == _kAdIndex) {
-                //   return Container(
-                //     width: _ad!.size.width.toDouble(),
-                //     height: 72.0,
-                //     alignment: Alignment.center,
-                //     child: AdWidget(ad: _ad!),
-                //   );
-                // } else {
-                // final house = houses[_getDestinationItemIndex(index)];
 
                 final house = houses[index];
                 final tag = 'explore_${house.id}';
@@ -131,7 +70,6 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                   ),
                   trailing: Text("KES ${house.price}"),
                 );
-                // }
               },
             );
           },
