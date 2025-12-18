@@ -46,6 +46,9 @@ class _SecuritySettingsPAGEState extends ConsumerState<SecuritySettingsPage> {
                         final success = await ref
                             .read(securityControllerProvider.notifier)
                             .authenticateBiometrics();
+
+                        if (!context.mounted) return;
+
                         if (success) {
                           ref
                               .read(securityControllerProvider.notifier)
@@ -55,7 +58,9 @@ class _SecuritySettingsPAGEState extends ConsumerState<SecuritySettingsPage> {
                           // The toggle will remain false
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Biometric verification failed. Please try again.'),
+                              content: Text(
+                                'Biometric verification failed. Please try again.',
+                              ),
                             ),
                           );
                         }
