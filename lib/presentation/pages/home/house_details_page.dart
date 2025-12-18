@@ -21,7 +21,7 @@ class HouseDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final ColorScheme cs = theme.colorScheme;
 
     final ratingsAsync = ref.watch(ratingsControllerProvider);
 
@@ -43,7 +43,17 @@ class HouseDetailsPage extends ConsumerWidget {
               SliverAppBar(
                 expandedHeight: 300,
                 pinned: true,
-                backgroundColor: colorScheme.surface,
+                backgroundColor: cs.surface,
+                leading: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundColor: cs.surface.withValues(alpha: 0.7),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back, color: cs.primary),
+                      onPressed: () => context.pop(),
+                    ),
+                  ),
+                ),
                 flexibleSpace: FlexibleSpaceBar(
                   background: Stack(
                     fit: StackFit.expand,
@@ -53,9 +63,8 @@ class HouseDetailsPage extends ConsumerWidget {
                         child: CachedNetworkImage(
                           imageUrl: house.imageDetail?.image ?? '',
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: colorScheme.surfaceContainerHighest,
-                          ),
+                          placeholder: (context, url) =>
+                              Container(color: cs.surfaceContainerHighest),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                         ),
@@ -70,8 +79,8 @@ class HouseDetailsPage extends ConsumerWidget {
                           icon: const Icon(Icons.grid_view, size: 18),
                           label: const Text('View Photos'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.surface,
-                            foregroundColor: colorScheme.onSurface,
+                            backgroundColor: cs.surface,
+                            foregroundColor: cs.onSurface,
                             elevation: 4,
                           ),
                         ),
@@ -132,7 +141,7 @@ class HouseDetailsPage extends ConsumerWidget {
                           Text(
                             "KES ${house.price.toStringAsFixed(0)}",
                             style: theme.textTheme.titleLarge?.copyWith(
-                              color: colorScheme.primary,
+                              color: cs.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -146,16 +155,14 @@ class HouseDetailsPage extends ConsumerWidget {
                           Icon(
                             Icons.location_on,
                             size: 16,
-                            color: colorScheme.onSurfaceVariant,
+                            color: cs.onSurfaceVariant,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             house.neighborhood?.name ??
                                 house.city?.name ??
                                 "Unknown Location",
-                            style: TextStyle(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
+                            style: TextStyle(color: cs.onSurfaceVariant),
                           ),
                         ],
                       ),
@@ -166,14 +173,14 @@ class HouseDetailsPage extends ConsumerWidget {
                         children: [
                           _buildTag(
                             house.category ?? '',
-                            colorScheme.primaryContainer,
-                            colorScheme.onPrimaryContainer,
+                            cs.primaryContainer,
+                            cs.onPrimaryContainer,
                           ),
                           const SizedBox(width: 10),
                           _buildTag(
                             "${house.totalUnits} Units",
-                            colorScheme.surfaceContainerHighest,
-                            colorScheme.onSurfaceVariant,
+                            cs.surfaceContainerHighest,
+                            cs.onSurfaceVariant,
                           ),
                         ],
                       ),
@@ -184,12 +191,10 @@ class HouseDetailsPage extends ConsumerWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: colorScheme.secondaryContainer.withValues(
-                            alpha: 0.1,
-                          ),
+                          color: cs.secondaryContainer.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: colorScheme.secondaryContainer,
+                            color: cs.secondaryContainer,
                             width: 1,
                           ),
                         ),
@@ -205,14 +210,14 @@ class HouseDetailsPage extends ConsumerWidget {
                                       : "Your Rating",
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: colorScheme.onSurface,
+                                    color: cs.onSurface,
                                   ),
                                 ),
                                 if (userRating != null)
                                   IconButton(
                                     icon: Icon(
                                       Icons.delete_outline,
-                                      color: colorScheme.error,
+                                      color: cs.error,
                                     ),
                                     onPressed: () async {
                                       try {
@@ -254,7 +259,7 @@ class HouseDetailsPage extends ConsumerWidget {
                                 userRating!.ratingReason ?? '',
                                 style: TextStyle(
                                   fontStyle: FontStyle.italic,
-                                  color: colorScheme.onSurfaceVariant,
+                                  color: cs.onSurfaceVariant,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -282,17 +287,17 @@ class HouseDetailsPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 24),
 
-                      // Host Section
+                      // Post Section
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: colorScheme.surfaceContainerHighest,
+                          color: cs.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: colorScheme.primary.withValues(
+                              backgroundColor: cs.primary.withValues(
                                 alpha: 0.2,
                               ),
                               child: Text(
@@ -314,7 +319,7 @@ class HouseDetailsPage extends ConsumerWidget {
                                   "Posted: ${house.datePosted.toString().split(' ')[0]}",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: colorScheme.onSurfaceVariant,
+                                    color: cs.onSurfaceVariant,
                                   ),
                                 ),
                               ],
@@ -332,15 +337,15 @@ class HouseDetailsPage extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
+
                       Text(
                         house.description ?? "No description provided.",
                         style: TextStyle(
                           height: 1.5,
-                          color: colorScheme.onSurface,
+                          color: cs.onSurface,
                           fontSize: 16,
                         ),
                       ),
-
                       const SizedBox(height: 100),
                     ],
                   ),
@@ -357,10 +362,10 @@ class HouseDetailsPage extends ConsumerWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: colorScheme.surface,
+                color: cs.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: colorScheme.shadow.withValues(alpha: 0.1),
+                    color: cs.shadow.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, -5),
                   ),
@@ -375,7 +380,7 @@ class HouseDetailsPage extends ConsumerWidget {
                       // TODO: Implement Call or Booking logic here
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: colorScheme.primary,
+                      backgroundColor: cs.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -383,7 +388,7 @@ class HouseDetailsPage extends ConsumerWidget {
                     child: Text(
                       "Contact Host",
                       style: TextStyle(
-                        color: colorScheme.onPrimary,
+                        color: cs.onPrimary,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
