@@ -46,7 +46,9 @@ void main() {
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => Scaffold(body: HouseCard(house: tHouse)),
+          builder: (context, state) => Scaffold(
+            body: HouseCard(house: tHouse, cs: Theme.of(context).colorScheme),
+          ),
         ),
         GoRoute(
           name: 'house-details',
@@ -100,7 +102,9 @@ void main() {
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => Scaffold(body: HouseCard(house: tHouse)),
+          builder: (context, state) => Scaffold(
+            body: HouseCard(house: tHouse, cs: Theme.of(context).colorScheme),
+          ),
         ),
         GoRoute(
           name: 'house-details',
