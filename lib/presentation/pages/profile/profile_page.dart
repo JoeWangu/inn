@@ -10,12 +10,9 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorScheme cs = Theme.of(context).colorScheme;
-
     final profileAsync = ref.watch(profileControllerProvider);
 
     return Scaffold(
-      backgroundColor: cs.onPrimary,
       appBar: AppBar(title: const Text('Profile')),
       body: profileAsync.when(
         data: (profile) {
