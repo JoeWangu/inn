@@ -75,15 +75,15 @@ class _LockScreenPageState extends ConsumerState<LockScreenPage> {
     if (state.isBiometricsEnabled && _lockoutRemaining == Duration.zero) {
       setState(() => _isAuthenticating = true);
       try {
-        print('LockScreen: Triggering biometrics...');
+        // print('LockScreen: Triggering biometrics...');
         final success = await ref
             .read(securityControllerProvider.notifier)
             .authenticateBiometrics();
         if (success) {
-          print('LockScreen: Biometrics success, unlocking...');
+          // print('LockScreen: Biometrics success, unlocking...');
           _unlock();
         } else {
-          print('LockScreen: Biometrics failed or canceled.');
+          // print('LockScreen: Biometrics failed or canceled.');
         }
       } finally {
         if (mounted) {
