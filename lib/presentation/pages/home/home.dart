@@ -6,6 +6,7 @@ import 'package:inn/presentation/controllers/home_controller/house_controller.da
 import 'package:inn/presentation/shared/house_card.dart';
 import 'package:inn/presentation/shared/item_card.dart';
 import 'package:inn/core/errors/error_handler.dart';
+import 'package:inn/presentation/controllers/profile_controller.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -23,27 +24,32 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'GOOD MORNING';
+    if (hour < 17) return 'GOOD AFTERNOON';
+    return 'GOOD EVENING';
+  }
+
   @override
   Widget build(BuildContext context) {
     final housesAsync = ref.watch(houseStreamProvider);
+    final profileAsync = ref.watch(profileControllerProvider);
     ColorScheme cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: cs.onPrimary,
-      appBar: AppBar(
-        toolbarHeight: 0,
-        shadowColor: cs.onPrimary,
-        backgroundColor: cs.onPrimary,
-        scrolledUnderElevation: 0.0,
-        surfaceTintColor: Colors.transparent,
-      ),
-
+      // appBar: AppBar(
+      //   toolbarHeight: 0,
+      //   scrolledUnderElevation: 0.0,
+      //   surfaceTintColor: Colors.transparent,
+      // ),
       body: SafeArea(
         child: ColoredBox(
           color: cs.onSurface.withValues(alpha: 0.05),
           child: RefreshIndicator(
             onRefresh: () async {
               await ref.read(homeHouseControllerProvider.notifier).refresh();
+              await ref.read(profileControllerProvider.notifier).refresh();
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -56,7 +62,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       bottomRight: Radius.circular(25),
                     ),
                     child: ColoredBox(
-                      color: cs.onPrimary,
+                      color: cs.surface,
                       child: Column(
                         children: [
                           // TOP HEADER
@@ -66,13 +72,36 @@ class _HomePageState extends ConsumerState<HomePage> {
                               children: [
                                 Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 24,
-                                      backgroundColor: cs.onSurface.withValues(
-                                        alpha: 0.05,
+                                    profileAsync.when(
+                                      data: (profile) => CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: cs.onSurface
+                                            .withValues(alpha: 0.05),
+                                        backgroundImage:
+                                            profile?.profilePicture != null
+                                            ? NetworkImage(
+                                                    profile!.profilePicture!,
+                                                  )
+                                                  as ImageProvider
+                                            : const AssetImage(
+                                                'assets/img_assets/avatar.png',
+                                              ),
                                       ),
-                                      backgroundImage: AssetImage(
-                                        'assets/img_assets/avatar.png',
+                                      loading: () => CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: cs.onSurface
+                                            .withValues(alpha: 0.05),
+                                        child: const CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                      ),
+                                      error: (e, s) => CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: cs.onSurface
+                                            .withValues(alpha: 0.05),
+                                        backgroundImage: const AssetImage(
+                                          'assets/img_assets/avatar.png',
+                                        ),
                                       ),
                                     ),
                                     //   ],
@@ -84,34 +113,55 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       children: [
                                         Row(
                                           children: [
-                                            Icon(
-                                              Icons.wb_sunny,
-                                              color: Colors.amber,
-                                              size: 18,
-                                            ),
-                                            const SizedBox(width: 6),
+                                            // Icon(
+                                            //   Icons.wb_sunny,
+                                            //   color: Colors.amber,
+                                            //   size: 18,
+                                            // ),
+                                            // const SizedBox(width: 6),
                                             Text(
-                                              'SUNNY',
+                                              _getGreeting(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall
                                                   ?.copyWith(
-                                                    color: cs
-                                                        .surfaceContainerHighest,
+                                                    color: cs.onSurface,
                                                     fontWeight: FontWeight.w400,
                                                     decorationThickness: 2.0,
                                                   ),
                                             ),
                                           ],
                                         ),
-                                        Text(
-                                          'Jay',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                        profileAsync.when(
+                                          data: (profile) {
+                                            final name =
+                                                profile?.username ??
+                                                profile?.firstName ??
+                                                'User';
+                                            return Text(
+                                              name,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium
+                                                  ?.copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            );
+                                          },
+                                          loading: () => const SizedBox(
+                                            height: 20,
+                                            width: 50,
+                                            child: LinearProgressIndicator(),
+                                          ),
+                                          error: (e, s) => Text(
+                                            'User',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -122,7 +172,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 InkWell(
                                   splashFactory: NoSplash.splashFactory,
                                   highlightColor: Colors.transparent,
-                                  onTap: () {},
+                                  onTap: () {
+                                    context.pushNamed('settings');
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
@@ -195,7 +247,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       children: [
                         // Recently Viewed
                         _sectionHeader('Recently Viewed', () {
-                          context.pushNamed('app_colors');
+                          // context.pushNamed('app_colors');
                         }),
                         const SizedBox(height: 16),
                         _horizontalHouseList(
@@ -204,13 +256,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                           useItemCard: true,
                           limit: 5,
                           reverse: false,
+                          cs: cs,
                         ),
 
                         const SizedBox(height: 32),
 
                         // Popular Hotels
                         _sectionHeader('Popular Hotels', () {
-                          context.pushNamed('explore');
+                          // context.pushNamed('explore');
                         }),
                         const SizedBox(height: 16),
                         _popularHotelsGrid(
@@ -218,6 +271,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           tagPrefix: 'popular',
                           limit: 5,
                           reverse: true,
+                          cs: cs,
                         ),
                       ],
                     ),
@@ -268,6 +322,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     required bool useItemCard,
     required int limit,
     required bool reverse,
+    required ColorScheme cs,
   }) {
     return SizedBox(
       height: 260,
@@ -301,7 +356,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   // cardHeight: 250,
                 );
               } else {
-                return HouseCard(house: house, tagPrefix: tagPrefix);
+                return HouseCard(house: house, tagPrefix: tagPrefix, cs: cs);
               }
             },
           );
@@ -326,6 +381,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     required String tagPrefix,
     required int limit,
     required bool reverse,
+    required ColorScheme cs,
   }) {
     return housesAsync.when(
       data: (allHouses) {
@@ -354,7 +410,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           itemCount: displayHouses.length,
           itemBuilder: (context, index) {
             final house = displayHouses[index];
-            return HouseCard(house: house, tagPrefix: tagPrefix);
+            return HouseCard(house: house, tagPrefix: tagPrefix, cs: cs);
           },
         );
       },
